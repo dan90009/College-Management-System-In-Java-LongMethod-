@@ -1,15 +1,7 @@
 
-0collegeapplication.chat.SubChatPanel$4#<init>()V
-__unknown_file ("startingBlock*¼
-startingBlock‹
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.java£ £(ö
-ó
-‹
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.java£ £(
-%0"%java.awt.event.MouseAdapter#<init>()V*6
- (*(
-&collegeapplication.chat.SubChatPanel$4"£
-‹
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.java£ £(
-implicit returnB*(
-&collegeapplication.chat.SubChatPanel$4
++collegeapplication.chat.Group#getMembers()I‚
+xC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/Group.java6 6("1*!
+18	 8("
+8 8(
+""B!
+collegeapplication.chat.GroupHX

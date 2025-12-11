@@ -1,18 +1,18 @@
 
-Mcollegeapplication.chat.ContactInfo#getGroup()Lcollegeapplication/chat/Group;ê
-ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.java≈ ≈("1*—
+Tcollegeapplication.chat.ContactInfo#getFaculty()Lcollegeapplication/faculty/Faculty;ê
+ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.javaë ë("1*›
 1
-«	 «(ä
-á
+ì	 ì(ë
+é
 
-«	 «(#
-%0collegeapplication.chat.Group"__id*N
+ì	 ì((
+%0"collegeapplication.faculty.Faculty"__id*P
 
-__unknown_file (2*0%
-#collegeapplication.chat.ContactInfo"
-group"3
+__unknown_file (4*2%
+#collegeapplication.chat.ContactInfo"	
+faculty"8
 
-« «(%
-#
-%0collegeapplication.chat.GroupB'%
+ì ì(*
+(
+%0"collegeapplication.faculty.FacultyB'%
 #collegeapplication.chat.ContactInfoH

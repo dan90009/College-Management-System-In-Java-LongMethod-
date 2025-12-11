@@ -1,15 +1,18 @@
 
-Ccollegeapplication.student.Marks#getStudentName()Ljava/lang/String;Ö
-{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/Marks.java) )("1*≤
-1+	 +(}
-{
-+	 +(
-%0java.lang.String"__id*Q
+Acollegeapplication.chat.ChatInfoPanel#imageIcon()Ljava/awt/Image;ç
+ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatInfoPanel.javaï ï("1*º
+1
+ó	 ó(Ñ
+Å
+
+ó	 ó(
+%0java.awt.Image"__id*W
 
-__unknown_file (5*3"
- collegeapplication.student.Marks"
-studentname"$
-+ +(
-
-%0java.lang.StringB$"
- collegeapplication.student.MarksH
+__unknown_file (;*9'
+%collegeapplication.chat.ChatInfoPanel"
+profileimage"$
+
+ó ó(
+
+%0java.awt.ImageB)'
+%collegeapplication.chat.ChatInfoPanelH

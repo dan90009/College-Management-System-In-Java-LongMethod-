@@ -1,26 +1,18 @@
 
->collegeapplication.subject.AddSubjectDialog#%field_initializer
-__unknown_file ("1*Ô
-1 (≈¬
-ë
-ÜC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/subject/AddSubjectDialog.java*) *(/
-%0javax.swing.JPanel"javax.swing.JPanel„
-‡
-ë
-ÜC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/subject/AddSubjectDialog.java*% *(1
-%1"javax.swing.JPanel#<init>()V*&
- (
+Ncollegeapplication.chat.ContactInfo#getAdmin()Lcollegeapplication/admin/Admin;ê
+ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.javaù ù("1*”
+1
+ü	 ü(ã
+à
+
+ü	 ü($
+%0collegeapplication.admin.Admin"__id*N
 
-%0javax.swing.JPanelÜ
-É
-ë
-ÜC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/subject/AddSubjectDialog.java* *(2?-
-+collegeapplication.subject.AddSubjectDialog"
-contentPanel"__id*&
- (
-
-%0javax.swing.JPanel"®
-ê
-ÜC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/subject/AddSubjectDialog.java& €(
-implicit returnB/-
-+collegeapplication.subject.AddSubjectDialog
+__unknown_file (2*0%
+#collegeapplication.chat.ContactInfo"
+admin"4
+
+ü ü(&
+$
+%0collegeapplication.admin.AdminB'%
+#collegeapplication.chat.ContactInfoH

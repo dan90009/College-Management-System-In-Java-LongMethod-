@@ -1,28 +1,16 @@
 
-Scollegeapplication.cource.RollGeneratorPanel#getPreferredSize()Ljava/awt/Dimension;’
-‡C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/cource/RollGeneratorPanel.java* *(""1*Æ
-1, ,(˜•
-, ,(+	
-%0int"#javax.swing.JComponent#getHeight()I*L
+@collegeapplication.chat.ChatUser#getToUserId()Ljava/lang/String;…
+{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatUser.javap p("1*¯
+1r	 r(z
+x
+r	 r(
+%0java.lang.String"__id*N
 
-__unknown_file (0.
-,collegeapplication.cource.RollGeneratorPanel2getHeight():8
-, ,(
-%1java.awt.Dimension"java.awt.Dimension·
-´
-,	 ,(,
-%2"java.awt.Dimension#<init>(II)V*6
-
-__unknown_file (
-
-%1java.awt.Dimension*!
-
-__unknown_file (2Ý*'
-
-__unknown_file (
-	
-%0int"&
-, ,(-
-
-%1java.awt.DimensionB0.
-,collegeapplication.cource.RollGeneratorPanelH
+__unknown_file (2*0"
+ collegeapplication.chat.ChatUser"
+
+touserid"$
+r r(
+
+%0java.lang.StringB$"
+ collegeapplication.chat.ChatUserH

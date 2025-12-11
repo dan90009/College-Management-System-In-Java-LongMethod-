@@ -1,0 +1,144 @@
+
+êcollegeapplication.common.NotificationPanel#createMessageLabel(Lcollegeapplication/common/Notification;Ljavax/swing/JPanel;)Ljavax/swing/JLabel;ì
+ÜC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/NotificationPanel.javaˇ ˇ(""1*ë
+1
+Ä# Ä($«ƒ
+
+Ä# Ä(1
+%0java.lang.String"Ecollegeapplication.common.Notification#getMessage()Ljava/lang/String;*I
+
+__unknown_file (-
++
+n&collegeapplication.common.Notification2getMessage()<:
+
+Ä Ä("
+%1javax.swing.JLabel"javax.swing.JLabel≥
+∞
+
+Ä Ä(2
+%2".javax.swing.JLabel#<init>(Ljava/lang/String;)V*6
+
+__unknown_file (
+
+%1javax.swing.JLabel*4
+
+__unknown_file (
+
+%0java.lang.Stringp
+n
+
+Ä Ä(3"
+messagelabeljavax.swing.JLabel"__id*6
+
+__unknown_file (
+
+%1javax.swing.JLabelÖÇ
+
+Å" Å(2	
+%3int""javax.swing.JComponent#getWidth()I*9
+
+__unknown_file (
+
+paneljavax.swing.JPanel2
+getWidth()j
+h
+
+Å" Å(7	
+%4int"__calculate*
+
+Å3 Å(4
+-*
+
+Å" Å(2
+	
+%3int*
+
+Å5 Å(72
+¢ü
+
+Å Å(<
+
+%5void"#java.awt.Component#setBounds(IIII)V*@
+
+__unknown_file ($
+"
+messagelabeljavax.swing.JLabel* 
+
+__unknown_file (2n* 
+
+__unknown_file (2#*'
+
+__unknown_file (
+	
+%4int* 
+
+__unknown_file (22setBounds(IIII)N
+L
+
+Ç Ç('
+%6java.awt.Color"__id*"
+
+__unknown_file (
+""ÎË
+
+Ç Ç((
+
+%7void"7javax.swing.JComponent#setForeground(Ljava/awt/Color;)V*@
+
+__unknown_file ($
+"
+messagelabeljavax.swing.JLabel*2
+
+__unknown_file (
+
+%6java.awt.Color2setForeground(Ljava/awt/Color;)C
+A
+
+É, É(6	
+%8int"__id*"
+
+__unknown_file (
+""20
+
+É É(
+%9java.awt.Font"java.awt.FontÎ
+Ë
+
+É É(;
+%10"+java.awt.Font#<init>(Ljava/lang/String;II)V*1
+
+__unknown_file (
+
+%9java.awt.Font*(
+
+__unknown_file (
+
+Segoe UI*'
+
+__unknown_file (
+	
+%8int* 
+
+__unknown_file (2›⁄
+
+É É(<
+%11void"0javax.swing.JComponent#setFont(Ljava/awt/Font;)V*@
+
+__unknown_file ($
+"
+messagelabeljavax.swing.JLabel*1
+
+__unknown_file (
+
+%9java.awt.Font2setFont(Ljava/awt/Font;)"2
+
+Ñ Ñ($
+"
+messagelabeljavax.swing.JLabel:9
+
+ˇ# ˇ(2+
+n&collegeapplication.common.Notification:)
+
+ˇ3 ˇ(?
+paneljavax.swing.JPanelB/-
++collegeapplication.common.NotificationPanel

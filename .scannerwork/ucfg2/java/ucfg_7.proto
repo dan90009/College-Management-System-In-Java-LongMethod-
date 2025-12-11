@@ -1,15 +1,16 @@
 
-0collegeapplication.chat.SubChatPanel$3#<init>()V
-__unknown_file ("startingBlock*∑
-startingBlockã
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.javaç" ç(#Ò
-Ó
-ã
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.javaç" ç(#
-%0" javax.swing.JTextField#<init>()V*6
- (*(
-&collegeapplication.chat.SubChatPanel$3"£
-ã
-C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.javaç" ç(#
-implicit returnB*(
-&collegeapplication.chat.SubChatPanel$3
+?collegeapplication.chat.Group#getCourceCode()Ljava/lang/String;Ç
+xC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/Group.java. .("1*Æ
+10	 0(y
+w
+0	 0(
+%0java.lang.String"__id*M
+
+__unknown_file (1*/
+collegeapplication.chat.Group"
+
+courcecode"$
+0 0(
+
+%0java.lang.StringB!
+collegeapplication.chat.GroupH

@@ -139,93 +139,153 @@ public class StudentMain extends JFrame  implements ActionListener
 	 * Create the frame.
 	 */
 	public StudentMain(Student s) {
-		
-		
-		ActionListener setActive=new ActionListener()
-		{
 
+		this.s = s;
+
+		loadMessageCountIcon();
+		configureLookAndFeel();
+		initContentPane();
+		JPanel sidebarpanel = createSidebarPanel();
+		createProfilePanel(sidebarpanel);
+
+		createSidebarButtons(sidebarpanel, s);
+
+		activeButton(homebutton);
+		homepanel.setVisible(true);
+
+		initializeStudentSession(s);
+		initActiveStatusTimer(s);
+		addWindowCloseBehavior();
+	}
+
+	/* ===================== TIMER / ACTIVE STATUS ===================== */
+
+	private void initActiveStatusTimer(Student student) {
+		ActionListener setActive = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-					int result=new StudentData().setActiveStatus(s.getActiveStatus(), s.getUserId());
-					if(result==0)
-					{
-						timer.stop();
-						JOptionPane.showMessageDialog(null,"Your account is deleted by Admin","Account deleted",JOptionPane.ERROR_MESSAGE);
-						System.exit(0);
-					}
-					else
-					{
-						int notification=new NotificationData().getUnreadNotification(s.getUserId(), "Student", s.getCourceCode(), s.getSemorYear(),s.getAdmissionDate());
-						if(notification>0)
-						{
-						totalnewnotification.setVisible(true);
-						totalnewnotification.setText(notification>999?"999+":notification+"");
-						totalnewnotification.setIcon(new ImageIcon(messagecount.getScaledInstance(24+totalnewnotification.getText().length(), 24, Image.SCALE_SMOOTH)));
-						}
-						int chat=new ChatData().getUndreadMessageCountStudent(s);
-						if(chat>0)
-						{
-							totalnewchatmessage.setText(chat>999?"999+":chat+"");
-							totalnewchatmessage.setVisible(true);
-							totalnewchatmessage.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewchatmessage.getText().length(), 26, Image.SCALE_SMOOTH)));
-						}
-						else if(chat==0) 
-						{
-							totalnewchatmessage.setVisible(false);
-						}
-					}
+				handleActiveStatusTick(student);
 			}
-			
 		};
-		try
-		{
-			messagecount=ImageIO.read(new File("./assets/messagecount.png"));
+		timer = new Timer(1000, setActive);
+		timer.start();
+	}
+
+	private void handleActiveStatusTick(Student student) {
+		int result = new StudentData().setActiveStatus(student.getActiveStatus(), student.getUserId());
+		if (result == 0) {
+			timer.stop();
+			JOptionPane.showMessageDialog(
+					null,
+					"Your account is deleted by Admin",
+					"Account deleted",
+					JOptionPane.ERROR_MESSAGE
+			);
+			System.exit(0);
+			return;
 		}
-		catch(IOException exp)
-		{
+
+		updateNotificationBadge(student);
+		updateChatBadge(student);
+	}
+
+	private void updateNotificationBadge(Student student) {
+		if (totalnewnotification == null) {
+			return; // timer may tick before UI fully built
+		}
+		int notification = new NotificationData().getUnreadNotification(
+				student.getUserId(),
+				"Student",
+				student.getCourceCode(),
+				student.getSemorYear(),
+				student.getAdmissionDate()
+		);
+		if (notification > 0) {
+			String text = notification > 999 ? "999+" : String.valueOf(notification);
+			totalnewnotification.setText(text);
+			totalnewnotification.setVisible(true);
+			totalnewnotification.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(26 + text.length(), 26, Image.SCALE_SMOOTH)
+			));
+		}
+		// Note: original code does not hide when notification == 0, so we keep same behavior.
+	}
+
+	private void updateChatBadge(Student student) {
+		if (totalnewchatmessage == null) {
+			return; // timer may tick before UI fully built
+		}
+		int chat = new ChatData().getUndreadMessageCountStudent(student);
+		if (chat > 0) {
+			String text = chat > 999 ? "999+" : String.valueOf(chat);
+			totalnewchatmessage.setText(text);
+			totalnewchatmessage.setVisible(true);
+			totalnewchatmessage.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(26 + text.length(), 26, Image.SCALE_SMOOTH)
+			));
+		} else if (chat == 0) {
+			totalnewchatmessage.setVisible(false);
+		}
+	}
+
+	/* ===================== LOOK & FEEL / FRAME ===================== */
+
+	private void loadMessageCountIcon() {
+		try {
+			messagecount = ImageIO.read(new File("./assets/messagecount.png"));
+		} catch (IOException exp) {
 			exp.printStackTrace();
 		}
-		timer=new Timer(1000,setActive);
-		timer.start();
-		this.s=s;
-		Color bgColor =new Color(32,178,170);
-		Color frColor=Color.white;
+	}
+
+	private void configureLookAndFeel() {
+		Color bgColor = new Color(32, 178, 170);
+		Color frColor = Color.white;
+
 		UIManager.put("ComboBoxUI", "com.sun.java.swing.plaf.windows.WindowsComboBoxUI");
-		
-	    UIManager.put("ComboBox.selectionBackground", new ColorUIResource(bgColor));
-	    UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
-	    UIManager.put("ComboBox.foreground", new ColorUIResource(Color.DARK_GRAY));
-	    UIManager.put("ComboBox.selectionForeground", new ColorUIResource(frColor));
-	    UIManager.put("ScrollBarUI", "com.sun.java.swing.plaf.windows.WindowsScrollBarUI");
-	  
+		UIManager.put("ComboBox.selectionBackground", new ColorUIResource(bgColor));
+		UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
+		UIManager.put("ComboBox.foreground", new ColorUIResource(Color.DARK_GRAY));
+		UIManager.put("ComboBox.selectionForeground", new ColorUIResource(frColor));
+		UIManager.put("ScrollBarUI", "com.sun.java.swing.plaf.windows.WindowsScrollBarUI");
+	}
+
+	private void initContentPane() {
 		this.setResizable(false);
 		setTitle("Collage Data Management");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
 		contentPane = new JPanel();
 		contentPane.setForeground(Color.DARK_GRAY);
 		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		this.setBounds(-2,0,1370,733);
+
+		this.setBounds(-2, 0, 1370, 733);
 		createpanel();
+	}
+
+	/* ===================== SIDEBAR / PROFILE ===================== */
+
+	private JPanel createSidebarPanel() {
 		JPanel sidebarpanel = new JPanel();
-		sidebarpanel.setBorder(new MatteBorder(0, 0, 0, 2, (Color) new Color(64, 64, 64)));
-//		sidebarpanel.setBackground(new Color(255, 255, 255));
+		sidebarpanel.setBorder(new MatteBorder(0, 0, 0, 2, new Color(64, 64, 64)));
 		sidebarpanel.setBackground(Color.DARK_GRAY);
 		sidebarpanel.setBounds(5, 11, 240, 706);
 		contentPane.add(sidebarpanel);
 		sidebarpanel.setLayout(null);
-		
-		 profilepanel = new JPanel();
-		 profilepanel.setBorder(new MatteBorder(0, 0, 2, 0, (Color) Color.LIGHT_GRAY));
+		return sidebarpanel;
+	}
+
+	private void createProfilePanel(JPanel sidebarpanel) {
+		profilepanel = new JPanel();
+		profilepanel.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 		profilepanel.setBackground(Color.DARK_GRAY);
 		profilepanel.setBounds(0, 0, 240, 61);
 		sidebarpanel.add(profilepanel);
 		profilepanel.setLayout(null);
-		
+
 		studentnamelabel = new JLabel();
 		studentnamelabel.setForeground(Color.WHITE);
 		studentnamelabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -234,117 +294,136 @@ public class StudentMain extends JFrame  implements ActionListener
 		studentnamelabel.setOpaque(true);
 		studentnamelabel.setBounds(65, 5, 171, 36);
 		profilepanel.add(studentnamelabel);
-		
+
 		studentprofilepiclabel = new JLabel();
-		studentprofilepiclabel.setBounds(5,0, 50, 50);
+		studentprofilepiclabel.setBounds(5, 0, 50, 50);
 		profilepanel.add(studentprofilepiclabel);
 		studentprofilepiclabel.setHorizontalAlignment(SwingConstants.CENTER);
 		studentprofilepiclabel.setBackground(Color.DARK_GRAY);
-		
-		studentprofilepiclabel.setBorder(new LineBorder(Color.black,0));
+		studentprofilepiclabel.setBorder(new LineBorder(Color.black, 0));
 		studentprofilepiclabel.setOpaque(true);
-		
-	
-		
-		
+	}
+
+	private void createSidebarButtons(JPanel sidebarpanel, Student student) {
 		homebutton = createButton("Home");
 		sidebarpanel.add(homebutton);
-		btn=homebutton;
-		
-		studentsbutton = createButton("Classmates","Students");
+		btn = homebutton;
+
+		studentsbutton = createButton("Classmates", "Students");
 		sidebarpanel.add(studentsbutton);
-		
-		subjectbutton =createButton("Subjects");
+
+		subjectbutton = createButton("Subjects");
 		sidebarpanel.add(subjectbutton);
-		
+
 		faculitiesbutton = createButton("Faculities");
 		sidebarpanel.add(faculitiesbutton);
 
-		assignedsubjectbutton = createButton("Assigned Subject","Assign Subject");
+		assignedsubjectbutton = createButton("Assigned Subject", "Assign Subject");
 		sidebarpanel.add(assignedsubjectbutton);
-		
-		marksheetbutton = createButton("Mark Sheet","Marksheet Report");
+
+		marksheetbutton = createButton("Mark Sheet", "Marksheet Report");
 		sidebarpanel.add(marksheetbutton);
-		
+
 		attandancereportbutton = createButton("Attandance Report");
 		sidebarpanel.add(attandancereportbutton);
-		
+
+		createChatButton(sidebarpanel, student);
+		createSearchAndNotificationButtons(sidebarpanel, student);
+		createMiscButtons(sidebarpanel);
+	}
+
+	private void createChatButton(JPanel sidebarpanel, Student student) {
 		chatbutton = createButton("Chat");
 		chatbutton.setLayout(new BorderLayout());
 		sidebarpanel.add(chatbutton);
-		int chat=new ChatData().getUndreadMessageCountStudent(s);
-		totalnewchatmessage=new JLabel();
-		totalnewchatmessage.setSize(60,30);
-		totalnewchatmessage.setFont(new Font("Arial",Font.BOLD,12));
+
+		int chat = new ChatData().getUndreadMessageCountStudent(student);
+
+		totalnewchatmessage = new JLabel();
+		totalnewchatmessage.setSize(60, 30);
+		totalnewchatmessage.setFont(new Font("Arial", Font.BOLD, 12));
 		totalnewchatmessage.setForeground(Color.white);
 		totalnewchatmessage.setHorizontalTextPosition(JLabel.CENTER);
 		totalnewchatmessage.setVerticalTextPosition(JLabel.CENTER);
-		chatbutton.add(totalnewchatmessage,BorderLayout.LINE_END);
-		System.out.println(chat);
-		if(chat>0)
-		{
-			totalnewchatmessage.setText(chat>999?"999+":chat+"");
+		chatbutton.add(totalnewchatmessage, BorderLayout.LINE_END);
+
+		if (chat > 0) {
+			String text = chat > 999 ? "999+" : String.valueOf(chat);
+			totalnewchatmessage.setText(text);
 			totalnewchatmessage.setVisible(true);
-			totalnewchatmessage.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewchatmessage.getText().length(), 26, Image.SCALE_SMOOTH)));
+			totalnewchatmessage.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(26 + text.length(), 26, Image.SCALE_SMOOTH)
+			));
 		}
-		
+	}
+
+	private void createSearchAndNotificationButtons(JPanel sidebarpanel, Student student) {
 		searchbutton = createButton("Search");
 		sidebarpanel.add(searchbutton);
-		
+
 		notificationbutton = createButton("Notification");
 		notificationbutton.setLayout(new BorderLayout());
 		sidebarpanel.add(notificationbutton);
-		
-		int notification=new NotificationData().getUnreadNotification(s.getUserId(), "Student", s.getCourceCode(), s.getSemorYear(),s.getAdmissionDate());
-		totalnewnotification=new JLabel();
-		totalnewnotification.setSize(60,30);
-		totalnewnotification.setFont(new Font("Arial",Font.BOLD,12));
+
+		int notification = new NotificationData().getUnreadNotification(
+				student.getUserId(),
+				"Student",
+				student.getCourceCode(),
+				student.getSemorYear(),
+				student.getAdmissionDate()
+		);
+
+		totalnewnotification = new JLabel();
+		totalnewnotification.setSize(60, 30);
+		totalnewnotification.setFont(new Font("Arial", Font.BOLD, 12));
 		totalnewnotification.setForeground(Color.white);
 		totalnewnotification.setHorizontalTextPosition(JLabel.CENTER);
 		totalnewnotification.setVerticalTextPosition(JLabel.CENTER);
-		notificationbutton.add(totalnewnotification,BorderLayout.LINE_END);
-		
-		if(notification>0)
-		{
-			totalnewnotification.setText(notification>999?"999+":notification+"");
+		notificationbutton.add(totalnewnotification, BorderLayout.LINE_END);
+
+		if (notification > 0) {
+			String text = notification > 999 ? "999+" : String.valueOf(notification);
+			totalnewnotification.setText(text);
 			totalnewnotification.setVisible(true);
-			totalnewnotification.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewnotification.getText().length(), 26, Image.SCALE_SMOOTH)));
+			totalnewnotification.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(26 + text.length(), 26, Image.SCALE_SMOOTH)
+			));
 		}
-		
-		
-		myprofilebutton = createButton("My Profile","Profile");
+	}
+
+	private void createMiscButtons(JPanel sidebarpanel) {
+		myprofilebutton = createButton("My Profile", "Profile");
 		sidebarpanel.add(myprofilebutton);
-		
-		contactusbutton= createButton("Contact Us");
+
+		contactusbutton = createButton("Contact Us");
 		sidebarpanel.add(contactusbutton);
-		
+
 		logoutbutton = createButton("logout");
 		sidebarpanel.add(logoutbutton);
 
-		exitbutton =createButton("Exit");
+		exitbutton = createButton("Exit");
 		sidebarpanel.add(exitbutton);
-		
-		activeButton(homebutton);
-		
-		homepanel.setVisible(true);
-		
+	}
+
+	/* ===================== STUDENT SESSION / WINDOW ===================== */
+
+	private void initializeStudentSession(Student student) {
 		this.setCollageDetails();
-		lastlogin=s.getLastLogin();
+		lastlogin = student.getLastLogin();
 		homepanel.setLastLogin(lastlogin);
-		
-		
-		s.setLastLogin(TimeUtil.getCurrentTime());
-		s.setActiveStatus(true);
-		new StudentData().updateStudentData(s, s);
-	        this.addWindowListener(new WindowAdapter() {
-	            @Override
-	            public void windowClosing(final WindowEvent windowenent) {
-	            	openPanel(exitbutton);
-	            }
-	        });
-	        
-	        
-		
+
+		student.setLastLogin(TimeUtil.getCurrentTime());
+		student.setActiveStatus(true);
+		new StudentData().updateStudentData(student, student);
+	}
+
+	private void addWindowCloseBehavior() {
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent windowenent) {
+				openPanel(exitbutton);
+			}
+		});
 	}
 	public void createpanel()
 	{
@@ -399,79 +478,64 @@ public class StudentMain extends JFrame  implements ActionListener
 		row+=40;
 		return button;
 	}
-	public void disablepanel()
-	{
-		if(homepanel!=null && homepanel.isVisible())
-		{
-			homepanel.setVisible(false);
+	public void disablepanel() {
+		// hide first visible "simple" panel in order
+		if (hideFirstVisiblePanel(
+				homepanel,
+				subjectpanel,
+				studentpanel,
+				viewstudentpanel,
+				facultypanel,
+				viewfacultypanel,
+				assignsubjectpanel,
+				entermarkspanelscroll,
+				marksheetpanelscroll,
+				markattandancepanelscroll,
+				attandancereportpanelscroll,
+				adminprofilepanel,
+				searchpanel,
+				notificationpanel
+		)) {
+			return;
 		}
-		else if(subjectpanel!=null&&subjectpanel.isVisible())
-		{
-			subjectpanel.setVisible(false);
-		}
-		else if(studentpanel!=null&&studentpanel.isVisible())
-		{
-			studentpanel.setVisible(false);
-		}
-		else if(viewstudentpanel!=null && viewstudentpanel.isVisible())
-		{
-			viewstudentpanel.setVisible(false);
-		}
-		else if(facultypanel!=null && facultypanel.isVisible())
-		{
-			facultypanel.setVisible(false);
-		}
-		else if(viewfacultypanel!=null&&viewfacultypanel.isVisible())
-		{
-			viewfacultypanel.setVisible(false);
-		}
-		else if(assignsubjectpanel!=null &&assignsubjectpanel.isVisible())
-		{
-			assignsubjectpanel.setVisible(false);
-		}
-		else if(entermarkspanelscroll!=null && entermarkspanelscroll.isVisible())
-		{
-			entermarkspanelscroll.setVisible(false);
-		}
-		else if(marksheetpanelscroll!=null&& marksheetpanelscroll.isVisible())
-		{
-			marksheetpanelscroll.setVisible(false);
-		}
-		else if(markattandancepanelscroll!=null && markattandancepanelscroll.isVisible())
-		{
-			markattandancepanelscroll.setVisible(false);
-		}		
-		else if(attandancereportpanelscroll!=null && attandancereportpanelscroll.isVisible())
-		{
-			attandancereportpanelscroll.setVisible(false);
-		}
-		else if(adminprofilepanel!=null && adminprofilepanel.isVisible())
-		{
-			adminprofilepanel.setVisible(false);
-		}
-		else if(searchpanel!=null && searchpanel.isVisible())
-		{
-			searchpanel.setVisible(false);
-		}
-		else if(notificationpanel!=null && notificationpanel.isVisible())
-		{
-			notificationpanel.setVisible(false);
-		}
-		else if(chatmainpanel!=null && chatmainpanel.isVisible())
-		{
-			try {
-				if(chatmainpanel.chatpanel.subchatpanel!=null&&chatmainpanel.chatpanel.subchatpanel.socket!=null&&!chatmainpanel.chatpanel.subchatpanel.socket.isClosed())
-				{
-					chatmainpanel.chatpanel.subchatpanel.socket.close();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			chatmainpanel.setVisible(false);
-		}
-		
+
+		// special case: chat panel (needs socket handling)
+		disableChatPanelIfVisible();
 	}
+
+	private boolean hideFirstVisiblePanel(JComponent... panels) {
+		if (panels == null) {
+			return false;
+		}
+		for (JComponent panel : panels) {
+			if (panel != null && panel.isVisible()) {
+				panel.setVisible(false);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void disableChatPanelIfVisible() {
+		if (chatmainpanel == null || !chatmainpanel.isVisible()) {
+			return;
+		}
+
+		try {
+			if (chatmainpanel.chatpanel != null &&
+					chatmainpanel.chatpanel.subchatpanel != null &&
+					chatmainpanel.chatpanel.subchatpanel.socket != null &&
+					!chatmainpanel.chatpanel.subchatpanel.socket.isClosed()) {
+
+				chatmainpanel.chatpanel.subchatpanel.socket.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		chatmainpanel.setVisible(false);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -485,172 +549,215 @@ public class StudentMain extends JFrame  implements ActionListener
 		studentnamelabel.setText(s.getFullName());
 		
 	}
-	public void openPanel(Object source) 
-	{
-		if(source==homebutton)
-		{
-			activeButton(homebutton);
-			homepanel=new HomePanel(s);
-			homepanel.setLocation(panelx, panely);
-			homepanel.setFocusable(true);
-			contentPane.add(homepanel);
-			homepanel.setVisible(true);
-			homepanel.setLastLogin(lastlogin);
+	public void openPanel(Object source) {
+		if (source == homebutton) {
+			openHomePanel();
+		} else if (source == subjectbutton) {
+			openSubjectPanel();
+		} else if (source == studentsbutton) {
+			openStudentPanel();
+		} else if (source == faculitiesbutton) {
+			openFacultyPanel();
+		} else if (source == assignedsubjectbutton) {
+			openAssignedSubjectPanel();
+		} else if (source == marksheetbutton) {
+			openMarksheetPanel();
+		} else if (source == attandancereportbutton) {
+			openAttendanceReportPanel();
+		} else if (source == chatbutton) {
+			openChatPanel();
+		} else if (source == searchbutton) {
+			openSearchPanel();
+		} else if (source == notificationbutton) {
+			openNotificationPanel();
+		} else if (source == myprofilebutton) {
+			openMyProfilePanel();
+		} else if (source == contactusbutton) {
+			openContactUsPanel();
+		} else if (source == exitbutton) {
+			handleExit();
+		} else if (source == logoutbutton) {
+			handleLogout();
 		}
-		
-		else if(source==subjectbutton)
-		{
-			activeButton(subjectbutton);
-			subjectpanel=new SubjectPanel(this);
-			subjectpanel.setLocation(panelx, panely);
-			subjectpanel.setFocusable(true);
-			contentPane.add(subjectpanel);
-			subjectpanel.setVisible(true);
+	}
+
+// ==== Panel opening helpers ====
+
+	private void openHomePanel() {
+		activeButton(homebutton);
+		homepanel = new HomePanel(s);
+		homepanel.setLocation(panelx, panely);
+		homepanel.setFocusable(true);
+		homepanel.setLastLogin(lastlogin);
+		contentPane.add(homepanel);
+		homepanel.setVisible(true);
+	}
+
+	private void openSubjectPanel() {
+		activeButton(subjectbutton);
+		subjectpanel = new SubjectPanel(this);
+		subjectpanel.setLocation(panelx, panely);
+		subjectpanel.setFocusable(true);
+		contentPane.add(subjectpanel);
+		subjectpanel.setVisible(true);
+	}
+
+	private void openStudentPanel() {
+		activeButton(studentsbutton);
+		studentpanel = new StudentPanel(this);
+		studentpanel.setLocation(panelx, panely);
+		studentpanel.setFocusable(true);
+		contentPane.add(studentpanel);
+		studentpanel.setVisible(true);
+	}
+
+	private void openFacultyPanel() {
+		activeButton(faculitiesbutton);
+		facultypanel = new FacultyPanel(this);
+		facultypanel.setLocation(panelx, panely);
+		facultypanel.setFocusable(true);
+		contentPane.add(facultypanel);
+		facultypanel.setVisible(true);
+	}
+
+	private void openAssignedSubjectPanel() {
+		activeButton(assignedsubjectbutton);
+		assignsubjectpanel = new AssignSubjectPanel(this);
+		assignsubjectpanel.setLocation(panelx, panely);
+		assignsubjectpanel.setFocusable(true);
+		contentPane.add(assignsubjectpanel);
+		assignsubjectpanel.setVisible(true);
+	}
+
+	private void openMarksheetPanel() {
+		activeButton(marksheetbutton);
+		marksheetpanel = new MarkSheetPanel(this, s);
+		marksheetpanel.setVisible(true);
+
+		marksheetpanelscroll = new JScrollPane(
+				marksheetpanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+		);
+		marksheetpanelscroll.getVerticalScrollBar().setUnitIncrement(16);
+		marksheetpanelscroll.setBounds(panelx, panely, 1116, 705);
+		contentPane.add(marksheetpanelscroll);
+		marksheetpanelscroll.setVisible(true);
+	}
+
+	private void openAttendanceReportPanel() {
+		activeButton(attandancereportbutton);
+		attandancereportpanel = new AttandanceReportPanel(this);
+		attandancereportpanel.setVisible(true);
+
+		attandancereportpanelscroll = new JScrollPane(
+				attandancereportpanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+		);
+		attandancereportpanelscroll.setBounds(panelx, panely, 1116, 705);
+		attandancereportpanelscroll.setName("Attadance Report Panel Scroll");
+		attandancereportpanelscroll.getVerticalScrollBar().setUnitIncrement(16);
+		attandancereportpanelscroll.setVisible(true);
+		contentPane.add(attandancereportpanelscroll);
+
+		for (Component c : attandancereportpanelscroll.getComponents()) {
+			c.setBackground(Color.white);
 		}
-		else if(source==studentsbutton)
-		{
-			activeButton(studentsbutton);
-			studentpanel=new StudentPanel(this);
-			studentpanel.setLocation(panelx,panely);
-			studentpanel.setVisible(true);
-			studentpanel.setFocusable(true);
-			contentPane.add(studentpanel);
+	}
+
+	private void openChatPanel() {
+		activeButton(chatbutton);
+		chatmainpanel = new ChatMainPanel(this);
+		chatmainpanel.setLocation(panelx, panely);
+		chatmainpanel.setVisible(true);
+		contentPane.add(chatmainpanel);
+	}
+
+	private void openSearchPanel() {
+		activeButton(searchbutton);
+		searchpanel = new SearchPanel(this);
+		searchpanel.setLocation(panelx, panely);
+		searchpanel.setVisible(true);
+		contentPane.add(searchpanel);
+	}
+
+	private void openNotificationPanel() {
+		activeButton(notificationbutton);
+		if (totalnewnotification != null && totalnewnotification.isVisible()) {
+			totalnewnotification.setVisible(false);
 		}
-		else if(source==faculitiesbutton)
-		{
-			
-			activeButton(faculitiesbutton);
-			facultypanel=new FacultyPanel(this);
-			facultypanel.setLocation(panelx,panely);
-			facultypanel.setVisible(true);
-			facultypanel.setFocusable(true);
-			contentPane.add(facultypanel);
-			
+		notificationpanel = new NotificationPanel(this);
+		notificationpanel.setLocation(panelx, panely);
+		notificationpanel.setFocusable(true);
+		notificationpanel.setVisible(true);
+		contentPane.add(notificationpanel);
+	}
+
+	private void openMyProfilePanel() {
+		activeButton(myprofilebutton);
+		viewstudentpanel = new ViewStudentPanel(s, this);
+		viewstudentpanel.setLocation(panelx, 0);
+		viewstudentpanel.setFocusable(true);
+		viewstudentpanel.setVisible(true);
+		contentPane.add(viewstudentpanel);
+	}
+
+	private void openContactUsPanel() {
+		activeButton(contactusbutton);
+		adminprofilepanel = new AdminProfilePanel();
+		adminprofilepanel.setLocation(panelx, panely);
+		adminprofilepanel.setFocusable(true);
+		adminprofilepanel.setVisible(true);
+		contentPane.add(adminprofilepanel);
+	}
+
+// ==== Exit / Logout helpers ====
+
+	private void handleExit() {
+		int result = JOptionPane.showConfirmDialog(
+				null,
+				"Do you want to exit this application ?",
+				"Exit",
+				JOptionPane.INFORMATION_MESSAGE
+		);
+		if (result != JOptionPane.YES_OPTION) {
+			return;
 		}
-		else if(source==assignedsubjectbutton)
-		{
-			activeButton(assignedsubjectbutton);
-			assignsubjectpanel=new AssignSubjectPanel(this);
-			assignsubjectpanel.setLocation(panelx,panely);
-			assignsubjectpanel.setVisible(true);
-			assignsubjectpanel.setFocusable(true);
-			contentPane.add(assignsubjectpanel);
-			
+
+		try {
+			s.setActiveStatus(false);
+			timer.stop();
+			new StudentData().setActiveStatus(false, s.getUserId());
+			DataBaseConnection.closeConnection();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		else if(source==marksheetbutton)
-		{
-				activeButton(marksheetbutton);
-				marksheetpanel=new MarkSheetPanel(this,s);
-				marksheetpanel.setVisible(true);
-				marksheetpanelscroll=new JScrollPane(marksheetpanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-				marksheetpanelscroll.getVerticalScrollBar().setUnitIncrement(16);
-				marksheetpanelscroll.setBounds(panelx,panely, 1116, 705);
-				contentPane.add(marksheetpanelscroll);
-				marksheetpanelscroll.setVisible(true);
-			
+
+		disablepanel();
+		System.exit(0);
+	}
+
+	private void handleLogout() {
+		int result = JOptionPane.showConfirmDialog(
+				null,
+				"Do you want to logout this application ?",
+				"Logout",
+				JOptionPane.INFORMATION_MESSAGE
+		);
+		if (result != JOptionPane.YES_OPTION) {
+			return;
 		}
-		
-		else if(source==attandancereportbutton)
-		{
-			activeButton(attandancereportbutton);
-			attandancereportpanel=new AttandanceReportPanel(this);
-			attandancereportpanel.setVisible(true);
-			attandancereportpanelscroll=new JScrollPane(attandancereportpanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			attandancereportpanelscroll.setBounds(panelx, panely, 1116, 705);
-			attandancereportpanelscroll.setVisible(true);
-			attandancereportpanelscroll.setName("Attadance Report Panel Scroll");
-			attandancereportpanelscroll.getVerticalScrollBar().setUnitIncrement(16);
-			contentPane.add(attandancereportpanelscroll);
-			for(Component c:attandancereportpanelscroll.getComponents())
-			{
-				c.setBackground(Color.white);
-			}
-		}
-		else if(source==chatbutton)
-		{
-			activeButton(chatbutton);
-			chatmainpanel=new ChatMainPanel(this);
-			chatmainpanel.setLocation(this.panelx, this.panely);
-			chatmainpanel.setVisible(true);
-			contentPane.add(chatmainpanel);
-			
-		}
-		else if(source==searchbutton)
-		{
-			activeButton(searchbutton);
-			searchpanel=new SearchPanel(this);
-			searchpanel.setLocation(this.panelx, this.panely);
-			searchpanel.setVisible(true);
-			contentPane.add(searchpanel);
-			
-		}
-		else if(source==notificationbutton)
-		{
-			activeButton(notificationbutton);
-			if(totalnewnotification!=null && totalnewnotification.isVisible())
-			{
-				totalnewnotification.setVisible(false);
-			}
-			notificationpanel=new NotificationPanel(this);
-			notificationpanel.setLocation(panelx,panely);
-			notificationpanel.setVisible(true);
-			notificationpanel.setFocusable(true);
-			contentPane.add(notificationpanel);
-		}
-		else if(source==myprofilebutton)
-		{
-			activeButton(myprofilebutton);
-			viewstudentpanel=new ViewStudentPanel(s,this);
-			viewstudentpanel.setLocation(panelx,0);
-			viewstudentpanel.setVisible(true);
-			viewstudentpanel.setFocusable(true);
-			
-			contentPane.add(viewstudentpanel);
-		}
-		else if(source==contactusbutton)
-		{
-			activeButton(contactusbutton);
-			adminprofilepanel=new AdminProfilePanel();
-			adminprofilepanel.setLocation(panelx,panely);
-			adminprofilepanel.setVisible(true);
-			adminprofilepanel.setFocusable(true);
-			contentPane.add(adminprofilepanel);
-		}
-		else if(source==exitbutton)
-		{
-			int result=JOptionPane.showConfirmDialog(null,"Do you want to exit this application ?","Exit",JOptionPane.INFORMATION_MESSAGE);
-			if(result==JOptionPane.YES_OPTION)
-			{
-				try {
-					s.setActiveStatus(false);
-					timer.stop();
-	        		new StudentData().setActiveStatus(false, s.getUserId());
-					DataBaseConnection.closeConnection();
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				this.disablepanel();
-				System.exit(0);
-			}
-		}
-		else if(source==logoutbutton)
-		{
-			int result=JOptionPane.showConfirmDialog(null,"Do you want to logout this application ?","Logout",JOptionPane.INFORMATION_MESSAGE);
-			if(result==JOptionPane.YES_OPTION)
-			{
-        		s.setActiveStatus(false);
-        		timer.stop();
-        		new StudentData().setActiveStatus(false, s.getUserId());
-				LoginPageFrame loginpageframe=new LoginPageFrame();
-				loginpageframe.setVisible(true);
-				loginpageframe.setLocationRelativeTo(null);
-				this.disablepanel();
-				this.dispose();
-			}
-		}
-		
+
+		s.setActiveStatus(false);
+		timer.stop();
+		new StudentData().setActiveStatus(false, s.getUserId());
+
+		LoginPageFrame loginpageframe = new LoginPageFrame();
+		loginpageframe.setVisible(true);
+		loginpageframe.setLocationRelativeTo(null);
+
+		disablepanel();
+		this.dispose();
 	}
 }

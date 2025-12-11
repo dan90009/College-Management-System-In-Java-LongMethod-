@@ -1,149 +1,18 @@
 
-Dcollegeapplication.chat.ContactInfo#getClassName()Ljava/lang/String;ê
-ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.javaÕ Õ("9*(
-2
-›
- ›("
-
-› ›(	
-Admin*≥
-3
-€
- €(ã
-à
-
-€
- €($
-%6collegeapplication.admin.Admin"__id*N
-
-__unknown_file (2*0%
-#collegeapplication.chat.ContactInfo"
-adminã
-à
-
-€
- €(
-%7boolean"	__compare*
-
-€ €(
-!=*4
-
-€
- €(&
-$
-%6collegeapplication.admin.Admin*
-
-€ €(
-""*
-2
-1*(
-4
-Ÿ
- Ÿ("
-
-Ÿ Ÿ(	
-Group*±
-5
-◊
- ◊(ä
-á
-
-◊
- ◊(#
-%4collegeapplication.chat.Group"__id*N
-
-__unknown_file (2*0%
-#collegeapplication.chat.ContactInfo"
-groupä
-á
-
-◊
- ◊(
-%5boolean"	__compare*
-
-◊ ◊(
-!=*3
-
-◊
- ◊(%
-#
-%4collegeapplication.chat.Group*
-
-◊ ◊(
-""*
-3
-4**
-6
-’
- ’("
-
-’ ’(	
-Faculty*Ω
-7
-”
- ”(ë
-é
-
-”
- ”((
-%2"collegeapplication.faculty.Faculty"__id*P
-
-__unknown_file (4*2%
-#collegeapplication.chat.ContactInfo"	
-facultyè
-å
-
-”
- ”(
-%3boolean"	__compare*
-
-” ”(
-!=*8
-
-”
- ”(*
-(
-%2"collegeapplication.faculty.Faculty*
-
-” ”(
-""*
-5
-6**
-8
-—
- —("
-
-— —(	
-Student*Ω
-9
-œ œ(ë
-é
-
-œ œ((
-%0"collegeapplication.student.Student"__id*P
-
-__unknown_file (4*2%
-#collegeapplication.chat.ContactInfo"	
-studentè
-å
-
-œ œ(
-%1boolean"	__compare*
-
-œ œ(
-!=*8
-
-œ œ(*
-(
-%0"collegeapplication.student.Student*
-
-œ œ(
-""*
-7
-8*%
+Mcollegeapplication.chat.ContactInfo#getGroup()Lcollegeapplication/chat/Group;ê
+ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.javaô ô("1*—
 1
-‡	 ‡("
+õ	 õ(ä
+á
 
-‡ ‡(
-""B'%
+õ	 õ(#
+%0collegeapplication.chat.Group"__id*N
+
+__unknown_file (2*0%
+#collegeapplication.chat.ContactInfo"
+group"3
+
+õ õ(%
+#
+%0collegeapplication.chat.GroupB'%
 #collegeapplication.chat.ContactInfoH

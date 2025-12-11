@@ -1,18 +1,18 @@
 
-Ncollegeapplication.chat.ContactInfo#getAdmin()Lcollegeapplication/admin/Admin;ê
-ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.java… …("1*”
+Tcollegeapplication.chat.ContactInfo#getStudent()Lcollegeapplication/student/Student;ê
+ÉC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ContactListPanel.javaï ï("1*›
 1
-À	 À(ã
-à
+ó	 ó(ë
+é
 
-À	 À($
-%0collegeapplication.admin.Admin"__id*N
+ó	 ó((
+%0"collegeapplication.student.Student"__id*P
 
-__unknown_file (2*0%
-#collegeapplication.chat.ContactInfo"
-admin"4
+__unknown_file (4*2%
+#collegeapplication.chat.ContactInfo"	
+student"8
 
-À À(&
-$
-%0collegeapplication.admin.AdminB'%
+ó ó(*
+(
+%0"collegeapplication.student.StudentB'%
 #collegeapplication.chat.ContactInfoH

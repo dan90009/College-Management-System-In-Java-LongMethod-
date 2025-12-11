@@ -271,126 +271,103 @@ public class EnterMarksPanel extends JPanel implements ActionListener
 			nodatafoundlabel.setBounds(300, 380, 480, 321);
 			add(nodatafoundlabel);
 	}
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-	
-		Errorlabel.setVisible(false);
-		TableErrorlabel.setVisible(false);
-		if(e.getSource()==courcenamecombo)
-		{
-			courcenamecombo.setFocusable(false);
-			
-			subjectnamecombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-			if(courcenamecombo.getSelectedIndex()==0)
-			{
-				semoryearcombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-				
-			}
-			else
-			{
-			 String cource=(String) courcenamecombo.getSelectedItem();
-			
-			 semoryearcombo.setModel(new DefaultComboBoxModel<String>(new CourceData().getSemorYear(cource)));
-			}
-		 
+	private boolean validateRequiredFields() {
+		if (!validateCourseAndRoll()) {
+			return false;
 		}
-		if(e.getSource()==semoryearcombo && semoryearcombo.getSelectedIndex()>0)
-		{
-			 String cource=(String) courcenamecombo.getSelectedItem();
-			
-			String[] totalsub=new SubjectData().getSubjectinCource(new CourceData().getCourcecode(cource), semoryearcombo.getSelectedIndex());
-			if(totalsub!=null)
-			{
-				subjectnamecombo.setModel(new DefaultComboBoxModel<String>(totalsub));
-			}
-			else
-			{
-				subjectnamecombo.setModel(new DefaultComboBoxModel<String>(new String[] {"No Subject Found"}));
-				
-			}
+		if (!validateOptionalSubject()) {
+			return false;
 		}
-		else if(e.getSource()==semoryearcombo)
-		{
-			subjectnamecombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));	
+		if (!validateBasicStudentInfo()) {
+			return false;
 		}
-		if(e.getSource()==subjectnamecombo)
-		{
-			if(courcenamecombo.getSelectedIndex()==0)
-			{
-				showerror(courcenamecombo);
-			}
-			else if(semoryearcombo.getSelectedIndex()==0)
-			{
-				showerror(semoryearcombo);
-			}
-			else if(subjectnamecombo.getSelectedItem().equals("No Subject Found"))
-			{
-				Component tf=subjectnamecombo;
-				Errorlabel.setVisible(true);
-				Errorlabel.setText("No Subject Found !");
-				Errorlabel.setBounds(tf.getX(), tf.getY()+tf.getHeight()-5, 400,26);
-			}
-			else if(subjectnamecombo.getSelectedIndex()==0)
-			{
-				showerror(subjectnamecombo);
-			}
-		
-			else
-			{
-				
-				createtablemodel();
-				
-			}
+		if (!validateParentInfo()) {
+			return false;
 		}
-		if(courcenamecombo.getSelectedIndex()==0 || semoryearcombo.getSelectedIndex()==0 || subjectnamecombo.getSelectedIndex()==0)
-		{
-			scrollPane.setVisible(false);
-			submitbutton.setVisible(false);
-			totalstudent=0;
-			this.setSize(1116, 544+(totalstudent*40));
-		}
-		if(e.getSource()==submitbutton)
-		{
-			if (table.isEditing())
-			{
-				table.getCellEditor().stopCellEditing();
-			}
-			if(theorymarksbutton.getName().equals("Active"))
-			{
-			this.addtheorymarks();
-			}
-			else
-			{
-				this.addpracticalmarks();
-			}
-			
-		}
-		if(e.getSource()==theorymarksbutton)
-		{
-			ActiveButton(theorymarksbutton);
-			DeactiveButton(practicalmarksbutton);
-			
-			if(courcenamecombo.getSelectedIndex()!=0 && semoryearcombo.getSelectedIndex()!=0 && subjectnamecombo.getSelectedIndex()!=0)
-			{
-				createtablemodel();
-			}
-		}
-		if(e.getSource()==practicalmarksbutton)
-		{
-			DeactiveButton(theorymarksbutton);
-			ActiveButton(practicalmarksbutton);
-			if(courcenamecombo.getSelectedIndex()!=0 && semoryearcombo.getSelectedIndex()!=0 && subjectnamecombo.getSelectedIndex()!=0)
-			{
-				createtablemodel();
-			}
-		}
-		if(totalstudent==0)
-		{
-			submitbutton.setVisible(false);
-		}
+		return true;
+	}
 
-		
+	/* ================== SUB-VALIDATORS ================== */
+
+	private boolean validateCourseAndRoll() {
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(courcenamecombo);
+			return false;
+		}
+		if (semoryearcombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(semoryearcombo);
+			return false;
+		}
+		if (rollnumberfield.getText().isEmpty()) {
+			showRequiredErrorAt(rollnumberfield);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateOptionalSubject() {
+		Object optionalItem = optionalsubjectcombo.getSelectedItem();
+		if (optionalsubjectcombo.getSelectedIndex() == 0
+				&& optionalItem != null
+				&& !optionalItem.toString().equals("No Optional Subject")) {
+			showRequiredErrorAt(optionalsubjectcombo);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateBasicStudentInfo() {
+		if (firstnamefield.getText().isEmpty()) {
+			showRequiredErrorAt(firstnamefield);
+			return false;
+		}
+		if (lastnamefield.getText().isEmpty()) {
+			showRequiredErrorAt(lastnamefield);
+			return false;
+		}
+		if (emailidfield.getText().isEmpty()) {
+			showRequiredErrorAt(emailidfield);
+			return false;
+		}
+		if (contactnumberfield.getText().isEmpty()) {
+			showRequiredErrorAt(contactnumberfield);
+			return false;
+		}
+		if (gendercombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(gendercombo);
+			return false;
+		}
+		if (statefield.getText().isEmpty()) {
+			showRequiredErrorAt(statefield);
+			return false;
+		}
+		if (cityfield.getText().isEmpty()) {
+			showRequiredErrorAt(cityfield);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateParentInfo() {
+		if (fathernamefield.getText().isEmpty()) {
+			showRequiredErrorAt(fathernamefield);
+			return false;
+		}
+		if (fatheroccupationfield.getText().isEmpty()) {
+			showRequiredErrorAt(fatheroccupationfield);
+			return false;
+		}
+		if (mothernamefield.getText().isEmpty()) {
+			// preserve original special offset
+			showRequiredErrorAtWithOffset(mothernamefield, 120);
+			return false;
+		}
+		if (motheroccupationfield.getText().isEmpty()
+				|| motheroccupationfield.getText().equals(" Mother Occupation")) {
+			showRequiredErrorAt(motheroccupationfield);
+			return false;
+		}
+		return true;
 	}
 	public void showerror(JComponent tf)
 	{

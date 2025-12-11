@@ -1,15 +1,15 @@
 
-1collegeapplication.chat.ChatMainPanel$2#<init>()V
-__unknown_file ("startingBlock*√
-startingBlockç
-ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatMainPanel.javaí í(˘
-ˆ
-ç
-ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatMainPanel.javaí í(
-%0"%java.awt.event.MouseAdapter#<init>()V*7
- (+)
-'collegeapplication.chat.ChatMainPanel$2"•
-ç
-ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatMainPanel.javaí í(
-implicit returnB+)
-'collegeapplication.chat.ChatMainPanel$2
+=collegeapplication.common.Person#getState()Ljava/lang/String;Ö
+{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/Person.java} }("1*¨
+1	 (w
+u
+	 (
+%0java.lang.String"__id*K
+
+__unknown_file (/*-"
+ collegeapplication.common.Person"
+state"$
+ (
+
+%0java.lang.StringB$"
+ collegeapplication.common.PersonH

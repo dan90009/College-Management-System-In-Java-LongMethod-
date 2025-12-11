@@ -148,80 +148,160 @@ public class FacultyMain extends JFrame  implements ActionListener
 	 * Create the frame.
 	 */
 	public FacultyMain(Faculty f) {
-		this.f=f;
-		ActionListener setActive=new ActionListener()
-		{
+		this.f = f;
 
+		initActiveStatusTimer();
+		loadMessageCountImage();
+		configureUIManager();
+		initFrameAndContentPane();
+
+		JPanel sidebarpanel = createSidebarPanel();
+		contentPane.add(sidebarpanel);
+
+		activeButton(homebutton);
+		if (homepanel != null) {
+			homepanel.setVisible(true);
+		}
+
+		setFacultyDetailsAndStatus();
+		addWindowCloseBehavior();
+	}
+
+	/* ====================== TIMER & ACTIVE STATUS ====================== */
+
+	private void initActiveStatusTimer() {
+		ActionListener setActive = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				new FacultyData().setActiveStatus(true, f.getFacultyId());
-				int notification=new NotificationData().getUnreadNotification(f.getFacultyId()+"", "Faculty", f.getCourceCode(), f.getSemorYear(),f.getJoinedDate());
-				if(notification>0)
-				{
-				totalnewnotification.setVisible(true);
-				totalnewnotification.setText(notification>999?"999+":notification+"");
-				totalnewnotification.setIcon(new ImageIcon(messagecount.getScaledInstance(24+totalnewnotification.getText().length(), 24, Image.SCALE_SMOOTH)));
-				}
-				int chat=new ChatData().getUndreadMessageCountFaculty(f);
-				if(chat>0)
-				{
-					totalnewchatmessage.setText(chat>999?"999+":chat+"");
-					totalnewchatmessage.setVisible(true);
-					totalnewchatmessage.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewchatmessage.getText().length(), 26, Image.SCALE_SMOOTH)));
-				}
-				else if(chat==0)
-				{
-					totalnewchatmessage.setVisible(false);
-				}
+				updateActiveStatusAndBadges();
 			}
-			
 		};
-		timer=new Timer(1000,setActive);
+		timer = new Timer(1000, setActive);
 		timer.start();
-		Color bgColor =new Color(32,178,170);
-		Color frColor=Color.white;
-		try
-		{
-			messagecount=ImageIO.read(new File("./assets/messagecount.png"));
+	}
+
+	private void updateActiveStatusAndBadges() {
+		new FacultyData().setActiveStatus(true, f.getFacultyId());
+
+		updateNotificationBadge();
+		updateChatBadge();
+	}
+
+	private void updateNotificationBadge() {
+		if (totalnewnotification == null || messagecount == null) {
+			return; // labels/icons not fully initialized yet
 		}
-		catch(IOException exp)
-		{
+
+		int notification = new NotificationData().getUnreadNotification(
+				f.getFacultyId() + "",
+				"Faculty",
+				f.getCourceCode(),
+				f.getSemorYear(),
+				f.getJoinedDate()
+		);
+
+		if (notification > 0) {
+			totalnewnotification.setVisible(true);
+			totalnewnotification.setText(notification > 999 ? "999+" : notification + "");
+			totalnewnotification.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(
+							24 + totalnewnotification.getText().length(),
+							24,
+							Image.SCALE_SMOOTH
+					)
+			));
+		} else {
+			totalnewnotification.setVisible(false);
+		}
+	}
+
+	private void updateChatBadge() {
+		if (totalnewchatmessage == null || messagecount == null) {
+			return;
+		}
+
+		int chat = new ChatData().getUndreadMessageCountFaculty(f);
+		if (chat > 0) {
+			totalnewchatmessage.setText(chat > 999 ? "999+" : chat + "");
+			totalnewchatmessage.setVisible(true);
+			totalnewchatmessage.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(
+							26 + totalnewchatmessage.getText().length(),
+							26,
+							Image.SCALE_SMOOTH
+					)
+			));
+		} else {
+			totalnewchatmessage.setVisible(false);
+		}
+	}
+
+	/* ====================== LOOK & FEEL / UI CONFIG ====================== */
+
+	private void loadMessageCountImage() {
+		try {
+			messagecount = ImageIO.read(new File("./assets/messagecount.png"));
+		} catch (IOException exp) {
 			exp.printStackTrace();
 		}
+	}
+
+	private void configureUIManager() {
+		Color bgColor = new Color(32, 178, 170);
+		Color frColor = Color.white;
+
 		UIManager.put("ComboBoxUI", "com.sun.java.swing.plaf.windows.WindowsComboBoxUI");
-	    UIManager.put("ComboBox.selectionBackground", new ColorUIResource(bgColor));
-	    UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
-	    UIManager.put("ComboBox.foreground", new ColorUIResource(Color.DARK_GRAY));
-	    UIManager.put("ComboBox.selectionForeground", new ColorUIResource(frColor));
-	    UIManager.put("ScrollBarUI", "com.sun.java.swing.plaf.windows.WindowsScrollBarUI");
-	  
+		UIManager.put("ComboBox.selectionBackground", new ColorUIResource(bgColor));
+		UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
+		UIManager.put("ComboBox.foreground", new ColorUIResource(Color.DARK_GRAY));
+		UIManager.put("ComboBox.selectionForeground", new ColorUIResource(frColor));
+		UIManager.put("ScrollBarUI", "com.sun.java.swing.plaf.windows.WindowsScrollBarUI");
+	}
+
+	/* ====================== FRAME & CONTENT PANE ====================== */
+
+	private void initFrameAndContentPane() {
 		this.setResizable(false);
 		setTitle("Collage Data Management");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
 		contentPane = new JPanel();
 		contentPane.setForeground(Color.DARK_GRAY);
 		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		this.setBounds(-2,0,1370,733);
-		createpanel();
+
+		this.setBounds(-2, 0, 1370, 733);
+		createpanel(); // existing method that sets up main panels like homepanel, etc.
+	}
+
+	/* ====================== SIDEBAR & BUTTONS ====================== */
+
+	private JPanel createSidebarPanel() {
 		JPanel sidebarpanel = new JPanel();
-		sidebarpanel.setBorder(new MatteBorder(0, 0, 0, 2, (Color) new Color(64, 64, 64)));
+		sidebarpanel.setBorder(new MatteBorder(0, 0, 0, 2, new Color(64, 64, 64)));
 		sidebarpanel.setBackground(Color.DARK_GRAY);
 		sidebarpanel.setBounds(5, 11, 240, 706);
-		contentPane.add(sidebarpanel);
 		sidebarpanel.setLayout(null);
-		
-		 profilepanel = new JPanel();
-		 profilepanel.setBorder(new MatteBorder(0, 0, 2, 0, (Color) Color.LIGHT_GRAY));
+
+		createProfilePanel(sidebarpanel);
+		createMainButtons(sidebarpanel);
+		createChatButton(sidebarpanel);
+		createSearchAndNotification(sidebarpanel);
+		createFooterButtons(sidebarpanel);
+
+		return sidebarpanel;
+	}
+
+	private void createProfilePanel(JPanel sidebarpanel) {
+		profilepanel = new JPanel();
+		profilepanel.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 		profilepanel.setBackground(Color.DARK_GRAY);
 		profilepanel.setBounds(0, 0, 240, 61);
-		sidebarpanel.add(profilepanel);
 		profilepanel.setLayout(null);
-		
+		sidebarpanel.add(profilepanel);
+
 		facultynamelabel = new JLabel();
 		facultynamelabel.setForeground(Color.WHITE);
 		facultynamelabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -230,123 +310,144 @@ public class FacultyMain extends JFrame  implements ActionListener
 		facultynamelabel.setOpaque(true);
 		facultynamelabel.setBounds(65, 5, 171, 36);
 		profilepanel.add(facultynamelabel);
-		
+
 		facultyprofilepiclabel = new JLabel();
-		facultyprofilepiclabel.setBounds(5,0, 50, 50);
-		profilepanel.add(facultyprofilepiclabel);
+		facultyprofilepiclabel.setBounds(5, 0, 50, 50);
 		facultyprofilepiclabel.setHorizontalAlignment(SwingConstants.CENTER);
 		facultyprofilepiclabel.setBackground(Color.DARK_GRAY);
-		
-		facultyprofilepiclabel.setBorder(new LineBorder(Color.black,0));
+		facultyprofilepiclabel.setBorder(new LineBorder(Color.black, 0));
 		facultyprofilepiclabel.setOpaque(true);
-		
-	
-		
-		
+		profilepanel.add(facultyprofilepiclabel);
+	}
+
+	private void createMainButtons(JPanel sidebarpanel) {
 		homebutton = createButton("Home");
 		sidebarpanel.add(homebutton);
-		btn=homebutton;
-		
+		btn = homebutton;
+
 		studentsbutton = createButton("Students");
 		sidebarpanel.add(studentsbutton);
-		
+
 		subjectbutton = createButton("Subjects");
 		sidebarpanel.add(subjectbutton);
-		
-		faculitiesbutton =createButton("Co-Faculities","Faculities");
+
+		faculitiesbutton = createButton("Co-Faculities", "Faculities");
 		sidebarpanel.add(faculitiesbutton);
-		
-		assignedsubjectbutton =createButton("Assigned Subject","Assign Subject");
+
+		assignedsubjectbutton = createButton("Assigned Subject", "Assign Subject");
 		sidebarpanel.add(assignedsubjectbutton);
-		
+
 		entermarksbutton = createButton("Enter Marks");
 		sidebarpanel.add(entermarksbutton);
-		
-		marksheetreportbutton=createButton("Marksheet Report");
+
+		marksheetreportbutton = createButton("Marksheet Report");
 		sidebarpanel.add(marksheetreportbutton);
-		
+
 		markattandancebutton = createButton("Mark Attandance");
 		sidebarpanel.add(markattandancebutton);
-		
+
 		attandancereportbutton = createButton("Attandance Report");
 		sidebarpanel.add(attandancereportbutton);
-		
+	}
+
+	private void createChatButton(JPanel sidebarpanel) {
 		chatbutton = createButton("Chat");
 		chatbutton.setLayout(new BorderLayout());
 		sidebarpanel.add(chatbutton);
-		int chat=new ChatData().getUndreadMessageCountFaculty(f);
-		totalnewchatmessage=new JLabel();
-		totalnewchatmessage.setSize(60,30);
-		totalnewchatmessage.setFont(new Font("Arial",Font.BOLD,12));
+
+		int chat = new ChatData().getUndreadMessageCountFaculty(f);
+
+		totalnewchatmessage = new JLabel();
+		totalnewchatmessage.setSize(60, 30);
+		totalnewchatmessage.setFont(new Font("Arial", Font.BOLD, 12));
 		totalnewchatmessage.setForeground(Color.white);
 		totalnewchatmessage.setHorizontalTextPosition(JLabel.CENTER);
 		totalnewchatmessage.setVerticalTextPosition(JLabel.CENTER);
-		chatbutton.add(totalnewchatmessage,BorderLayout.LINE_END);
-		if(chat>0)
-		{
-			totalnewchatmessage.setText(chat>999?"999+":chat+"");
+		chatbutton.add(totalnewchatmessage, BorderLayout.LINE_END);
+
+		if (chat > 0 && messagecount != null) {
+			totalnewchatmessage.setText(chat > 999 ? "999+" : chat + "");
 			totalnewchatmessage.setVisible(true);
-			totalnewchatmessage.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewchatmessage.getText().length(), 26, Image.SCALE_SMOOTH)));
+			totalnewchatmessage.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(
+							26 + totalnewchatmessage.getText().length(),
+							26,
+							Image.SCALE_SMOOTH
+					)
+			));
 		}
-		
+	}
+
+	private void createSearchAndNotification(JPanel sidebarpanel) {
 		searchbutton = createButton("Search");
 		sidebarpanel.add(searchbutton);
-		
-		notificationbutton =createButton("Notification");
+
+		notificationbutton = createButton("Notification");
 		notificationbutton.setLayout(new BorderLayout());
 		sidebarpanel.add(notificationbutton);
-		
-		totalnewnotification=new JLabel();
-		totalnewnotification.setSize(60,30);
-		totalnewnotification.setFont(new Font("Arial",Font.BOLD,12));
+
+		totalnewnotification = new JLabel();
+		totalnewnotification.setSize(60, 30);
+		totalnewnotification.setFont(new Font("Arial", Font.BOLD, 12));
 		totalnewnotification.setForeground(Color.white);
 		totalnewnotification.setHorizontalTextPosition(JLabel.CENTER);
 		totalnewnotification.setVerticalTextPosition(JLabel.CENTER);
-		notificationbutton.add(totalnewnotification,BorderLayout.LINE_END);
-		int notification=new NotificationData().getUnreadNotification(f.getFacultyId()+"", "Faculty", f.getCourceCode(), f.getSemorYear(),f.getJoinedDate());
-		System.out.println("Notification :"+notification);
-		if(notification>0)
-		{
-			totalnewnotification.setText(notification>999?"999+":notification+"");
-			totalnewnotification.setIcon(new ImageIcon(messagecount.getScaledInstance(26+totalnewnotification.getText().length(), 26, Image.SCALE_SMOOTH)));
+		notificationbutton.add(totalnewnotification, BorderLayout.LINE_END);
+
+		int notification = new NotificationData().getUnreadNotification(
+				f.getFacultyId() + "",
+				"Faculty",
+				f.getCourceCode(),
+				f.getSemorYear(),
+				f.getJoinedDate()
+		);
+		System.out.println("Notification :" + notification);
+		if (notification > 0 && messagecount != null) {
+			totalnewnotification.setText(notification > 999 ? "999+" : notification + "");
+			totalnewnotification.setIcon(new ImageIcon(
+					messagecount.getScaledInstance(
+							26 + totalnewnotification.getText().length(),
+							26,
+							Image.SCALE_SMOOTH
+					)
+			));
 		}
-		
-		
-		myprofilebutton = createButton("My Profile","Profile");
+	}
+
+	private void createFooterButtons(JPanel sidebarpanel) {
+		myprofilebutton = createButton("My Profile", "Profile");
 		sidebarpanel.add(myprofilebutton);
-		
-		contactusbutton= createButton("Contact Us");
+
+		contactusbutton = createButton("Contact Us");
 		sidebarpanel.add(contactusbutton);
-		
+
 		logoutbutton = createButton("logout");
 		sidebarpanel.add(logoutbutton);
 
-		exitbutton =createButton("Exit");
+		exitbutton = createButton("Exit");
 		sidebarpanel.add(exitbutton);
-		
-		activeButton(homebutton);
-		homepanel.setVisible(true);
-		
-		
-		
+	}
+
+	/* ====================== FACULTY DETAILS & WINDOW CLOSE ====================== */
+
+	private void setFacultyDetailsAndStatus() {
 		this.setFacultyDetails();
-		lastlogin=f.getLastLogin();
-		homepanel.setLastLogin(lastlogin);
+		lastlogin = f.getLastLogin();
+		if (homepanel != null) {
+			homepanel.setLastLogin(lastlogin);
+		}
 		f.setLastLogin(TimeUtil.getCurrentTime());
 		f.setActiveStatus(true);
 		new FacultyData().updateFacultyData(f, f);
-		
-	
-		
-	        this.addWindowListener(new WindowAdapter() {
-	            @Override
-	            public void windowClosing(final WindowEvent windowenent) {
-	            	openPanel(exitbutton);
-	            }
-	        });
-	        
-	        
-		
+	}
+
+	private void addWindowCloseBehavior() {
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent windowEvent) {
+				openPanel(exitbutton);
+			}
+		});
 	}
 	public void createpanel()
 	{

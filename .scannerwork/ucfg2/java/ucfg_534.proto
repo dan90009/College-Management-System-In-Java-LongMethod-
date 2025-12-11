@@ -1,20 +1,15 @@
 
-Rcollegeapplication.student.HeaderRendererForCheckBox$CheckBoxIcon#getIconHeight()Iö
-èC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/HeaderRendererForCheckBox.javaS S("1*˙
-1T T(û
-õ
-T T(
-%0javax.swing.JCheckBox"__id*l
+=collegeapplication.admin.Admin#getEmailId()Ljava/lang/String;É
+yC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/Admin.javad d("1*¨
+1f	 f(w
+u
+f	 f(
+%0java.lang.String"__id*K
 
-__unknown_file (P*NC
-Acollegeapplication.student.HeaderRendererForCheckBox$CheckBoxIcon"
-checkµ≤
-T T('
-%1java.awt.Dimension"=javax.swing.JComponent#getPreferredSize()Ljava/awt/Dimension;*9
-
-__unknown_file (
-
-%0javax.swing.JCheckBox2getPreferredSize()"
-T T(/
-""BEC
-Acollegeapplication.student.HeaderRendererForCheckBox$CheckBoxIconHX
+__unknown_file (/*- 
+collegeapplication.admin.Admin"	
+emailid"$
+f f(
+
+%0java.lang.StringB" 
+collegeapplication.admin.AdminH

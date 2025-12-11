@@ -1,15 +1,18 @@
 
-8collegeapplication.faculty.AddFaculityDialog$2#<init>()V
-__unknown_file ("startingBlock*›
-startingBlockî
-áC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/faculty/AddFaculityDialog.javaÜ3 Ü(4Ö
-Ç
-î
-áC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/faculty/AddFaculityDialog.javaÜ3 Ü(4
-%0"#java.awt.event.KeyAdapter#<init>()V*>
- (20
-.collegeapplication.faculty.AddFaculityDialog$2"¨
-î
-áC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/faculty/AddFaculityDialog.javaÜ3 Ü(4
-implicit returnB20
-.collegeapplication.faculty.AddFaculityDialog$2
+?collegeapplication.admin.Admin#getLastLogin()Ljava/lang/String;Ö
+yC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/Admin.javaù ù("1*¥
+1
+ü	 ü({
+y
+
+ü	 ü(
+%0java.lang.String"__id*M
+
+__unknown_file (1*/ 
+collegeapplication.admin.Admin"
+	lastlogin"&
+
+ü ü(
+
+%0java.lang.StringB" 
+collegeapplication.admin.AdminH

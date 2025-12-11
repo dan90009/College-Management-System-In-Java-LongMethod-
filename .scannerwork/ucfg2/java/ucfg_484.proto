@@ -1,15 +1,17 @@
 
-2collegeapplication.student.StudentMain$3#<init>()V
-__unknown_file ("startingBlock*»
-startingBlocké
-ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/StudentMain.java”4 ”(5¸
-˘
-é
-ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/StudentMain.java”4 ”(5
-%0"&java.awt.event.WindowAdapter#<init>()V*8
- (,*
-(collegeapplication.student.StudentMain$3"¶
-é
-ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/StudentMain.java”4 ”(5
-implicit returnB,*
-(collegeapplication.student.StudentMain$3
+Jcollegeapplication.student.Student#getMotherOccupation()Ljava/lang/String;á
+}C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/Student.javak k(#"1*ª
+1m
+ m(Ö
+Ç
+m
+ m(
+%0java.lang.String"__id*X
+
+__unknown_file (<*:$
+"collegeapplication.student.Student"
+motheroccupation"$
+m m(
+
+%0java.lang.StringB&$
+"collegeapplication.student.StudentH

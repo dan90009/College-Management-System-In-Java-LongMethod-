@@ -1,15 +1,15 @@
 
-=collegeapplication.admin.Admin#getWebsite()Ljava/lang/String;É
-yC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/Admin.java\ \("1*¨
-1^	 ^(w
-u
-^	 ^(
-%0java.lang.String"__id*K
-
-__unknown_file (/*- 
-collegeapplication.admin.Admin"	
-website"$
-^ ^(
-
-%0java.lang.StringB" 
-collegeapplication.admin.AdminH
+0collegeapplication.common.Notification#<init>()V
+__unknown_file ("startingBlock*æ
+startingBlockä
+ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/Notification.java	 	(˙
+˜
+ä
+ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/Notification.java	 	(
+%0"*collegeapplication.cource.Cource#<init>()V*6
+ (*(
+&collegeapplication.common.Notification"¢
+ä
+ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/Notification.java	 	(
+implicit returnB*(
+&collegeapplication.common.Notification

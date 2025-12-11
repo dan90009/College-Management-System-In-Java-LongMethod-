@@ -1,21 +1,39 @@
 
-6collegeapplication.student.EnterMarksPanel$2#<init>()V
-__unknown_file ("startingBlock*ˇ
-startingBlockí
-ÖC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/EnterMarksPanel.java„@ „(Aù
-ö
-í
-ÖC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/EnterMarksPanel.java„@ „(A
-%0"?collegeapplication.student.EnterMarksPanel$2#%field_initializer*<
- (0.
-,collegeapplication.student.EnterMarksPanel$2ã
-à
-í
-ÖC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/EnterMarksPanel.java„@ „(A
-%1"-javax.swing.table.DefaultTableModel#<init>()V*<
- (0.
-,collegeapplication.student.EnterMarksPanel$2"™
-í
-ÖC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/EnterMarksPanel.java„@ „(A
-implicit returnB0.
-,collegeapplication.student.EnterMarksPanel$2
+Ncollegeapplication.chat.ChatInfoPanel$1#getPreferredSize()Ljava/awt/Dimension;ç
+ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatInfoPanel.javaﬂ ﬂ(&"1*ö
+1
+· ·(e
+c
+
+· ·('	
+%0int"__calculate*
+
+·$ ·(%
+**
+
+· ·($
+""*
+
+·% ·('2><:
+
+· ·(
+%1java.awt.Dimension"java.awt.Dimensionπ
+∂
+
+· ·((
+%2"java.awt.Dimension#<init>(II)V*6
+
+__unknown_file (
+
+%1java.awt.Dimension*!
+
+__unknown_file (2û*'
+
+__unknown_file (
+	
+%0int"(
+
+· ·()
+
+%1java.awt.DimensionB+)
+'collegeapplication.chat.ChatInfoPanel$1H

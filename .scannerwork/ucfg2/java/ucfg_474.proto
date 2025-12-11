@@ -1,48 +1,46 @@
 
-@collegeapplication.admin.Admin#getProfilePic(II)Ljava/awt/Image;…
-yC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/Admin.java• •("1*‘
-1
-—	 —(y
-w
+Bcollegeapplication.student.Student#getFullName()Ljava/lang/String;‡
+}C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/Student.javaA A("1*•
+1C
+ C(}
+{
+C
+ C(
+%0java.lang.String"__id*Q
+
+__unknown_file (5*3$
+"collegeapplication.student.Student"
+	firstnameg
+e
+C
+ C(
+%1java.lang.String"__concat*$
+C
+ C(
+
+%0java.lang.String*
+C C(
+ |
+z
+C C( 
+%2java.lang.String"__id*P
+
+__unknown_file (4*2$
+"collegeapplication.student.Student"
 
-—	 —(
-%0java.awt.Image"__id*M
-
-__unknown_file (1*/ 
-collegeapplication.admin.Admin"
-	logoimageC
-A
-
-—4 —(F	
-%1int"__id*"
-
-__unknown_file (
-""™–
-
-—	 —(G
-%2java.awt.Image"5java.awt.Image#getScaledInstance(III)Ljava/awt/Image;*2
-
-__unknown_file (
-
-%0java.awt.Image*"
-
-__unknown_file (
-""*"
-
-__unknown_file (
-""*'
-
-__unknown_file (
-	
-%1int2getScaledInstance(III)"$
-
-— —(H
-
-%2java.awt.Image: 
-
-__unknown_file (
-"": 
-
-__unknown_file (
-""B" 
-collegeapplication.admin.AdminH
+lastnamez
+x
+C
+ C( 
+%3java.lang.String"__concat*$
+C
+ C(
+
+%1java.lang.String*$
+C C( 
+
+%2java.lang.String"$
+C C(!
+
+%3java.lang.StringB&$
+"collegeapplication.student.StudentH

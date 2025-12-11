@@ -582,8 +582,25 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			e1.printStackTrace();
 		}
 	}
-
 	private boolean validateRequiredFields() {
+		if (!validateCourseAndRoll()) {
+			return false;
+		}
+		if (!validateOptionalSubject()) {
+			return false;
+		}
+		if (!validateBasicStudentInfo()) {
+			return false;
+		}
+		if (!validateParentInfo()) {
+			return false;
+		}
+		return true;
+	}
+
+	/* ================== SUB-VALIDATORS ================== */
+
+	private boolean validateCourseAndRoll() {
 		if (courcenamecombo.getSelectedIndex() == 0) {
 			showRequiredErrorAt(courcenamecombo);
 			return false;
@@ -596,7 +613,10 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			showRequiredErrorAt(rollnumberfield);
 			return false;
 		}
+		return true;
+	}
 
+	private boolean validateOptionalSubject() {
 		Object optionalItem = optionalsubjectcombo.getSelectedItem();
 		if (optionalsubjectcombo.getSelectedIndex() == 0
 				&& optionalItem != null
@@ -604,7 +624,10 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			showRequiredErrorAt(optionalsubjectcombo);
 			return false;
 		}
+		return true;
+	}
 
+	private boolean validateBasicStudentInfo() {
 		if (firstnamefield.getText().isEmpty()) {
 			showRequiredErrorAt(firstnamefield);
 			return false;
@@ -633,6 +656,10 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			showRequiredErrorAt(cityfield);
 			return false;
 		}
+		return true;
+	}
+
+	private boolean validateParentInfo() {
 		if (fathernamefield.getText().isEmpty()) {
 			showRequiredErrorAt(fathernamefield);
 			return false;
@@ -642,6 +669,7 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			return false;
 		}
 		if (mothernamefield.getText().isEmpty()) {
+			// preserve original special offset
 			showRequiredErrorAtWithOffset(mothernamefield, 120);
 			return false;
 		}
@@ -650,10 +678,8 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 			showRequiredErrorAt(motheroccupationfield);
 			return false;
 		}
-
 		return true;
 	}
-
 	private Student buildStudentFromForm() throws Exception {
 		Student s = new Student();
 
