@@ -153,93 +153,113 @@ public class AddCourceDialog extends JDialog implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) 
-	{
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		resetErrorLabel();
+
+		String courcename = courcenamefield.getText();
+		String courcecode = courcecodefield.getText();
+		String semoryear = (String) semoryearcombo.getSelectedItem();
+		String strtotalsemoryear = totalsemoryearfield.getText();
+
+		if (!validateRequiredFields(courcecode, courcename, strtotalsemoryear)) {
+			return;
+		}
+
+		int totalsemoryear;
+		try {
+			totalsemoryear = Integer.parseInt(strtotalsemoryear);
+		} catch (NumberFormatException nexp) {
+			showErrorAt(totalsemoryearfield, "Characters are not allowed !");
+			return;
+		}
+
+		if (!validateBusinessRules(courcecode, courcename, totalsemoryear)) {
+			return;
+		}
+
+		CourceData c = new CourceData();
+		int result = c.addCource(courcecode, courcename, semoryear, totalsemoryear);
+		if (result > 0) {
+			if (courcepanel != null) {
+				courcepanel.updatetableData();
+			}
+			this.dispose();
+		}
+	}
+
+	/* ====================== Helpers ====================== */
+
+	private void resetErrorLabel() {
 		lblError.setForeground(Color.red);
 		lblError.setVisible(false);
 		lblError.setText("This is required question !");
-		String courcename=courcenamefield.getText();
-		String courcecode=courcecodefield.getText();
-		String semoryear=(String) semoryearcombo.getSelectedItem();
-		String strtotalsemoryear=totalsemoryearfield.getText();
-	 	if(courcecode.isEmpty())
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(courcecodefield.getX(), courcecodefield.getY()+courcecodefield.getHeight(), lblError.getWidth(), 21);
-			courcecodefield.setFocusable(true);
-		}
-	
-		else if(courcename.isEmpty())
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(courcenamefield.getX(), courcenamefield.getY()+courcenamefield.getHeight(), lblError.getWidth(), 21);
-			courcenamefield.setFocusable(true);
-		}
-		else if(semoryearcombo.getSelectedIndex()==0)
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(semoryearcombo.getX(), semoryearcombo.getY()+semoryearcombo.getHeight(),  lblError.getWidth(), 21);
-			
-		}
-		else if(strtotalsemoryear.isEmpty())
-		{
-			
-			lblError.setVisible(true);
-			lblError.setBounds(totalsemoryearfield.getX(), totalsemoryearfield.getY()+totalsemoryearfield.getHeight(),  lblError.getWidth(), 21);
-			totalsemoryearfield.setFocusable(true);
-		}
-		
-		else
-		{
-			 
-				try
-				{
-					int totalsemoryear=Integer.parseInt(strtotalsemoryear);
-					if(new CourceData().isCourceCodeExist(courcecode.toUpperCase()))
-					{
-						lblError.setVisible(true);
-						lblError.setBounds(courcecodefield.getX(), courcecodefield.getY()+courcecodefield.getHeight(),  lblError.getWidth(), 21);
-						lblError.setText("Cource code already exist !");
-					}
-					else if(new CourceData().isCourceNameExist(courcename))
-					{
-						lblError.setVisible(true);
-						lblError.setBounds(courcenamefield.getX(), courcenamefield.getY()+courcenamefield.getHeight(), lblError.getWidth(), 21);
-						courcenamefield.setFocusable(true);
-						lblError.setText("Cource name already exist !");
-					}
-					else if(totalsemoryear<1)
-					{
-						lblError.setVisible(true);
-						lblError.setBounds(totalsemoryearfield.getX(), totalsemoryearfield.getY()+totalsemoryearfield.getHeight(),  lblError.getWidth(), 21);
-						lblError.setText("Minimun 1 sem/year required !");
-					}
-					else
-					{
-						CourceData c=new CourceData();
-						int result=c.addCource(courcecode, courcename, semoryear, totalsemoryear);
-						if(result>0)
-						{
-							
-							if(courcepanel!=null)
-							{
-							courcepanel.updatetableData();
-							}
-							this.dispose();
-						}
-						
-					}
-				}
-				catch(NumberFormatException nexp)
-				{
-					lblError.setVisible(true);
-					lblError.setBounds(totalsemoryearfield.getX(), totalsemoryearfield.getY()+totalsemoryearfield.getHeight(), lblError.getWidth(), 21);
-					lblError.setText("Characters are not allowed !");
-				}
-				
-		
-		}
-		
 	}
-	
+
+	private boolean validateRequiredFields(String courcecode,
+										   String courcename,
+										   String strtotalsemoryear) {
+
+		if (courcecode.isEmpty()) {
+			showErrorAt(courcecodefield, "This is required question !");
+			courcecodefield.setFocusable(true);
+			return false;
+		}
+
+		if (courcename.isEmpty()) {
+			showErrorAt(courcenamefield, "This is required question !");
+			courcenamefield.setFocusable(true);
+			return false;
+		}
+
+		if (semoryearcombo.getSelectedIndex() == 0) {
+			showErrorAt(semoryearcombo, "This is required question !");
+			return false;
+		}
+
+		if (strtotalsemoryear.isEmpty()) {
+			showErrorAt(totalsemoryearfield, "This is required question !");
+			totalsemoryearfield.setFocusable(true);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validateBusinessRules(String courcecode,
+										  String courcename,
+										  int totalsemoryear) {
+
+		CourceData courceData = new CourceData();
+
+		if (courceData.isCourceCodeExist(courcecode.toUpperCase())) {
+			showErrorAt(courcecodefield, "Cource code already exist !");
+			return false;
+		}
+
+		if (courceData.isCourceNameExist(courcename)) {
+			showErrorAt(courcenamefield, "Cource name already exist !");
+			courcenamefield.setFocusable(true);
+			return false;
+		}
+
+		if (totalsemoryear < 1) {
+			showErrorAt(totalsemoryearfield, "Minimun 1 sem/year required !");
+			return false;
+		}
+
+		return true;
+	}
+
+	private void showErrorAt(JComponent component, String message) {
+		lblError.setVisible(true);
+		lblError.setText(message);
+		lblError.setBounds(
+				component.getX(),
+				component.getY() + component.getHeight(),
+				lblError.getWidth(),
+				21
+		);
+	}
+
 }

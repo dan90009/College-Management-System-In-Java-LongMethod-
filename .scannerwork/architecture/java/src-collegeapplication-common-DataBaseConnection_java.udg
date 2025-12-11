@@ -1,0 +1,260 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480919895*java2.BÉ
+:
+5src/collegeapplication/common/DataBaseConnection.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.common7
+1
+,collegeapplication.common.DataBaseConnection9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(12:1)-(68:2)14
+
+simple-name15
+
+DataBaseConnection16
+6
+0collegeapplication.common.DataBaseConnection.con18
+
+field19
+
+	protected20
+
+(14:2)-(14:29)21
+	
+con22
+6
+0collegeapplication.common.DataBaseConnection.url24
+
+(15:2)-(15:68)25
+	
+url26
+8
+2collegeapplication.common.DataBaseConnection.uname28
+
+(16:2)-(16:35)29
+
+uname30
+;
+5collegeapplication.common.DataBaseConnection.password32
+
+(17:2)-(17:34)33
+
+password34
+W
+Qcollegeapplication.common.DataBaseConnection#getConnection()Ljava/sql/Connection;36
+
+method37
+
+(20:2)-(41:3)38
+
+getConnection39
+
+
+references40
+E
+?collegeapplication.common.DataBaseConnection#checkconnection()Z42
+
+(42:2)-(57:3)43
+
+checkconnection44
+E
+?collegeapplication.common.DataBaseConnection#closeConnection()V46
+
+(58:2)-(66:3)47
+
+closeConnection48J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576jò
+G
+8B
+8910 *
+1 ( :5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+M
+41G
+414237 *
+1* *('28:5B$
+
+
+11
+12
+
+
+13
+43
+
+
+15
+44
+M
+27G
+272819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+29
+
+
+15
+30
+M
+23G
+232419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+25
+
+
+15
+26
+M
+45G
+454637 *
+1: :(%28:5B$
+
+
+11
+12
+
+
+13
+47
+
+
+15
+48
+M
+35G
+353637 *
+1 ((28:5B$
+
+
+11
+12
+
+
+13
+38
+
+
+15
+39
+M
+31G
+313219 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+33
+
+
+15
+34
+M
+17G
+171819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+21
+
+
+15
+22rú
+
+351740*
+1 (	
+
+351740*
+1 (
+
+351740*
+1   (
+
+352340*
+1 %  ((
+
+352740*
+1 )  (.
+
+353140*
+1 /  (7
+
+351740*
+1! !(
+
+351740*
+1& &(
+
+411740*
+11 1(
+
+412340*
+11$ 1('
+
+412740*
+11( 1(-
+
+413140*
+11. 1(6
+
+451740*
+1= =(
+
+451740*
+1= =(

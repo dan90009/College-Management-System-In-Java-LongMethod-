@@ -420,173 +420,202 @@ public class AddFaculityDialog extends JDialog implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
+	public void actionPerformed(ActionEvent e) {
 		Errorlabel.setVisible(false);
-		if(e.getSource()==choosefilebutton)
-		{
-			FileDialog fd=new FileDialog(this,"Choose a File",FileDialog.LOAD);
-			
-			fd.setDirectory(".\\Faculities Profile pic\\");
-			fd.setFile("*.jpeg;*.jpg;*.png;*.tiff;*.tif;*.gif;");	
-			fd.setVisible(true);
-			fd.setLocationRelativeTo(this);
-			String filename=fd.getFile();
-			String path=fd.getDirectory();
-			
-			if(filename!=null)
-			{
- 				
-				file=new File(path+filename);
-				long bytes=file.length();
-				if(bytes<10482376)
-				{
-					try
-					{
-						 filesizenote.setForeground(new Color(46,139,27));
-						filesizenote.setText("Image size < 1024 KB");
-						Image image = ImageIO.read(file).getScaledInstance(100, 120, Image.SCALE_SMOOTH);
-						profilepiclabel.setIcon(new ImageIcon(image));
-						filesize.setText(file.length()/1024+" KB");
-						filenamelabel.setText(file.getName());	
-					}
-					catch(Exception exp)
-					{
-						file = null;
-	            		filenamelabel.setText("No file Choosen");
-	            		filesize.setText("");
-	            	   filesizenote.setForeground(Color.red);
-	            	   filesizenote.setText("Image Not supported");
-	            	   exp.printStackTrace();
-					}
-				}
-				else
-				{
-					file = null;
-					filesizenote.setForeground(Color.red);
-					filesizenote.setText("Image size greater than 1024 KB");
-					filesize.setText("");
-					filenamelabel.setText("No File Choosen");
-				}
-			
-			}
-		// TODO Auto-generated method stub
-		}
-		if(e.getSource()==addfacultybutton)
-		{
-			if(facultynamefield.getText().isEmpty())
-			{
-				showerror(facultynamefield);
-			}
-			else if(statefield.getText().isEmpty())
-			{
-				showerror(statefield);
-			}
-			else if(cityfield.getText().isEmpty())
-			{
-				showerror(cityfield);
-			}
-			else if(emailidfield.getText().isEmpty())
-			{
-				showerror(emailidfield);
-			}
-			else if(contactnumberfield.getText().isEmpty())
-			{
-				showerror(contactnumberfield);
-			}
 
-			else if(qualificationfield.getText().isEmpty())
-			{
-				showerror(qualificationfield);
-				
-			}
-			else if(experiencefield.getText().isEmpty())
-			{
-				showerror(experiencefield);
-			}
-			
-			else if(gendercombo.getSelectedIndex()==0)
-			{
-				showerror(gendercombo);
-			}
-			else
-			{
-				try
-				{
-					Faculty f=new Faculty();
-					f.setFacultyId(Integer.parseInt(facultyidfield.getText()));
-					f.setFacultyName(facultynamefield.getText());
-					f.setState(statefield.getText());
-					f.setCity(cityfield.getText());
-					f.setEmailId(emailidfield.getText());
-					f.setContactNumber(contactnumberfield.getText());
-					f.setExperience(experiencefield.getText());
-					f.setQualification(qualificationfield.getText());
-					Date date=(Date) birthdatespinner.getValue();
-					f.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").format(date));
-					f.setGender(gendercombo.getSelectedItem()+"");
-					
-					if(file!=null) {
-						f.setProfilePic(ImageIO.read(file));
-					}
-					else if(faculty!=null)
-					{
-						f.setProfilePic(faculty.getProfilePic());
-					}
-					else 
-					{
-					
-						file = new File(defaultpicpath);
-						f.setProfilePic(ImageIO.read(file));
-					}
-					int result=0;
-					if(fp!=null)
-					{
-					result=new FacultyData().addFacultyData(f);
-					}
-					else if(am!=null && faculty!=null)
-					{
-						result=new FacultyData().updateFacultyData(faculty, f);
-					}
-					if(result>0)
-					{
-						if(fp!=null)
-						{
-							if(fp.photoviewscrollpane!=null && fp.photoviewscrollpane.isVisible())
-							{
-								fp.createtablemodel();
-								fp.createphotoviewpanel();
-							}
-							else
-							{
-								fp.createtablemodel();
-							}
-						}
-						else if(am!=null && faculty!=null)
-						{
-//							Student su=new StudentData().getStudentDetails(s.courcecode, s.sem, s.rollnumber);
-							am.viewfacultypanel.setVisible(false);
-							am.viewfacultypanel=new ViewFacultyPanel(new FacultyData().getFacultyInfobyId(f.getFacultyId()),am,am.viewfacultypanel.lastpanel);
-							am.viewfacultypanel.setVisible(true);
-							am.viewfacultypanel.setLocation(am.panelx, am.panely);
-							am.getContentPane().add(am.viewfacultypanel);
-					
-							
-							
-						}
-						this.dispose();
-						
-					}
-					
-				}
-				catch(Exception exp)
-				{
-					exp.printStackTrace();
-				}
-			}
+		Object source = e.getSource();
+		if (source == choosefilebutton) {
+			handleChooseFile();
+		} else if (source == addfacultybutton) {
+			handleAddFaculty();
 		}
 	}
 
+	/* ===================== FILE SELECTION ===================== */
+
+	private void handleChooseFile() {
+		FileDialog fd = new FileDialog(this, "Choose a File", FileDialog.LOAD);
+		fd.setDirectory(".\\Faculities Profile pic\\");
+		fd.setFile("*.jpeg;*.jpg;*.png;*.tiff;*.tif;*.gif;");
+		fd.setVisible(true);
+		fd.setLocationRelativeTo(this);
+
+		String filename = fd.getFile();
+		String path = fd.getDirectory();
+
+		if (filename == null) {
+			return;
+		}
+
+		file = new File(path + filename);
+		long bytes = file.length();
+
+		if (bytes < 10482376) {
+			loadAndDisplayImageFile();
+		} else {
+			resetFileSelectionWithSizeError();
+		}
+	}
+
+	private void loadAndDisplayImageFile() {
+		try {
+			filesizenote.setForeground(new Color(46, 139, 27));
+			filesizenote.setText("Image size < 1024 KB");
+
+			Image image = ImageIO.read(file).getScaledInstance(100, 120, Image.SCALE_SMOOTH);
+			profilepiclabel.setIcon(new ImageIcon(image));
+
+			filesize.setText(file.length() / 1024 + " KB");
+			filenamelabel.setText(file.getName());
+		} catch (Exception exp) {
+			resetFileSelectionWithUnsupportedError(exp);
+		}
+	}
+
+	private void resetFileSelectionWithSizeError() {
+		file = null;
+		filesizenote.setForeground(Color.red);
+		filesizenote.setText("Image size greater than 1024 KB");
+		filesize.setText("");
+		filenamelabel.setText("No File Choosen");
+	}
+
+	private void resetFileSelectionWithUnsupportedError(Exception exp) {
+		file = null;
+		filenamelabel.setText("No file Choosen");
+		filesize.setText("");
+		filesizenote.setForeground(Color.red);
+		filesizenote.setText("Image Not supported");
+		exp.printStackTrace();
+	}
+
+	/* ===================== ADD / UPDATE FACULTY ===================== */
+
+	private void handleAddFaculty() {
+		if (!validateRequiredFacultyFields()) {
+			return;
+		}
+
+		try {
+			Faculty f = buildFacultyFromForm();
+			int result = saveFaculty(f);
+
+			if (result > 0) {
+				updateUIAfterFacultySave(f);
+				this.dispose();
+			}
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+	}
+
+	private boolean validateRequiredFacultyFields() {
+		if (facultynamefield.getText().isEmpty()) {
+			showerror(facultynamefield);
+			return false;
+		}
+		if (statefield.getText().isEmpty()) {
+			showerror(statefield);
+			return false;
+		}
+		if (cityfield.getText().isEmpty()) {
+			showerror(cityfield);
+			return false;
+		}
+		if (emailidfield.getText().isEmpty()) {
+			showerror(emailidfield);
+			return false;
+		}
+		if (contactnumberfield.getText().isEmpty()) {
+			showerror(contactnumberfield);
+			return false;
+		}
+		if (qualificationfield.getText().isEmpty()) {
+			showerror(qualificationfield);
+			return false;
+		}
+		if (experiencefield.getText().isEmpty()) {
+			showerror(experiencefield);
+			return false;
+		}
+		if (gendercombo.getSelectedIndex() == 0) {
+			showerror(gendercombo);
+			return false;
+		}
+		return true;
+	}
+
+	private Faculty buildFacultyFromForm() throws IOException {
+		Faculty f = new Faculty();
+		f.setFacultyId(Integer.parseInt(facultyidfield.getText()));
+		f.setFacultyName(facultynamefield.getText());
+		f.setState(statefield.getText());
+		f.setCity(cityfield.getText());
+		f.setEmailId(emailidfield.getText());
+		f.setContactNumber(contactnumberfield.getText());
+		f.setExperience(experiencefield.getText());
+		f.setQualification(qualificationfield.getText());
+
+		Date date = (Date) birthdatespinner.getValue();
+		f.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").format(date));
+		f.setGender(gendercombo.getSelectedItem() + "");
+
+		f.setProfilePic(resolveProfilePic());
+
+		return f;
+	}
+
+	private Image resolveProfilePic() throws IOException {
+		if (file != null) {
+			return ImageIO.read(file);
+		}
+		if (faculty != null) {
+			return faculty.getProfilePic();
+		}
+		File defaultFile = new File(defaultpicpath);
+		return ImageIO.read(defaultFile);
+	}
+
+	private int saveFaculty(Faculty f) {
+		FacultyData facultyData = new FacultyData();
+
+		if (fp != null) {
+			return facultyData.addFacultyData(f);
+		}
+		if (am != null && faculty != null) {
+			return facultyData.updateFacultyData(faculty, f);
+		}
+		return 0;
+	}
+
+	private void updateUIAfterFacultySave(Faculty f) {
+		if (fp != null) {
+			refreshFacultyPanelListView();
+		} else if (am != null && faculty != null) {
+			refreshAdminViewFacultyPanel(f);
+		}
+	}
+
+	private void refreshFacultyPanelListView() {
+		if (fp.photoviewscrollpane != null && fp.photoviewscrollpane.isVisible()) {
+			fp.createtablemodel();
+			fp.createphotoviewpanel();
+		} else {
+			fp.createtablemodel();
+		}
+	}
+
+	private void refreshAdminViewFacultyPanel(Faculty f) {
+		am.viewfacultypanel.setVisible(false);
+		am.viewfacultypanel = new ViewFacultyPanel(
+				new FacultyData().getFacultyInfobyId(f.getFacultyId()),
+				am,
+				am.viewfacultypanel.lastpanel
+		);
+		am.viewfacultypanel.setVisible(true);
+		am.viewfacultypanel.setLocation(am.panelx, am.panely);
+		am.getContentPane().add(am.viewfacultypanel);
+	}
 	public void showerror(JComponent tf)
 	{
 		Errorlabel.setVisible(true);

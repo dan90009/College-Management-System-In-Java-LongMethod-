@@ -1,0 +1,1211 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480917343*java2.BÔ(
+,
+'src/collegeapplication/admin/Admin.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.admin7
+#
+collegeapplication.admin.Admin9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(20:1)-(167:2)14
+
+simple-name15
+
+Admin16
+,
+&collegeapplication.admin.Admin.website18
+
+field19
+
+private20
+
+(22:2)-(22:25)21
+
+website22
+2
+,collegeapplication.admin.Admin.contactnumber24
+
+(23:2)-(23:31)25
+
+contactnumber26
+,
+&collegeapplication.admin.Admin.emailid28
+
+(24:2)-(24:25)29
+
+emailid30
+0
+*collegeapplication.admin.Admin.collagename32
+
+(25:2)-(25:29)33
+
+collagename34
+-
+'collegeapplication.admin.Admin.password36
+
+(26:2)-(26:26)37
+
+password38
+.
+(collegeapplication.admin.Admin.logoimage40
+
+(27:2)-(27:26)41
+
+	logoimage42
+-
+'collegeapplication.admin.Admin.facebook44
+
+(28:2)-(28:26)45
+
+facebook46
+.
+(collegeapplication.admin.Admin.instagram48
+
+(29:2)-(29:27)49
+
+	instagram50
+,
+&collegeapplication.admin.Admin.twitter52
+
+(30:2)-(30:25)53
+
+twitter54
+.
+(collegeapplication.admin.Admin.lastlogin56
+
+(31:2)-(31:27)57
+
+	lastlogin58
+-
+'collegeapplication.admin.Admin.linkedin60
+
+(32:2)-(32:26)61
+
+linkedin62
+,
+&collegeapplication.admin.Admin.address64
+
+(33:2)-(33:25)65
+
+address66
+-
+'collegeapplication.admin.Admin.isactive68
+
+(34:2)-(34:33)69
+
+isactive70
+D
+>collegeapplication.admin.Admin#setWebsite(Ljava/lang/String;)V72
+
+method73
+
+(35:2)-(38:3)74
+
+
+setWebsite75
+
+
+uses76
+
+
+references77
+J
+Dcollegeapplication.admin.Admin#setContactNumber(Ljava/lang/String;)V79
+
+(40:2)-(43:3)80
+
+setContactNumber81
+D
+>collegeapplication.admin.Admin#setEmailId(Ljava/lang/String;)V83
+
+(44:2)-(47:3)84
+
+
+setEmailId85
+H
+Bcollegeapplication.admin.Admin#setCollageName(Ljava/lang/String;)V87
+
+(48:2)-(51:3)88
+
+setCollageName89
+E
+?collegeapplication.admin.Admin#setPassword(Ljava/lang/String;)V91
+
+(52:2)-(55:3)92
+
+setPassword93
+7
+1collegeapplication.admin.Admin#setProfilePic([B)V95
+
+(56:2)-(59:3)96
+
+setProfilePic97
+E
+?collegeapplication.admin.Admin#setProfilePic(Ljava/awt/Image;)V99
+
+(60:2)-(63:3)100
+J
+Ccollegeapplication.admin.Admin#setFaceBookLink(Ljava/lang/String;)V102
+
+(64:2)-(67:3)103
+
+setFaceBookLink104
+K
+Dcollegeapplication.admin.Admin#setInstagramLink(Ljava/lang/String;)V106
+
+(68:2)-(71:3)107
+
+setInstagramLink108
+J
+Ccollegeapplication.admin.Admin#setLinkedinLink(Ljava/lang/String;)V110
+
+(72:2)-(75:3)111
+
+setLinkedinLink112
+I
+Bcollegeapplication.admin.Admin#setTwitterLink(Ljava/lang/String;)V114
+
+(76:2)-(79:3)115
+
+setTwitterLink116
+G
+@collegeapplication.admin.Admin#setLastLogin(Ljava/lang/String;)V118
+
+(80:2)-(83:3)119
+
+setLastLogin120
+9
+2collegeapplication.admin.Admin#setActiveStatus(Z)V122
+
+(84:2)-(87:3)123
+
+setActiveStatus124
+E
+>collegeapplication.admin.Admin#setAddress(Ljava/lang/String;)V126
+
+(88:2)-(91:3)127
+
+
+setAddress128
+D
+=collegeapplication.admin.Admin#getWebsite()Ljava/lang/String;130
+
+(92:2)-(95:3)131
+
+
+getWebsite132
+J
+Ccollegeapplication.admin.Admin#getContactNumber()Ljava/lang/String;134
+
+(96:2)-(99:3)135
+
+getContactNumber136
+D
+=collegeapplication.admin.Admin#getEmailId()Ljava/lang/String;138
+
+(100:2)-(103:3)139
+
+
+getEmailId140
+H
+Acollegeapplication.admin.Admin#getCollageName()Ljava/lang/String;142
+
+(104:2)-(107:3)143
+
+getCollageName144
+E
+>collegeapplication.admin.Admin#getPassword()Ljava/lang/String;146
+
+(108:2)-(111:3)147
+
+getPassword148
+8
+1collegeapplication.admin.Admin#getActiveStatus()Z150
+
+(112:2)-(115:3)151
+
+getActiveStatus152
+I
+Bcollegeapplication.admin.Admin#getFacebookLink()Ljava/lang/String;154
+
+(116:2)-(119:3)155
+
+getFacebookLink156
+J
+Ccollegeapplication.admin.Admin#getInstagramLink()Ljava/lang/String;158
+
+(120:2)-(123:3)159
+
+getInstagramLink160
+H
+Acollegeapplication.admin.Admin#getTwitterLink()Ljava/lang/String;162
+
+(124:2)-(127:3)163
+
+getTwitterLink164
+I
+Bcollegeapplication.admin.Admin#getLinkedinLink()Ljava/lang/String;166
+
+(128:2)-(131:3)167
+
+getLinkedinLink168
+E
+>collegeapplication.admin.Admin#getProfilePic()Ljava/awt/Image;170
+
+(132:2)-(135:3)171
+
+getProfilePic172
+>
+7collegeapplication.admin.Admin#getProfilePicInBytes()[B174
+
+(136:2)-(147:3)175
+
+getProfilePicInBytes176
+*
+#collegeapplication.common.ImageUtil178
+
+unknown179
+j
+ccollegeapplication.common.ImageUtil#toBufferedImage(Ljava/awt/Image;)Ljava/awt/image/BufferedImage;181
+
+calls182
+G
+@collegeapplication.admin.Admin#getProfilePic(II)Ljava/awt/Image;184
+
+(149:2)-(152:3)185
+]
+Vcollegeapplication.admin.Admin#getRoundedProfilePic(III)Ljava/awt/image/BufferedImage;187
+
+(153:2)-(156:3)188
+
+getRoundedProfilePic189
+{
+tcollegeapplication.common.ImageUtil#makeRoundedCorner(Ljava/awt/image/BufferedImage;I)Ljava/awt/image/BufferedImage;191
+F
+?collegeapplication.admin.Admin#getLastLogin()Ljava/lang/String;193
+
+(157:2)-(160:3)194
+
+getLastLogin195
+D
+=collegeapplication.admin.Admin#getAddress()Ljava/lang/String;197
+
+(161:2)-(164:3)198
+
+
+getAddress199J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576jÿ
+T
+186M
+18618773 *
+1ô ô(+28:5B&
+
+
+11
+12
+
+13
+188
+
+15
+189
+
+190
+190191179
+R
+129K
+12913073 *
+1\ \(28:5B&
+
+
+11
+12
+
+13
+131
+
+15
+132
+R
+105K
+10510673 *
+1D D(28:5B&
+
+
+11
+12
+
+13
+107
+
+15
+108
+
+177
+177178179
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+R
+141K
+14114273 *
+1h h(28:5B&
+
+
+11
+12
+
+13
+143
+
+15
+144
+M
+78G
+787973 *
+1( ((28:5B$
+
+
+11
+12
+
+
+13
+80
+
+
+15
+81
+T
+196M
+19619773 *
+1° °(28:5B&
+
+
+11
+12
+
+13
+198
+
+15
+199
+M
+55G
+555619 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+57
+
+
+15
+58
+R
+121K
+12112273 *
+1T T(28:5B&
+
+
+11
+12
+
+13
+123
+
+15
+124
+M
+47G
+474819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+49
+
+
+15
+50
+M
+59G
+596019 *
+1   (28:5B$
+
+
+11
+20
+
+
+13
+61
+
+
+15
+62
+R
+117K
+11711873 *
+1P P(28:5B&
+
+
+11
+12
+
+13
+119
+
+15
+120
+R
+153K
+15315473 *
+1t t(28:5B&
+
+
+11
+12
+
+13
+155
+
+15
+156
+R
+161K
+16116273 *
+1| |(28:5B&
+
+
+11
+12
+
+13
+163
+
+15
+164
+T
+183M
+18318473 *
+1ï ï(28:5B&
+
+
+11
+12
+
+13
+185
+
+15
+172
+M
+43G
+434419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+45
+
+
+15
+46
+T
+169M
+16917073 *
+1Ñ Ñ(28:5B&
+
+
+11
+12
+
+13
+171
+
+15
+172
+M
+94G
+949573 *
+18 8(28:5B$
+
+
+11
+12
+
+
+13
+96
+
+
+15
+97
+R
+145K
+14514673 *
+1l l(28:5B&
+
+
+11
+12
+
+13
+147
+
+15
+148
+
+180
+180181179
+M
+35G
+353619 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+37
+
+
+15
+38
+R
+157K
+15715873 *
+1x x( 28:5B&
+
+
+11
+12
+
+13
+159
+
+15
+160
+M
+71G
+717273 *
+1# #(28:5B$
+
+
+11
+12
+
+
+13
+74
+
+
+15
+75
+R
+101K
+10110273 *
+1@ @(28:5B&
+
+
+11
+12
+
+13
+103
+
+15
+104
+T
+192M
+19219373 *
+1ù ù(28:5B&
+
+
+11
+12
+
+13
+194
+
+15
+195
+M
+31G
+313219 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+33
+
+
+15
+34
+R
+109K
+10911073 *
+1H H(28:5B&
+
+
+11
+12
+
+13
+111
+
+15
+112
+R
+137K
+13713873 *
+1d d(28:5B&
+
+
+11
+12
+
+13
+139
+
+15
+140
+M
+39G
+394019 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+41
+
+
+15
+42
+M
+67G
+676819 *
+1" "(28:5B$
+
+
+11
+20
+
+
+13
+69
+
+
+15
+70
+N
+98H
+989973 *
+1< <(28:5B%
+
+
+11
+12
+
+13
+100
+
+
+15
+97
+M
+82G
+828373 *
+1, ,(28:5B$
+
+
+11
+12
+
+
+13
+84
+
+
+15
+85
+R
+149K
+14915073 *
+1p p( 28:5B&
+
+
+11
+12
+
+13
+151
+
+15
+152
+T
+173M
+17317473 *
+1à à($28:5B&
+
+
+11
+12
+
+13
+175
+
+15
+176
+M
+86G
+868773 *
+10 0(28:5B$
+
+
+11
+12
+
+
+13
+88
+
+
+15
+89
+M
+23G
+232419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+25
+
+
+15
+26
+M
+90G
+909173 *
+14 4(28:5B$
+
+
+11
+12
+
+
+13
+92
+
+
+15
+93
+M
+17G
+171819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+21
+
+
+15
+22
+M
+63G
+636419 *
+1! !(28:5B$
+
+
+11
+20
+
+
+13
+65
+
+
+15
+66
+R
+125K
+12512673 *
+1X X(28:5B&
+
+
+11
+12
+
+13
+127
+
+15
+128
+M
+27G
+272819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+29
+
+
+15
+30
+R
+113K
+11311473 *
+1L L(28:5B&
+
+
+11
+12
+
+13
+115
+
+15
+116
+R
+133K
+13313473 *
+1` `( 28:5B&
+
+
+11
+12
+
+13
+135
+
+15
+136
+T
+165M
+16516673 *
+1Ä Ä(28:5B&
+
+
+11
+12
+
+13
+167
+
+15
+168
+M
+51G
+515219 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+53
+
+
+15
+54rã
+
+71876*
+1% %(
+
+71877*
+1% %(
+
+711777*
+1% %(
+
+78876*
+1* *(
+
+78877*
+1* *(
+
+782377*
+1* *(
+
+82876*
+1. .(
+
+82877*
+1. .(
+
+822777*
+1. .(
+
+86876*
+12 2(
+
+86877*
+12 2(
+
+863177*
+12 2(
+
+90876*
+16 6(
+
+90877*
+16 6(
+
+903577*
+16 6(
+
+94876*
+1: :(
+
+94877*
+1: :(
+
+943977*
+1: :(
+
+98876*
+1> >(
+
+98877*
+1> >(
+
+983977*
+1> >(
+
+101876*
+1B B(
+
+101877*
+1B B(
+
+1014377*
+1B B(
+
+105876*
+1F F(
+
+105877*
+1F F(
+
+1054777*
+1F F(
+
+109876*
+1J J(
+
+109877*
+1J J(
+
+1095977*
+1J J(
+
+113876*
+1N N(
+
+113877*
+1N N(
+
+1135177*
+1N N(
+
+117876*
+1R R(
+
+117877*
+1R R(
+
+1175577*
+1R R(
+
+121876*
+1V V(
+
+121877*
+1V V(
+
+1216777*
+1V V(
+
+125876*
+1Z Z(
+
+125877*
+1Z Z(
+
+1256377*
+1Z Z(
+
+1291777*
+1^
+ ^(
+
+1332377*
+1b
+ b(
+
+1372777*
+1f
+ f(
+
+1413177*
+1j
+ j(
+
+1453577*
+1n
+ n(
+
+1496777*
+1r
+ r(
+
+1534377*
+1v
+ v(
+
+1574777*
+1z
+ z(
+
+1615177*
+1~
+ ~(
+
+1655977*
+1Ç
+ Ç(
+
+1693977*
+1Ü
+ Ü(
+
+17317777*
+1å å(+
+
+173180182*
+1å å(+
+
+17317776*
+1å å(
+
+1733977*
+1å, å(5
+
+1833977*
+1ó
+ ó(
+
+1833977*
+1ó
+ ó(
+
+18617777*
+1õ
+ õ(%
+
+186190182*
+1õ õ(%
+
+18617776*
+1õ
+ õ(
+
+18617777*
+1õ& õ(?
+
+186180182*
+1õ0 õ(?
+
+18617776*
+1õ& õ(/
+
+1863977*
+1õ@ õ(I
+
+1863977*
+1õ@ õ(I
+
+1925577*
+1ü
+ ü(
+
+1966377*
+1£
+ £(

@@ -108,70 +108,88 @@ public class ChatPanel extends JPanel
 		
 	}
 	@SuppressWarnings("deprecation")
-	public void setToUserData(String userprofile,String touserid,String tousername,Image tousericon,String lastlogin,boolean isactive)
-	{
-		
-		if(user.getToUserId()!=null && user.getToUserId().equals(touserid))
-		{
-			onlinestatus.setVisible(false);
-			bottomlabel.setForeground(Color.GRAY);
-			bottomlabel.setText(lastlogin);
-			if(isactive)
-			{
-				
-				onlinestatus.setVisible(true);
-				bottomlabel.setForeground(new Color(10,200,19));
-				bottomlabel.setText("Online");
-			}
-			if(subchatpanel!=null)
-			{
-				subchatpanel.repaint();
-			}
-		}
-		else
-		{
-			if(subchatpanel!=null)
-			{
-				subchatpanel.setVisible(false);
-				try 
-				{
-					if(subchatpanel.socket!=null)
-					{
-						subchatpanel.socket.close();
-					}
-				} 
-				catch (IOException e) 
-				{
-					e.printStackTrace();
-				}
-				thread.stop();
-			}
-			contactinfopanel.setVisible(true);
-			selectchatlabel.setVisible(false);
-			user.setToUser(userprofile,touserid, tousername, isactive);
-			bottomlabel.setForeground(Color.GRAY);
-			bottomlabel.setText(lastlogin);
-			contactnamelabel.setText(tousername);
-			BufferedImage image=ImageUtil.toBufferedImage(tousericon.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-			profilepiclabel.setIcon(new ImageIcon(ImageUtil.makeRoundedCorner(image, 50)));
-			onlinestatus.setVisible(false);
-			if(isactive)
-			{
-				onlinestatus.setVisible(true);
-				bottomlabel.setForeground(new Color(10,200,19));
-				bottomlabel.setText("Online");
-			}
-			subchatpanel=new SubChatPanel(user);
-			subchatpanel.setBounds(1, 61,this.getWidth()-2,this.getHeight());
-			add(subchatpanel);
-			subchatpanel.repaint();
-			subchatpanel.setVisible(true);
-			subchatpanel.setFocusable(true);
-			thread=new Thread(subchatpanel);
-			thread.start();
-			this.getRootPane().setDefaultButton(subchatpanel.send);
+	public void setToUserData(String userprofile, String touserid, String tousername,
+							  Image tousericon, String lastlogin, boolean isactive) {
 
-		}			
+		if (isSameChat(touserid)) {
+			updateStatusForExistingChat(lastlogin, isactive);
+			return;
+		}
+
+		switchToNewChat(userprofile, touserid, tousername, tousericon, lastlogin, isactive);
+	}
+
+	private boolean isSameChat(String touserid) {
+		return user.getToUserId() != null && user.getToUserId().equals(touserid);
+	}
+
+	private void updateStatusForExistingChat(String lastlogin, boolean isactive) {
+		onlinestatus.setVisible(false);
+		bottomlabel.setForeground(Color.GRAY);
+		bottomlabel.setText(lastlogin);
+
+		if (isactive) {
+			onlinestatus.setVisible(true);
+			bottomlabel.setForeground(new Color(10, 200, 19));
+			bottomlabel.setText("Online");
+		}
+		if (subchatpanel != null) {
+			subchatpanel.repaint();
+		}
+	}
+
+	private void switchToNewChat(String userprofile, String touserid, String tousername,
+								 Image tousericon, String lastlogin, boolean isactive) {
+
+		closeExistingSubChatIfAny();
+		contactinfopanel.setVisible(true);
+		selectchatlabel.setVisible(false);
+
+		user.setToUser(userprofile, touserid, tousername, isactive);
+		bottomlabel.setForeground(Color.GRAY);
+		bottomlabel.setText(lastlogin);
+		contactnamelabel.setText(tousername);
+
+		BufferedImage image = ImageUtil.toBufferedImage(
+				tousericon.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		profilepiclabel.setIcon(new ImageIcon(ImageUtil.makeRoundedCorner(image, 50)));
+
+		updateOnlineStatus(isactive);
+
+		subchatpanel = new SubChatPanel(user);
+		subchatpanel.setBounds(1, 61, this.getWidth() - 2, this.getHeight());
+		add(subchatpanel);
+		subchatpanel.repaint();
+		subchatpanel.setVisible(true);
+		subchatpanel.setFocusable(true);
+
+		thread = new Thread(subchatpanel);
+		thread.start();
+		this.getRootPane().setDefaultButton(subchatpanel.send);
+	}
+
+	private void closeExistingSubChatIfAny() {
+		if (subchatpanel == null) {
+			return;
+		}
+		subchatpanel.setVisible(false);
+		try {
+			if (subchatpanel.socket != null) {
+				subchatpanel.socket.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		thread.stop(); // (still unsafe, but unchanged behavior)
+	}
+
+	private void updateOnlineStatus(boolean isactive) {
+		onlinestatus.setVisible(false);
+		if (isactive) {
+			onlinestatus.setVisible(true);
+			bottomlabel.setForeground(new Color(10, 200, 19));
+			bottomlabel.setText("Online");
+		}
 	}
 	public void setFromUserData(String fromuserid,String fromusername,Image fromusericon)
 	{

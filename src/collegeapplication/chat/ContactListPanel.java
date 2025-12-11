@@ -380,427 +380,383 @@ public class ContactListPanel extends JPanel implements ActionListener {
 		grouplabel.setBorder(new EmptyBorder(3,15,3,240));
 		add(grouplabel);
 	}
-	public JPanel createPanel(Image image,String username,String userid,boolean isactive)
-	{
-		JPanel usernamepanel=new JPanel();
+	public JPanel createPanel(Image image, String username, String userid, boolean isactive) {
+		JPanel usernamepanel = buildBaseUserPanel(image, username, isactive);
+		configureMessagePreview(usernamepanel, userid);
+		attachContactPanelMouseListener(usernamepanel);
+		return usernamepanel;
+	}
+
+	private JPanel buildBaseUserPanel(Image image, String username, boolean isactive) {
+		JPanel usernamepanel = new JPanel();
 		usernamepanel.setLayout(null);
 		usernamepanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		usernamepanel.setSize(330,60);
+		usernamepanel.setSize(330, 60);
 		usernamepanel.setBackground(Color.white);
-		usernamepanel.addMouseListener(new MouseAdapter()
-				{
-					public void mousePressed(MouseEvent e)
-					{
-						
-						if(e.getButton()==MouseEvent.BUTTON1)
-						{
-							chatmainpanel.searchfield.setFocusable(false);
-							JPanel panel=(JPanel) e.getSource();
-						
-							for(JPanel p:contactlist)
-							{
-								p.setBackground(Color.white);
-								for(Component c:p.getComponents())
-								{
-									if(c.getName()!=null && c.getName().equals("lastmessage"))
-									{
-										if(!c.getForeground().equals(Color.DARK_GRAY))
-										{
-											c.setForeground(Color.gray);
-										}
-									}
-									else if(c.getName()!=null &&c.getName().equals("messagetime")&&c.getForeground().equals(new Color(30,178,170)))
-									{
-										
-										c.setForeground(Color.gray);
-									}
-									else if(c.getName()!=null&&c.getName().equals("username"))
-									{
-										c.setForeground(Color.DARK_GRAY);
-									}
-									else if(c.getName()!=null && c.getName().equals("messagetime"))
-									{
-										c.setForeground(Color.gray);
-									}
-									
-								}
-							}
-							panel.setBackground(new Color(30,178,170));
-							for(Component c:panel.getComponents())
-							{
-								c.setForeground(Color.white);
-								if(c.getName()!=null && c.getName().equals("lastmessage"))
-								{
-									c.setFont(new Font("Segoe UI",Font.PLAIN,13));
-								}
-								if(c.getName()!=null && c.getName().equals("totalnewmessages"))
-								{
-									c.setVisible(false);
-								}
-								
-							}
-							StringTokenizer str=new StringTokenizer(panel.getName(),"#");
-							str.nextToken();
-							str.nextToken();
-							int pos=Integer.parseInt(str.nextToken());
-							ContactInfo cf=contactinfo.get(pos);
-							String s=cf.getClassName();
-							if(s.equals("Student"))
-							{
-								chatmainpanel.chatinfopanel.setData(cf.getStudent());
-								chatmainpanel.chatpanel.setToUserData(s,cf.getStudent().getUserId(), cf.getStudent().getFullName()+"-"+cf.getStudent().getUserId(), cf.getStudent().getProfilePic(), cf.getStudent().getLastLogin(),cf.getStudent().getActiveStatus());
-							}
-							else if(s.equals("Faculty"))
-							{
-								chatmainpanel.chatinfopanel.setData(cf.getFaculty());
-								chatmainpanel.chatpanel.setToUserData(s,cf.getFaculty().getFacultyId()+"",cf.getFaculty().getFacultyName()+"-"+cf.getFaculty().getFacultyId(),cf.getFaculty().getProfilePic(),cf.getFaculty().getLastLogin(),cf.getFaculty().getActiveStatus());
-							}
-							else if(s.equals("Group"))
-							{
-								chatmainpanel.chatinfopanel.setData(cf.getGroup());
-								chatmainpanel.chatpanel.setToUserData(s,cf.getGroup().getGroupName(),cf.getGroup().getGroupName(),cf.getGroup().getImage(), cf.getGroup().getMembers()+" Members",false);
-							}
-							else
-							{
-								chatmainpanel.chatinfopanel.setData(cf.getAdmin());	
-								chatmainpanel.chatpanel.setToUserData(s,"Admin", "Principal", cf.getAdmin().getProfilePic() ,cf.getAdmin().getLastLogin(),cf.getAdmin().getActiveStatus());
-							}
-						}
-					}
-					public void mouseEntered(MouseEvent e)
-					{
-						JPanel panel=(JPanel) e.getSource();
-						if(panel.getBackground()==Color.white)
-						{
-						panel.setBackground(new Color(245,245,245));
-						}
-					}
-					public void mouseExited(MouseEvent e)
-					{
-						JPanel panel=(JPanel) e.getSource();
-						if(panel.getBackground().equals(new Color(245,245,245)))
-						{
-							panel.setBackground(Color.white);
-						}
-					}
-					
-					
-				});
-		
-		
-		BufferedImage profilepic=ImageUtil.toBufferedImage(image.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-		profilepic=ImageUtil.makeRoundedCorner(profilepic, 50);
-		JLabel profilepiclabel=new JLabel(new ImageIcon(profilepic));
+
+		BufferedImage profilepic = ImageUtil.toBufferedImage(
+				image.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		profilepic = ImageUtil.makeRoundedCorner(profilepic, 50);
+		JLabel profilepiclabel = new JLabel(new ImageIcon(profilepic));
 		profilepiclabel.setLocation(10, 5);
 		profilepiclabel.setSize(50, 50);
+		usernamepanel.add(profilepiclabel);
+
 		JLabel onlinestatus = new JLabel(new ImageIcon("./assets/onlinestatus.png"));
 		onlinestatus.setBounds(45, 40, 15, 15);
-		usernamepanel.add(onlinestatus);
 		onlinestatus.setName("onlinestatus");
-		onlinestatus.setVisible(false);
-		if(isactive)
-		{
-			onlinestatus.setVisible(true);
-		}
-		usernamepanel.add(profilepiclabel);
-	
-		
-		JLabel usernamelabel=new JLabel(username);
+		onlinestatus.setVisible(isactive);
+		usernamepanel.add(onlinestatus);
+
+		JLabel usernamelabel = new JLabel(username);
 		usernamelabel.setName("username");
-		usernamelabel.setFont(new Font("Segoe UI",Font.BOLD,15));
+		usernamelabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		usernamelabel.setLocation(70, 5);
 		usernamelabel.setSize(180, 30);
 		usernamepanel.add(usernamelabel);
-		
-		JLabel messagetimelabel=new JLabel();
-		messagetimelabel.setForeground(new Color(30,178,170));
-		messagetimelabel.setFont(new Font("Segoe UI",Font.PLAIN,10));
+
+		JLabel messagetimelabel = new JLabel();
+		messagetimelabel.setForeground(new Color(30, 178, 170));
+		messagetimelabel.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 		messagetimelabel.setLocation(250, 6);
 		messagetimelabel.setName("messagetime");
 		messagetimelabel.setSize(70, 30);
 		messagetimelabel.setHorizontalAlignment(JLabel.RIGHT);
 		usernamepanel.add(messagetimelabel);
-		
-		
-		
-		JLabel totalnewmessages=new JLabel();
+
+		JLabel totalnewmessages = new JLabel();
 		totalnewmessages.setLocation(290, 30);
 		totalnewmessages.setText("0");
 		totalnewmessages.setName("totalnewmessages");
-		totalnewmessages.setSize(60,22);
-		totalnewmessages.setFont(new Font("Arial",Font.BOLD,10));
+		totalnewmessages.setSize(60, 22);
+		totalnewmessages.setFont(new Font("Arial", Font.BOLD, 10));
 		totalnewmessages.setForeground(Color.white);
 		totalnewmessages.setHorizontalTextPosition(JLabel.CENTER);
 		totalnewmessages.setVerticalTextPosition(JLabel.CENTER);
 		usernamepanel.add(totalnewmessages);
-		
-		
-		JLabel lastlabel=new JLabel();
+
+		JLabel lastlabel = new JLabel();
 		lastlabel.setForeground(Color.gray);
 		lastlabel.setName("lastmessage");
-		lastlabel.setFont(new Font("Segoe UI",Font.PLAIN,13));
-		if(!userid.isEmpty())
-		{
-			NewMessage newmessage=chatdata.getNewMessages(this.userid,userid);
-			if(newmessage.total==0)
-			{
-				messagetimelabel.setForeground(Color.gray);
-				lastlabel.setFont(new Font("Segoe UI",Font.PLAIN,13));
-				lastlabel.setForeground(Color.gray);
-				totalnewmessages.setVisible(false);
-				messagetimelabel.setText(newmessage.messagetime);
-			}
-			else
-			{
-				lastlabel.setFont(new Font("Segoe UI",Font.BOLD,13));
-				lastlabel.setForeground(Color.DARK_GRAY);
-				totalnewmessages.setVisible(true);
-				totalnewmessages.setText(newmessage.total+"");
-				messagetimelabel.setText(newmessage.messagetime);
-				if(newmessage.total>99)
-				{
-					totalnewmessages.setIcon(new ImageIcon(messagecount.getScaledInstance(24+totalnewmessages.getText().length(), 24, Image.SCALE_SMOOTH)));
-				}
-				else
-				{
-					totalnewmessages.setIcon(new ImageIcon(messagecount));
-				}
-			}
-			
-			lastlabel.setText(newmessage.message);
-		}
-		else 
-		{
-			lastlabel.setText("Start new Conversion");
-		}
+		lastlabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		lastlabel.setBackground(Color.white);
 		lastlabel.setSize(220, 30);
 		lastlabel.setLocation(70, 25);
 		usernamepanel.add(lastlabel);
-		
-	
+
 		return usernamepanel;
-		
 	}
-	
+
+	private void configureMessagePreview(JPanel usernamepanel, String userid) {
+		JLabel lastlabel = (JLabel) findComponentByName(usernamepanel, "lastmessage");
+		JLabel messagetimelabel = (JLabel) findComponentByName(usernamepanel, "messagetime");
+		JLabel totalnewmessages = (JLabel) findComponentByName(usernamepanel, "totalnewmessages");
+
+		if (userid == null || userid.isEmpty()) {
+			lastlabel.setText("Start new Conversion");
+			totalnewmessages.setVisible(false);
+			return;
+		}
+
+		NewMessage newmessage = chatdata.getNewMessages(this.userid, userid);
+		if (newmessage.total == 0) {
+			messagetimelabel.setForeground(Color.gray);
+			lastlabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+			lastlabel.setForeground(Color.gray);
+			totalnewmessages.setVisible(false);
+			messagetimelabel.setText(newmessage.messagetime);
+		} else {
+			lastlabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+			lastlabel.setForeground(Color.DARK_GRAY);
+			totalnewmessages.setVisible(true);
+			totalnewmessages.setText(newmessage.total + "");
+			messagetimelabel.setText(newmessage.messagetime);
+			if (newmessage.total > 99) {
+				totalnewmessages.setIcon(new ImageIcon(
+						messagecount.getScaledInstance(24 + totalnewmessages.getText().length(), 24, Image.SCALE_SMOOTH)));
+			} else {
+				totalnewmessages.setIcon(new ImageIcon(messagecount));
+			}
+		}
+
+		lastlabel.setText(newmessage.message);
+	}
+
+	private Component findComponentByName(JPanel panel, String name) {
+		for (Component c : panel.getComponents()) {
+			if (name.equals(c.getName())) {
+				return c;
+			}
+		}
+		return null;
+	}
+
+	private void attachContactPanelMouseListener(JPanel usernamepanel) {
+		usernamepanel.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					handleContactPanelClick((JPanel) e.getSource());
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JPanel panel = (JPanel) e.getSource();
+				if (panel.getBackground() == Color.white) {
+					panel.setBackground(new Color(245, 245, 245));
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JPanel panel = (JPanel) e.getSource();
+				if (panel.getBackground().equals(new Color(245, 245, 245))) {
+					panel.setBackground(Color.white);
+				}
+			}
+		});
+	}
+
+	private void handleContactPanelClick(JPanel panel) {
+		chatmainpanel.searchfield.setFocusable(false);
+
+		resetContactListVisuals();
+		highlightSelectedPanel(panel);
+		openChatForPanel(panel);
+	}
+
+	private void highlightSelectedPanel(JPanel panel) {
+		panel.setBackground(new Color(30, 178, 170));
+		for (Component c : panel.getComponents()) {
+			c.setForeground(Color.white);
+			if ("lastmessage".equals(c.getName())) {
+				c.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+			}
+			if ("totalnewmessages".equals(c.getName())) {
+				c.setVisible(false);
+			}
+		}
+	}
+
+	private void openChatForPanel(JPanel panel) {
+		StringTokenizer str = new StringTokenizer(panel.getName(), "#");
+		str.nextToken();
+		str.nextToken();
+		int pos = Integer.parseInt(str.nextToken());
+		ContactInfo cf = contactinfo.get(pos);
+		String s = cf.getClassName();
+
+		if ("Student".equals(s)) {
+			chatmainpanel.chatinfopanel.setData(cf.getStudent());
+			chatmainpanel.chatpanel.setToUserData(
+					s,
+					cf.getStudent().getUserId(),
+					cf.getStudent().getFullName() + "-" + cf.getStudent().getUserId(),
+					cf.getStudent().getProfilePic(),
+					cf.getStudent().getLastLogin(),
+					cf.getStudent().getActiveStatus());
+		} else if ("Faculty".equals(s)) {
+			chatmainpanel.chatinfopanel.setData(cf.getFaculty());
+			chatmainpanel.chatpanel.setToUserData(
+					s,
+					cf.getFaculty().getFacultyId() + "",
+					cf.getFaculty().getFacultyName() + "-" + cf.getFaculty().getFacultyId(),
+					cf.getFaculty().getProfilePic(),
+					cf.getFaculty().getLastLogin(),
+					cf.getFaculty().getActiveStatus());
+		} else if ("Group".equals(s)) {
+			chatmainpanel.chatinfopanel.setData(cf.getGroup());
+			chatmainpanel.chatpanel.setToUserData(
+					s,
+					cf.getGroup().getGroupName(),
+					cf.getGroup().getGroupName(),
+					cf.getGroup().getImage(),
+					cf.getGroup().getMembers() + " Members",
+					false);
+		} else {
+			chatmainpanel.chatinfopanel.setData(cf.getAdmin());
+			chatmainpanel.chatpanel.setToUserData(
+					s,
+					"Admin",
+					"Principal",
+					cf.getAdmin().getProfilePic(),
+					cf.getAdmin().getLastLogin(),
+					cf.getAdmin().getActiveStatus());
+		}
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent arg0) 
-	{
-		// TODO Auto-generated method stub
-		
-		for(int i=0; i<contactinfo.size(); i++)
-		{
-			ContactInfo cf=contactinfo.get(i);
-			String s=cf.getClassName();
-			JPanel panel=contactlist.get(i);
-			if(s.equals("Student"))
-			{
-				cf.getStudent().setActiveStatus(new StudentData().isActive(cf.getStudent().getUserId()));
-				cf.getStudent().setLastLogin(new StudentData().getLastLogin(cf.getStudent().getUserId()));
-				for(Component c:panel.getComponents())
-				{
-					if(c.getName()!=null&&c.getName().equals("onlinestatus"))
-					{
-						if(cf.getStudent().getActiveStatus())
-						{
-							c.setVisible(true);
-						}
-						else
-						{
-							c.setVisible(false);
-						}
-						if(panel.getBackground().equals(new Color(30,178,170)))
-						{
-							chatmainpanel.chatinfopanel.setData(cf.getStudent());
-							chatmainpanel.chatpanel.setToUserData("Student",cf.getStudent().getUserId(), cf.getStudent().getFullName()+"-"+cf.getStudent().getUserId(), cf.getStudent().getProfilePic(), cf.getStudent().getLastLogin(),cf.getStudent().getActiveStatus());
-						}
-					}
-				}
-			}
-			else if(s.equals("Faculty"))
-			{
-				cf.getFaculty().setActiveStatus(new FacultyData().isActive(cf.getFaculty().getFacultyId()+""));
-				cf.getFaculty().setLastLogin(new FacultyData().getLastLogin(cf.getFaculty().getFacultyId()+""));
-				
-				for(Component c:panel.getComponents())
-				{
-					if(c.getName()!=null&&c.getName().equals("onlinestatus"))
-					{
-						if(cf.getFaculty().getActiveStatus())
-						{
-							c.setVisible(true);
-						}
-						else
-						{
-							c.setVisible(false);
-						}
-						if(panel.getBackground().equals(new Color(30,178,170)))
-						{
-							chatmainpanel.chatinfopanel.setData(cf.getFaculty());
-							chatmainpanel.chatpanel.setToUserData("Faculty",cf.getFaculty().getFacultyId()+"",cf.getFaculty().getFacultyName()+"-"+cf.getFaculty().getFacultyId(),cf.getFaculty().getProfilePic(),cf.getFaculty().getLastLogin(),cf.getFaculty().getActiveStatus());
-						}
-						
-					}
-				}
-			}
-			else  if(s.equals("Admin"))
-			{
-				cf.getAdmin().setActiveStatus(new AdminData().isActive());
-				cf.getAdmin().setLastLogin(new AdminData().getLastLogin());
-				for(Component c:panel.getComponents())
-				{
-					if(c.getName()!=null&&c.getName().equals("onlinestatus"))
-					{
-						if(cf.getAdmin().getActiveStatus())
-						{
-							c.setVisible(true);
-						}
-						else
-						{
-							c.setVisible(false);
-						}
-						if(panel.getBackground().equals(new Color(30,178,170)))
-						{
-							chatmainpanel.chatinfopanel.setData(cf.getAdmin());	
-							chatmainpanel.chatpanel.setToUserData("Admin","Admin", "Principal", cf.getAdmin().getProfilePic() ,cf.getAdmin().getLastLogin(),cf.getAdmin().getActiveStatus());
-						}
-						
-					}
-				}
-			}
-			else if(s.equals("Group"))
-			{
-				if(panel.getBackground().equals(new Color(30,178,170)))
-				{
-					chatmainpanel.chatinfopanel.setData(cf.getGroup());
-					chatmainpanel.chatpanel.setToUserData("Group",cf.getGroup().getGroupName(),cf.getGroup().getGroupName(),cf.getGroup().getImage(), cf.getGroup().getMembers()+" Members",false);
-				}
-			}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (!isCreateAccountEvent(e)) {
+			return;
 		}
-		for(JPanel p:contactlist)
-		{
-			StringTokenizer str=new StringTokenizer(p.getName(),"#");
-			str.nextToken();
-			String userid=str.nextToken();
-			NewMessage	newmessage=chatdata.getNewMessages(this.userid,userid);
-			for(Component c:p.getComponents())
-			{
-				
-//				
-				{
-					if(c.getName()!=null && c.getName().equals("lastmessage"))
-					{
-						
-						if(newmessage.total!=0)
-						{
-							c.setFont(new Font("Segoe UI",Font.BOLD,13));
-							c.setForeground(Color.DARK_GRAY);
-						}
-						((JLabel) c).setText(newmessage.message);
-					}
-					if(c.getName()!=null&&c.getName().equals("messagetime"))
-					{ 
-						
-						
-						if(newmessage.total!=0)
-						{
-							c.setForeground(new Color(20,178,170));
-						}
-						((JLabel) c).setText(newmessage.messagetime);
-					
-					}
-					if(c.getName()!=null&&c.getName().equals("totalnewmessages"))
-					{ 
-						
-						
-						
-						if(newmessage.total!=0)
-						{
-							((JLabel) c).setText(newmessage.total+"");
-							c.setVisible(true);
-							c.setForeground(Color.white);
-							if(newmessage.total>99)
-							{
-								((JLabel) c).setIcon(new ImageIcon(messagecount.getScaledInstance(24+((JLabel) c).getText().length(), 24, Image.SCALE_SMOOTH)));
-							}
-							else
-							{
-								((JLabel) c).setIcon(new ImageIcon(messagecount));
-							}
-						}
-						
-					}
-				}
-			}
-			
-			if(p.getBackground().equals(new Color(30,178,170)))
-			{
-				for(Component c:p.getComponents())
-				{
-					c.setForeground(Color.white);
-					if(c.getName()!=null && c.getName().equals("lastmessage"))
-					{
-						c.setFont(new Font("Segoe UI",Font.PLAIN,13));
-					}
-					if(c.getName()!=null && c.getName().equals("totalnewmessages"))
-					{
-						c.setVisible(false);
-					}
-				}
-			}
+
+		JComponent errorField = findFirstEmptyField();
+		if (errorField != null) {
+			showerror(errorField);
+			return;
 		}
-		this.repaint();
+
+		Admin ad = buildAdminFromForm();
+		int result = new AdminData().updateAdminDetails(ad);
+		if (result > 0) {
+			refreshAdminProfileView();
+			this.dispose();
+		}
 	}
-	public void filterContact(String search)
-	{
+
+	private boolean isCreateAccountEvent(ActionEvent e) {
+		return e.getSource() == createaccountbutton;
+	}
+
+	private JComponent findFirstEmptyField() {
+		if (collagenamefield.getText().isEmpty()) {
+			return collagenamefield;
+		}
+		if (emailidfield.getText().isEmpty()) {
+			return emailidfield;
+		}
+		if (contactnumberfield.getText().isEmpty()) {
+			return contactnumberfield;
+		}
+		if (websitefield.getText().isEmpty()) {
+			return websitefield;
+		}
+		// NOTE: getPassword() returns char[], not String
+		if (passwordfield.getPassword().length == 0) {
+			return passwordfield;
+		}
+		if (addresstextarea.getText().isEmpty()) {
+			return scrollpaneforaddress;
+		}
+		return null;
+	}
+
+	private Admin buildAdminFromForm() {
+		Admin ad = new Admin();
+		ad.setCollageName(collagenamefield.getText());
+		ad.setEmailId(emailidfield.getText());
+		ad.setContactNumber(contactnumberfield.getText());
+		ad.setAddress(addresstextarea.getText());
+		ad.setPassword(String.valueOf(passwordfield.getPassword()));
+		ad.setWebsite(websitefield.getText());
+
+		if (file != null) {
+			try {
+				ad.setProfilePic(ImageIO.read(file));
+			} catch (Exception exp) {
+				exp.printStackTrace();
+			}
+		} else {
+			ad.setProfilePic(a.getProfilePic());
+		}
+		return ad;
+	}
+
+	private void refreshAdminProfileView() {
+		am.adminprofilepanel.setVisible(false);
+		am.adminprofilepanel = new AdminProfilePanel(am);
+		am.adminprofilepanel.setLocation(am.panelx, am.panely);
+		am.adminprofilepanel.setVisible(true);
+		am.contentPane.add(am.adminprofilepanel);
+		am.setCollageDetails();
+	}
+	// helper to track which section labels were already added
+	private static class ContactFilterFlags {
+		boolean group;
+		boolean students;
+		boolean faculties;
+	}
+
+	public void filterContact(String search) {
+		resetContactFilterView();
+
+		String normalizedSearch = normalizeSearch(search);
+		ContactFilterFlags flags = new ContactFilterFlags();
+
+		for (JPanel p : contactlist) {
+			String contactName = getContactNameFromPanel(p);
+
+			if (!matchesSearch(contactName, normalizedSearch)) {
+				continue;
+			}
+
+			addSectionLabelsForContact(contactName, flags);
+			addFilteredContactPanel(p);
+		}
+
+		this.setVisible(true);
+	}
+	// Reset UI before applying filter
+	private void resetContactFilterView() {
 		this.removeAll();
 		this.setVisible(false);
-		location=0;
-		boolean group=false;
-		boolean students=false;
-		boolean faculties=false;
-		for(JPanel p:contactlist)
-		{
-			StringTokenizer str=new StringTokenizer(p.getName(),"#");
-			String contactname=str.nextToken();
-			contactname=contactname.toLowerCase();
-			search=search.trim();
-			search=search.toLowerCase();
-			if(contactname.contains(search))
-			{
-				if(contactname.contains("group")&&!group)
-				{
-					addLabel("Groups");
-					group=true;
-				}
-				if(contactname.contains("student")&&!contactname.contains("group")&&!students)
-				{
-					addLabel("Students");
-					students=true;
-				}
-				if(contactname.contains("faculty")&&!contactname.contains("group")&&!faculties)
-				{
-					addLabel("Faculties");
-					faculties=true;
-				}
-				if(contactname.contains("admin")&&contactname.contains("principal"))
-				{
-					addLabel("Admin");
-					
-				}
-				add(p);
-				p.setLocation(0, location);
-				location+=60;
-				
-				
-			}
-			
-			
-		}
-		this.setVisible(true);
-		
-		
+		location = 0;
 	}
+
+	// Normalize user input (null-safe, trimmed, lowercased)
+	private String normalizeSearch(String search) {
+		if (search == null) {
+			return "";
+		}
+		return search.trim().toLowerCase();
+	}
+
+	// Extract the logical "contact name" part from panel name
+	private String getContactNameFromPanel(JPanel panel) {
+		String rawName = panel.getName();
+		if (rawName == null) {
+			return "";
+		}
+
+		StringTokenizer str = new StringTokenizer(rawName, "#");
+		if (!str.hasMoreTokens()) {
+			return "";
+		}
+
+		return str.nextToken().toLowerCase();
+	}
+
+	// Check if this contact matches the search string
+	private boolean matchesSearch(String contactName, String search) {
+		if (search.isEmpty()) {
+			// if you want "empty search shows all", this keeps that behavior
+			return true;
+		}
+		return contactName.contains(search);
+	}
+
+	// Add “Groups / Students / Faculties / Admin” headings as needed
+	private void addSectionLabelsForContact(String contactName, ContactFilterFlags flags) {
+		if (contactName.contains("group") && !flags.group) {
+			addLabel("Groups");
+			flags.group = true;
+		}
+		if (contactName.contains("student") && !contactName.contains("group") && !flags.students) {
+			addLabel("Students");
+			flags.students = true;
+		}
+		if (contactName.contains("faculty") && !contactName.contains("group") && !flags.faculties) {
+			addLabel("Faculties");
+			flags.faculties = true;
+		}
+		// Note: original code did NOT guard "Admin" with a flag, so keep same behavior.
+		if (contactName.contains("admin") && contactName.contains("principal")) {
+			addLabel("Admin");
+		}
+	}
+
+	// Actually add the contact panel to the view and position it
+	private void addFilteredContactPanel(JPanel panel) {
+		add(panel);
+		panel.setLocation(0, location);
+		location += 60;
+	}
+
+
 }
 class ContactInfo
 {

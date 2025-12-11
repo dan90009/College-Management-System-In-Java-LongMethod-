@@ -389,288 +389,306 @@ public class AdminMain extends JFrame  implements ActionListener
 		row+=39;
 		return button;
 	}
+	private static class PanelHandler {
+		JComponent panel;
+		Runnable beforeHide;
 
-	public void disablepanel()
-	{
-		if(homepanel!=null && homepanel.isVisible())
-		{
-			homepanel.setVisible(false);
+		PanelHandler(JComponent panel, Runnable beforeHide) {
+			this.panel = panel;
+			this.beforeHide = beforeHide;
 		}
-		else if(courcepanel!=null&&courcepanel.isVisible())
-		{
-			courcepanel.setVisible(false);
-		}
-		else if(subjectpanel!=null&&subjectpanel.isVisible())
-		{
-			subjectpanel.setVisible(false);
-		}
-		else if(studentpanel!=null&&studentpanel.isVisible())
-		{
-			studentpanel.setVisible(false);
-		}
-		else if(viewstudentpanel!=null && viewstudentpanel.isVisible())
-		{
-		
-			viewstudentpanel.setVisible(false);
-		}
-		else if(facultypanel!=null && facultypanel.isVisible())
-		{
-			facultypanel.setVisible(false);
-		}
-		else if(viewfacultypanel!=null&&viewfacultypanel.isVisible())
-		{
-			viewfacultypanel.setVisible(false);
-		}
-		else if(assignsubjectpanel!=null &&assignsubjectpanel.isVisible())
-		{
-			assignsubjectpanel.setVisible(false);
-		}
-		else if(entermarkspanelscroll!=null && entermarkspanelscroll.isVisible())
-		{
-			entermarkspanelscroll.setVisible(false);
-		}
-		else if(marksheetpanelscroll!=null&& marksheetpanelscroll.isVisible())
-		{
-			marksheetpanelscroll.setVisible(false);
-		}
-		else if(markattandancepanelscroll!=null && markattandancepanelscroll.isVisible())
-		{
-			markattandancepanelscroll.setVisible(false);
-		}		
-		else if(attandancereportpanelscroll!=null && attandancereportpanelscroll.isVisible())
-		{
-			attandancereportpanelscroll.setVisible(false);
-		}
-		else if(marksheetreportpanelscroll!=null &&  marksheetreportpanelscroll.isVisible())
-		{
-			marksheetreportpanelscroll.setVisible(false);
-		}
-		else if(adminprofilepanel!=null && adminprofilepanel.isVisible())
-		{
-			adminprofilepanel.setVisible(false);
-		}
-		else if(searchpanel!=null && searchpanel.isVisible())
-		{
-			searchpanel.setVisible(false);
-		}
-		else if(chatmainpanel!=null && chatmainpanel.isVisible())
-		{
-			
-			try {
-				
-				if(chatmainpanel.chatpanel.subchatpanel!=null&&chatmainpanel.chatpanel.subchatpanel.socket!=null&&!chatmainpanel.chatpanel.subchatpanel.socket.isClosed())
-				{
-					chatmainpanel.chatpanel.subchatpanel.socket.close();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			chatmainpanel.setVisible(false);
-		}
-		else if(userspanel!=null && userspanel.isVisible())
-		{
-			userspanel.setVisible(false);
-		}
-		
 	}
+	public void disablepanel() {
+		List<PanelHandler> handlers = getPanelHandlers();
+		disableFirstVisiblePanel(handlers);
+	}
+	private List<PanelHandler> getPanelHandlers() {
+		List<PanelHandler> handlers = new ArrayList<>();
+
+		handlers.add(new PanelHandler(homepanel, null));
+		handlers.add(new PanelHandler(courcepanel, null));
+		handlers.add(new PanelHandler(subjectpanel, null));
+		handlers.add(new PanelHandler(studentpanel, null));
+		handlers.add(new PanelHandler(viewstudentpanel, null));
+		handlers.add(new PanelHandler(facultypanel, null));
+		handlers.add(new PanelHandler(viewfacultypanel, null));
+		handlers.add(new PanelHandler(assignsubjectpanel, null));
+		handlers.add(new PanelHandler(entermarkspanelscroll, null));
+		handlers.add(new PanelHandler(marksheetpanelscroll, null));
+		handlers.add(new PanelHandler(markattandancepanelscroll, null));
+		handlers.add(new PanelHandler(attandancereportpanelscroll, null));
+		handlers.add(new PanelHandler(marksheetreportpanelscroll, null));
+		handlers.add(new PanelHandler(adminprofilepanel, null));
+		handlers.add(new PanelHandler(searchpanel, null));
+
+		// Chat panel needs special handling before hiding.
+		handlers.add(new PanelHandler(chatmainpanel, this::closeChatSocketIfNeeded));
+
+		handlers.add(new PanelHandler(userspanel, null));
+
+		return handlers;
+	}
+	private void disableFirstVisiblePanel(List<PanelHandler> handlers) {
+		for (PanelHandler handler : handlers) {
+			if (handler.panel != null && handler.panel.isVisible()) {
+				if (handler.beforeHide != null) {
+					handler.beforeHide.run();
+				}
+				handler.panel.setVisible(false);
+				break;
+			}
+		}
+	}
+	private void closeChatSocketIfNeeded() {
+		if (chatmainpanel == null || chatmainpanel.chatpanel == null) {
+			return;
+		}
+		try {
+			if (chatmainpanel.chatpanel.subchatpanel != null &&
+					chatmainpanel.chatpanel.subchatpanel.socket != null &&
+					!chatmainpanel.chatpanel.subchatpanel.socket.isClosed()) {
+
+				chatmainpanel.chatpanel.subchatpanel.socket.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		openPanel(e.getSource());
 	}
-	public void openPanel(Object source) 
-	{
-		if(source==homebutton)
-		{
-			activeButton(homebutton);
-			homepanel=new HomePanel(a);
-			homepanel.setLocation(panelx, panely);
-			homepanel.setFocusable(true);
-			contentPane.add(homepanel);
-			homepanel.setVisible(true);
-			homepanel.setLastLogin(lastlogin);
+	// inside AdminMain
+
+	private Map<Object, Runnable> panelActions;
+
+	public void openPanel(Object source) {
+		ensurePanelActionsInitialized();
+		Runnable action = panelActions.get(source);
+		if (action != null) {
+			// Always disable current panel before opening a new one
+			disablepanel();
+			action.run();
 		}
-		else if(source==courcebutton)
-		{
-			activeButton(courcebutton);
-			courcepanel=new CourcePanel();
-			courcepanel.setLocation(panelx,panely);
-			courcepanel.setFocusable(true);
-			contentPane.add(courcepanel);
-			courcepanel.setVisible(true);
-		}
-		else if(source==subjectbutton)
-		{
-			activeButton(subjectbutton);
-			subjectpanel=new SubjectPanel(this);
-			subjectpanel.setLocation(panelx, panely);
-			subjectpanel.setFocusable(true);
-			contentPane.add(subjectpanel);
-			subjectpanel.setVisible(true);
-		}
-		else if(source==studentsbutton)
-		{
-			activeButton(studentsbutton);
-			studentpanel = new StudentPanel(this);
-			studentpanel.setLocation(panelx, panely);
-			studentpanel.setVisible(true);
-			studentpanel.setFocusable(true);
-			contentPane.add(studentpanel);
-			
-		}
-		else if(source==faculitiesbutton)
-		{
-			activeButton(faculitiesbutton);
-			facultypanel=new FacultyPanel(this);
-			facultypanel.setLocation(panelx,panely);
-			facultypanel.setVisible(true);
-			facultypanel.setFocusable(true);
-			contentPane.add(facultypanel);
-			
-		}
-		else if(source==assignsubjectbutton)
-		{
-			activeButton(assignsubjectbutton);
-			assignsubjectpanel=new AssignSubjectPanel(this);
-			assignsubjectpanel.setLocation(panelx,panely);
-			assignsubjectpanel.setVisible(true);
-			assignsubjectpanel.setFocusable(true);
-			contentPane.add(assignsubjectpanel);
-			
-		}
-		else if(source==entermarksbutton)
-		{
-			activeButton(entermarksbutton);
-			entermarkspanel=new EnterMarksPanel();
-			entermarkspanel.setVisible(true);
-			entermarkspanelscroll=new JScrollPane(entermarkspanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			entermarkspanelscroll.setBounds(panelx,panely,1116,705);
-			entermarkspanelscroll.setVisible(true);
-			entermarkspanelscroll.getVerticalScrollBar().setUnitIncrement(80);
-			contentPane.add(entermarkspanelscroll);
-			for(Component c:entermarkspanelscroll.getComponents())
-			{
-				c.setBackground(Color.white);
-			}
-			
-		}
-		else if(source==markattandancebutton)
-		{
-			activeButton(markattandancebutton);
-			markattandancepanel=new MarkAttandancePanel(this);
-			markattandancepanel.setVisible(true);
-			markattandancepanelscroll=new JScrollPane(markattandancepanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			markattandancepanelscroll.setBounds(panelx, panely, 1116, 705);
-			markattandancepanelscroll.setVisible(true);
-			markattandancepanelscroll.getVerticalScrollBar().setUnitIncrement(80);
-			contentPane.add(markattandancepanelscroll);
-			for(Component c:markattandancepanelscroll.getComponents())
-			{
-				c.setBackground(Color.white);
-			}
-		}
-		else if(source==attandancereportbutton)
-		{
-			activeButton(attandancereportbutton);
-			attandancereportpanel=new AttandanceReportPanel(this);
-			attandancereportpanel.setVisible(true);
-			attandancereportpanelscroll=new JScrollPane(attandancereportpanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			attandancereportpanelscroll.setBounds(panelx, panely, 1116, 705);
-			attandancereportpanelscroll.setVisible(true);
-			attandancereportpanelscroll.setName("Attadance Report Panel Scroll");
-			attandancereportpanelscroll.getVerticalScrollBar().setUnitIncrement(80);
-			contentPane.add(attandancereportpanelscroll);
-			for(Component c:attandancereportpanelscroll.getComponents())
-			{
-				c.setBackground(Color.white);
-			}
-		}
-		else if(source==marksheetreportbutton)
-		{
-			activeButton(marksheetreportbutton);
-			marksheetreportpanel=new MarkSheetReportPanel(this);
-			marksheetreportpanel.setVisible(true);
-			marksheetreportpanelscroll=new JScrollPane(marksheetreportpanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			marksheetreportpanelscroll.setBounds(panelx, panely, 1116, 705);
-			marksheetreportpanelscroll.setVisible(true);
-			marksheetreportpanelscroll.setName("Marksheet Report Panel Scroll");
-			marksheetreportpanelscroll.getVerticalScrollBar().setUnitIncrement(80);
-			contentPane.add(marksheetreportpanelscroll);
-			for(Component c:marksheetreportpanelscroll.getComponents())
-			{
-				c.setBackground(Color.white);
-			}
-		}
-		else if(source==usersbutton)
-		{
-			activeButton(usersbutton);
-			userspanel=new UsersPanel(this);
-			userspanel.setVisible(true);
-			userspanel.setLocation(this.panelx, this.panely);
-			contentPane.add(userspanel);
-		}
-		else if(source==chatbutton)
-		{
-			
-			activeButton(chatbutton);
-			chatmainpanel=new ChatMainPanel(this);
-			chatmainpanel.setLocation(this.panelx, this.panely);
-			chatmainpanel.setVisible(true);
-			contentPane.add(chatmainpanel);
-			
-		}
-		else if(source==searchbutton)
-		{
-			activeButton(searchbutton);
-			searchpanel=new SearchPanel(this);
-			searchpanel.setLocation(this.panelx, this.panely);
-			searchpanel.setVisible(true);
-			contentPane.add(searchpanel);
-			
-		}
-		else if(source==adminprofilebutton)
-		{
-			activeButton(adminprofilebutton);
-			adminprofilepanel=new AdminProfilePanel(this);
-			adminprofilepanel.setLocation(panelx,panely);
-			adminprofilepanel.setVisible(true);
-			adminprofilepanel.setFocusable(true);
-			contentPane.add(adminprofilepanel);
-		}
-		else if(source==exitbutton)
-		{
-			int result=JOptionPane.showConfirmDialog(null,"Do you want to exit this application ?","Exit",JOptionPane.INFORMATION_MESSAGE);
-			if(result==JOptionPane.YES_OPTION)
-			{
-				a.setActiveStatus(false);
-				timer.stop();
-        		new AdminData().setActiveStatus(false);
-				this.disablepanel();
-				DataBaseConnection.closeConnection();
-				System.exit(0);
-			}
-		}
-		else if(source==logoutbutton)
-		{
-			int result=JOptionPane.showConfirmDialog(null,"Do you want to logout this application ?","Logout",JOptionPane.INFORMATION_MESSAGE);
-			if(result==JOptionPane.YES_OPTION)
-			{
-				a.setActiveStatus(false);
-				timer.stop();
-        		new AdminData().setActiveStatus(false);
-				LoginPageFrame loginpageframe=new LoginPageFrame();
-				loginpageframe.setVisible(true);
-				loginpageframe.setLocationRelativeTo(null);
-				this.disablepanel();
-				this.dispose();
-			}
-		}
-		
 	}
-	
-	
-	
+
+	private void ensurePanelActionsInitialized() {
+		if (panelActions != null) {
+			return;
+		}
+		panelActions = new HashMap<>();
+
+		panelActions.put(homebutton, this::openHomePanel);
+		panelActions.put(courcebutton, this::openCourcePanel);
+		panelActions.put(subjectbutton, this::openSubjectPanel);
+		panelActions.put(studentsbutton, this::openStudentsPanel);
+		panelActions.put(faculitiesbutton, this::openFacultiesPanel);
+		panelActions.put(assignsubjectbutton, this::openAssignSubjectPanel);
+		panelActions.put(entermarksbutton, this::openEnterMarksPanel);
+		panelActions.put(markattandancebutton, this::openMarkAttendancePanel);
+		panelActions.put(attandancereportbutton, this::openAttendanceReportPanel);
+		panelActions.put(marksheetreportbutton, this::openMarksheetReportPanel);
+		panelActions.put(usersbutton, this::openUsersPanel);
+		panelActions.put(chatbutton, this::openChatPanel);
+		panelActions.put(searchbutton, this::openSearchPanel);
+		panelActions.put(adminprofilebutton, this::openAdminProfilePanel);
+		panelActions.put(exitbutton, this::confirmExit);
+		panelActions.put(logoutbutton, this::confirmLogout);
+	}
+
+// --- Panel open helpers ---
+
+	private void openHomePanel() {
+		activeButton(homebutton);
+		homepanel = new HomePanel(a);
+		homepanel.setLocation(panelx, panely);
+		homepanel.setFocusable(true);
+		contentPane.add(homepanel);
+		homepanel.setVisible(true);
+		homepanel.setLastLogin(lastlogin);
+	}
+
+	private void openCourcePanel() {
+		activeButton(courcebutton);
+		courcepanel = new CourcePanel();
+		courcepanel.setLocation(panelx, panely);
+		courcepanel.setFocusable(true);
+		contentPane.add(courcepanel);
+		courcepanel.setVisible(true);
+	}
+
+	private void openSubjectPanel() {
+		activeButton(subjectbutton);
+		subjectpanel = new SubjectPanel(this);
+		subjectpanel.setLocation(panelx, panely);
+		subjectpanel.setFocusable(true);
+		contentPane.add(subjectpanel);
+		subjectpanel.setVisible(true);
+	}
+
+	private void openStudentsPanel() {
+		activeButton(studentsbutton);
+		studentpanel = new StudentPanel(this);
+		studentpanel.setLocation(panelx, panely);
+		studentpanel.setVisible(true);
+		studentpanel.setFocusable(true);
+		contentPane.add(studentpanel);
+	}
+
+	private void openFacultiesPanel() {
+		activeButton(faculitiesbutton);
+		facultypanel = new FacultyPanel(this);
+		facultypanel.setLocation(panelx, panely);
+		facultypanel.setVisible(true);
+		facultypanel.setFocusable(true);
+		contentPane.add(facultypanel);
+	}
+
+	private void openAssignSubjectPanel() {
+		activeButton(assignsubjectbutton);
+		assignsubjectpanel = new AssignSubjectPanel(this);
+		assignsubjectpanel.setLocation(panelx, panely);
+		assignsubjectpanel.setVisible(true);
+		assignsubjectpanel.setFocusable(true);
+		contentPane.add(assignsubjectpanel);
+	}
+
+	private void openEnterMarksPanel() {
+		activeButton(entermarksbutton);
+		entermarkspanel = new EnterMarksPanel();
+		entermarkspanel.setVisible(true);
+		entermarkspanelscroll = new JScrollPane(entermarkspanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		entermarkspanelscroll.setBounds(panelx, panely, 1116, 705);
+		entermarkspanelscroll.setVisible(true);
+		entermarkspanelscroll.getVerticalScrollBar().setUnitIncrement(80);
+		contentPane.add(entermarkspanelscroll);
+		for (Component c : entermarkspanelscroll.getComponents()) {
+			c.setBackground(Color.white);
+		}
+	}
+
+	private void openMarkAttendancePanel() {
+		activeButton(markattandancebutton);
+		markattandancepanel = new MarkAttandancePanel(this);
+		markattandancepanel.setVisible(true);
+		markattandancepanelscroll = new JScrollPane(markattandancepanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		markattandancepanelscroll.setBounds(panelx, panely, 1116, 705);
+		markattandancepanelscroll.setVisible(true);
+		markattandancepanelscroll.getVerticalScrollBar().setUnitIncrement(80);
+		contentPane.add(markattandancepanelscroll);
+		for (Component c : markattandancepanelscroll.getComponents()) {
+			c.setBackground(Color.white);
+		}
+	}
+
+	private void openAttendanceReportPanel() {
+		activeButton(attandancereportbutton);
+		attandancereportpanel = new AttandanceReportPanel(this);
+		attandancereportpanel.setVisible(true);
+		attandancereportpanelscroll = new JScrollPane(attandancereportpanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		attandancereportpanelscroll.setBounds(panelx, panely, 1116, 705);
+		attandancereportpanelscroll.setVisible(true);
+		attandancereportpanelscroll.setName("Attadance Report Panel Scroll");
+		attandancereportpanelscroll.getVerticalScrollBar().setUnitIncrement(80);
+		contentPane.add(attandancereportpanelscroll);
+		for (Component c : attandancereportpanelscroll.getComponents()) {
+			c.setBackground(Color.white);
+		}
+	}
+
+	private void openMarksheetReportPanel() {
+		activeButton(marksheetreportbutton);
+		marksheetreportpanel = new MarkSheetReportPanel(this);
+		marksheetreportpanel.setVisible(true);
+		marksheetreportpanelscroll = new JScrollPane(marksheetreportpanel,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		marksheetreportpanelscroll.setBounds(panelx, panely, 1116, 705);
+		marksheetreportpanelscroll.setVisible(true);
+		marksheetreportpanelscroll.setName("Marksheet Report Panel Scroll");
+		marksheetreportpanelscroll.getVerticalScrollBar().setUnitIncrement(80);
+		contentPane.add(marksheetreportpanelscroll);
+		for (Component c : marksheetreportpanelscroll.getComponents()) {
+			c.setBackground(Color.white);
+		}
+	}
+
+	private void openUsersPanel() {
+		activeButton(usersbutton);
+		userspanel = new UsersPanel(this);
+		userspanel.setVisible(true);
+		userspanel.setLocation(this.panelx, this.panely);
+		contentPane.add(userspanel);
+	}
+
+	private void openChatPanel() {
+		activeButton(chatbutton);
+		chatmainpanel = new ChatMainPanel(this);
+		chatmainpanel.setLocation(this.panelx, this.panely);
+		chatmainpanel.setVisible(true);
+		contentPane.add(chatmainpanel);
+	}
+
+	private void openSearchPanel() {
+		activeButton(searchbutton);
+		searchpanel = new SearchPanel(this);
+		searchpanel.setLocation(this.panelx, this.panely);
+		searchpanel.setVisible(true);
+		contentPane.add(searchpanel);
+	}
+
+	private void openAdminProfilePanel() {
+		activeButton(adminprofilebutton);
+		adminprofilepanel = new AdminProfilePanel(this);
+		adminprofilepanel.setLocation(panelx, panely);
+		adminprofilepanel.setVisible(true);
+		adminprofilepanel.setFocusable(true);
+		contentPane.add(adminprofilepanel);
+	}
+
+	private void confirmExit() {
+		int result = JOptionPane.showConfirmDialog(null,
+				"Do you want to exit this application ?",
+				"Exit",
+				JOptionPane.INFORMATION_MESSAGE);
+		if (result == JOptionPane.YES_OPTION) {
+			a.setActiveStatus(false);
+			timer.stop();
+			new AdminData().setActiveStatus(false);
+			this.disablepanel();
+			DataBaseConnection.closeConnection();
+			System.exit(0);
+		}
+	}
+
+	private void confirmLogout() {
+		int result = JOptionPane.showConfirmDialog(null,
+				"Do you want to logout this application ?",
+				"Logout",
+				JOptionPane.INFORMATION_MESSAGE);
+		if (result == JOptionPane.YES_OPTION) {
+			a.setActiveStatus(false);
+			timer.stop();
+			new AdminData().setActiveStatus(false);
+			LoginPageFrame loginpageframe = new LoginPageFrame();
+			loginpageframe.setVisible(true);
+			loginpageframe.setLocationRelativeTo(null);
+			this.disablepanel();
+			this.dispose();
+		}
+	}
+
+
+
 	public void setCollageDetails()
 	{
 		 a=new AdminData().getAdminData();

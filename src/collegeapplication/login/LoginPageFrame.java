@@ -219,95 +219,97 @@ public class LoginPageFrame extends JFrame implements ActionListener
 		
 		
 	}
-//
-//	protected void disposethis() {
-//		// TODO Auto-generated method stub
-//		this.dispose();
-//	}
-
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// TODO Auto-generated method stub
-			if(!adminchanging&&!studentchanging&&!facultychanging)
-			{
-				
-				imagenumber++;
-				if(imagenumber>5)
-				{
-					imagenumber=1;
-				
-				}
-				this.setBackgroundImage();
-			}
-			
-			if(adminchanging)
-			{
-				if(adminpanelx==500)
-				{
-					adminchanging=false;
-					timer.stop();
-				}
-				else
-				{
-					
-					adminpanelx+=50;
-					studentpanelx+=50;
-					facultypanelx+=50;
-					underlinelabelx-=5;
-				}
-			}
-			else if(facultychanging)
-			{
-				if(facultypanelx==500)
-				{
-					facultychanging=false;
-					timer.stop();
-				}
-				else
-				{
-					if(facultypanelx>500)
-					{
-						adminpanelx-=50;
-						studentpanelx-=50;
-						facultypanelx-=50;	
-						underlinelabelx+=5;
-					}
-					else
-					{
-						adminpanelx+=50;
-						studentpanelx+=50;
-						facultypanelx+=50;
-						underlinelabelx-=5;
-					}
-				}
-			}
-			else if(studentchanging)
-			{
-				if(studentpanelx==500)
-				{
-					studentchanging=false;
-					timer.stop();
-				}
-				else
-				{
-					
-						adminpanelx-=50;
-						studentpanelx-=50;
-						facultypanelx-=50;
-						underlinelabelx+=5;
-					
-				}
-			}
-			
-			studentloginpanel.setLocation(studentpanelx,studentpanely);
-			facultyloginpanel.setLocation(facultypanelx, facultypanely);
-			adminloginpanel.setLocation(adminpanelx, adminpanely);
-			underlinelabel.setLocation(underlinelabelx, underlinelabel.getY());
-			this.repaint();
-			
-		
+	public void actionPerformed(ActionEvent e) {
+		updateBackgroundImageIfIdle();
+		updatePanelsPosition();
+		applyPanelLocations();
 	}
+
+	/* ================== BACKGROUND IMAGE ================== */
+
+	private void updateBackgroundImageIfIdle() {
+		if (adminchanging || studentchanging || facultychanging) {
+			return;
+		}
+		incrementImageNumber();
+		setBackgroundImage();
+	}
+
+	private void incrementImageNumber() {
+		imagenumber++;
+		if (imagenumber > 5) {
+			imagenumber = 1;
+		}
+	}
+
+	/* ================== PANEL POSITION UPDATES ================== */
+
+	private void updatePanelsPosition() {
+		if (adminchanging) {
+			handleAdminChanging();
+		} else if (facultychanging) {
+			handleFacultyChanging();
+		} else if (studentchanging) {
+			handleStudentChanging();
+		}
+	}
+
+	private void handleAdminChanging() {
+		if (adminpanelx == 500) {
+			adminchanging = false;
+			timer.stop();
+			return;
+		}
+		movePanelsRight();
+	}
+
+	private void handleFacultyChanging() {
+		if (facultypanelx == 500) {
+			facultychanging = false;
+			timer.stop();
+			return;
+		}
+		if (facultypanelx > 500) {
+			movePanelsLeft();
+		} else {
+			movePanelsRight();
+		}
+	}
+
+	private void handleStudentChanging() {
+		if (studentpanelx == 500) {
+			studentchanging = false;
+			timer.stop();
+			return;
+		}
+		movePanelsLeft();
+	}
+
+	private void movePanelsRight() {
+		adminpanelx += 50;
+		studentpanelx += 50;
+		facultypanelx += 50;
+		underlinelabelx -= 5;
+	}
+
+	private void movePanelsLeft() {
+		adminpanelx -= 50;
+		studentpanelx -= 50;
+		facultypanelx -= 50;
+		underlinelabelx += 5;
+	}
+
+	/* ================== APPLY POSITIONS ================== */
+
+	private void applyPanelLocations() {
+		studentloginpanel.setLocation(studentpanelx, studentpanely);
+		facultyloginpanel.setLocation(facultypanelx, facultypanely);
+		adminloginpanel.setLocation(adminpanelx, adminpanely);
+		underlinelabel.setLocation(underlinelabelx, underlinelabel.getY());
+		this.repaint();
+	}
+
 	public void buttonStyle(JButton button)
 	{
 		button.setFocusable(true);

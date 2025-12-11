@@ -1,0 +1,60 @@
+
+Lcollegeapplication.chat.ChatInfoPanel#getPreferredSize()Ljava/awt/Dimension;ã
+ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatInfoPanel.java9 9(""1*•
+1; ;(Ü
+É
+; ;('
+%0javax.swing.JPanel"__id*W
+
+__unknown_file (;*9'
+%collegeapplication.chat.ChatInfoPanel"
+memberspanelwu
+; ;(.	
+%1int"javax.swing.JComponent#getY()I*6
+
+__unknown_file (
+
+%0javax.swing.JPanel2getY()Ü
+É
+;/ ;(;
+%2javax.swing.JPanel"__id*W
+
+__unknown_file (;*9'
+%collegeapplication.chat.ChatInfoPanel"
+memberspanelÅ
+;/ ;(G	
+%3int"#javax.swing.JComponent#getHeight()I*6
+
+__unknown_file (
+
+%2javax.swing.JPanel2getHeight()i
+g
+; ;(G	
+%4int"__calculate*
+;. ;(/
++*
+; ;(.
+	
+%1int*
+;/ ;(G
+	
+%3int:8
+; ;(
+%5java.awt.Dimension"java.awt.Dimension∑
+¥
+;	 ;(H
+%6"java.awt.Dimension#<init>(II)V*6
+
+__unknown_file (
+
+%5java.awt.Dimension*!
+
+__unknown_file (2û*'
+
+__unknown_file (
+	
+%4int"&
+; ;(I
+
+%5java.awt.DimensionB)'
+%collegeapplication.chat.ChatInfoPanelH

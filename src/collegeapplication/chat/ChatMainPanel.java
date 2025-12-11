@@ -58,194 +58,133 @@ public class ChatMainPanel extends JPanel {
 	private JLabel onlinestatus;
 	MyDocumentListener fielddoc=new MyDocumentListener();
 	private JLabel hintlabel;
-	
-	public ChatMainPanel(AdminMain am)
-	{
+	// inside ChatMainPanel
+
+	public ChatMainPanel(AdminMain am) {
 		this();
-		this.am=am;
-		
-		contactlistpanel=new ContactListPanel(am,this);
-		contactlistpanel.setBounds(0, 0, 330, 600);
-		contactlistpanelscroll.setViewportView(contactlistpanel);
+		this.am = am;
+
+		contactlistpanel = new ContactListPanel(am, this);
+		initializeCommonChatUI(contactlistpanel);
+
+		Admin admin = new AdminData().getAdminData();
+		configureAdminUser(admin);
+	}
+
+	public ChatMainPanel(FacultyMain fm) {
+		this();
+		this.fm = fm;
+
+		contactlistpanel = new ContactListPanel(fm, this);
+		initializeCommonChatUI(contactlistpanel);
+
+		configureFacultyUser(fm);
+	}
+
+	public ChatMainPanel(StudentMain sm) {
+		this();
+		this.sm = sm;
+
+		contactlistpanel = new ContactListPanel(sm, this);
+		initializeCommonChatUI(contactlistpanel);
+
+		configureStudentUser(sm);
+	}
+
+	private void initializeCommonChatUI(ContactListPanel listPanel) {
+		listPanel.setBounds(0, 0, 330, 600);
+		contactlistpanelscroll.setViewportView(listPanel);
 		contactlistpanelscroll.setVisible(true);
 		add(contactlistpanelscroll);
-		
-		chatpanel=new ChatPanel();
+
+		chatpanel = new ChatPanel();
 		chatpanel.setSize(500, 705);
 		chatpanel.setLocation(330, 0);
 		chatpanel.setVisible(true);
 		add(chatpanel);
-		
-		Admin admin=new AdminData().getAdminData();
-		chatpanel.setFromUserData("Admin", "Principal",admin.getProfilePic());
-		BufferedImage image=ImageUtil.toBufferedImage(admin.getProfilePic(50, 50));
+	}
+
+	private void configureAdminUser(Admin admin) {
+		chatpanel.setFromUserData("Admin", "Principal", admin.getProfilePic());
+		BufferedImage image = ImageUtil.toBufferedImage(admin.getProfilePic(50, 50));
 		profilepiclabel.setIcon(new ImageIcon(ImageUtil.makeRoundedCorner(image, 50)));
 		chatinfopanel.setData(admin);
 		chatinfopanel.setAdmin(new AdminData().getAdminData());
-		profilepiclabel.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent e)
-			{
-				if(e.getButton()==MouseEvent.BUTTON1)
-				{
-					chatinfopanel.setData(admin);
-					chatpanel.setEmptyChatPanel();
-					for(JPanel panel:contactlistpanel.contactlist)
-					{
-						panel.setBackground(Color.white);
-						
-						for(Component c:panel.getComponents())
-						{
 
-							if(c.getName()!=null && c.getName().equals("lastmessage"))
-							{
-								if(!c.getForeground().equals(Color.DARK_GRAY))
-								{
-									c.setForeground(Color.gray);
-								}
-							}
-							else if(c.getName()!=null &&c.getName().equals("messagetime")&&c.getForeground().equals(new Color(30,178,170)))
-							{
-								
-								c.setForeground(Color.gray);
-							}
-							else if(c.getName()!=null&&c.getName().equals("username"))
-							{
-								c.setForeground(Color.DARK_GRAY);
-							}
-							else if(c.getName()!=null && c.getName().equals("messagetime"))
-							{
-								c.setForeground(Color.gray);
-							}
-						}
-					}
-				}
-			}
+		addProfilePicClickListener(() -> {
+			chatinfopanel.setData(admin);
+			chatpanel.setEmptyChatPanel();
+			resetContactListVisuals();
 		});
 	}
-	public ChatMainPanel(FacultyMain fm)
-	{
-		this();
-		this.fm=fm;
-		contactlistpanel=new ContactListPanel(fm,this);
-		contactlistpanel.setBounds(0, 0, 330, 600);
-		contactlistpanelscroll.setViewportView(contactlistpanel);
-		contactlistpanelscroll.setVisible(true);
-		add(contactlistpanelscroll);
-		chatpanel=new ChatPanel();
-		chatpanel.setSize(500, 705);
-		chatpanel.setLocation(330, 0);
-		chatpanel.setVisible(true);
-		add(chatpanel);
-		chatpanel.setFromUserData(fm.f.getFacultyId()+"",fm.f.getFacultyName(), fm.f.getProfilePic());
-		BufferedImage image=ImageUtil.toBufferedImage(fm.f.getProfilePic().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+
+	private void configureFacultyUser(FacultyMain fm) {
+		chatpanel.setFromUserData(
+				fm.f.getFacultyId() + "",
+				fm.f.getFacultyName(),
+				fm.f.getProfilePic());
+		BufferedImage image = ImageUtil.toBufferedImage(
+				fm.f.getProfilePic().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 		profilepiclabel.setIcon(new ImageIcon(ImageUtil.makeRoundedCorner(image, 50)));
 		chatinfopanel.setData(fm.f);
 		chatinfopanel.setFaculty(fm.f);
-		profilepiclabel.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent e)
-			{
-				if(e.getButton()==MouseEvent.BUTTON1)
-				{
-					chatinfopanel.setData(fm.f);
-					chatpanel.setEmptyChatPanel();
-					for(JPanel panel:contactlistpanel.contactlist)
-					{
-						panel.setBackground(Color.white);
-						for(Component c:panel.getComponents())
-						{
 
-							if(c.getName()!=null && c.getName().equals("lastmessage"))
-							{
-								if(!c.getForeground().equals(Color.DARK_GRAY))
-								{
-									c.setForeground(Color.gray);
-								}
-							}
-							else if(c.getName()!=null &&c.getName().equals("messagetime")&&c.getForeground().equals(new Color(30,178,170)))
-							{
-								
-								c.setForeground(Color.gray);
-							}
-							else if(c.getName()!=null&&c.getName().equals("username"))
-							{
-								c.setForeground(Color.DARK_GRAY);
-							}
-							else if(c.getName()!=null && c.getName().equals("messagetime"))
-							{
-								c.setForeground(Color.gray);
-							}
-						}
-					}
-				}
-			}
+		addProfilePicClickListener(() -> {
+			chatinfopanel.setData(fm.f);
+			chatpanel.setEmptyChatPanel();
+			resetContactListVisuals();
 		});
 	}
-	public ChatMainPanel(StudentMain sm)
-	{
-		this();
-		
-		this.sm=sm;
-		contactlistpanel=new ContactListPanel(sm,this);
-		contactlistpanel.setBounds(0, 0, 330, 600);
-		contactlistpanelscroll.setViewportView(contactlistpanel);
-		contactlistpanelscroll.setVisible(true);
-		add(contactlistpanelscroll);
-		
-		chatpanel=new ChatPanel();
-		chatpanel.setSize(500, 705);
-		chatpanel.setLocation(330, 0);
-		chatpanel.setVisible(true);
-		add(chatpanel);
-		
+
+	private void configureStudentUser(StudentMain sm) {
 		chatpanel.setFromUserData(sm.s.getUserId(), sm.s.getFullName(), sm.s.getProfilePic());
-		BufferedImage image=ImageUtil.toBufferedImage(sm.s.getProfilePic(50, 50));
+		BufferedImage image = ImageUtil.toBufferedImage(sm.s.getProfilePic(50, 50));
 		profilepiclabel.setIcon(new ImageIcon(ImageUtil.makeRoundedCorner(image, 50)));
 		chatinfopanel.setData(sm.s);
 		chatinfopanel.setStudent(sm.s);
-		
-		profilepiclabel.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent e)
-			{
-				if(e.getButton()==MouseEvent.BUTTON1)
-				{
-					chatinfopanel.setData(sm.s);
-					chatpanel.setEmptyChatPanel();
-					for(JPanel panel:contactlistpanel.contactlist)
-					{
-						panel.setBackground(Color.white);
-						for(Component c:panel.getComponents())
-						{
 
-							if(c.getName()!=null && c.getName().equals("lastmessage"))
-							{
-								if(!c.getForeground().equals(Color.DARK_GRAY))
-								{
-									c.setForeground(Color.gray);
-								}
-							}
-							else if(c.getName()!=null &&c.getName().equals("messagetime")&&c.getForeground().equals(new Color(30,178,170)))
-							{
-								
-								c.setForeground(Color.gray);
-							}
-							else if(c.getName()!=null&&c.getName().equals("username"))
-							{
-								c.setForeground(Color.DARK_GRAY);
-							}
-							else if(c.getName()!=null && c.getName().equals("messagetime"))
-							{
-								c.setForeground(Color.gray);
-							}
-						}
-						
-					}
+		addProfilePicClickListener(() -> {
+			chatinfopanel.setData(sm.s);
+			chatpanel.setEmptyChatPanel();
+			resetContactListVisuals();
+		});
+	}
+
+	private void addProfilePicClickListener(Runnable onClick) {
+		profilepiclabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					onClick.run();
 				}
 			}
 		});
 	}
+
+	private void resetContactListVisuals() {
+		for (JPanel panel : contactlistpanel.contactlist) {
+			panel.setBackground(Color.white);
+
+			for (Component c : panel.getComponents()) {
+				String name = c.getName();
+				if ("lastmessage".equals(name)) {
+					if (!c.getForeground().equals(Color.DARK_GRAY)) {
+						c.setForeground(Color.gray);
+					}
+				} else if ("messagetime".equals(name)
+						&& c.getForeground().equals(new Color(30, 178, 170))) {
+
+					c.setForeground(Color.gray);
+				} else if ("username".equals(name)) {
+					c.setForeground(Color.DARK_GRAY);
+				} else if ("messagetime".equals(name)) {
+					c.setForeground(Color.gray);
+				}
+			}
+		}
+	}
+
+
 	public ChatMainPanel() {
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(Color.WHITE);

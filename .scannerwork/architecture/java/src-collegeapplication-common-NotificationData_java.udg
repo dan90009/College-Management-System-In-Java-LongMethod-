@@ -1,0 +1,509 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480923426*java2.Bø
+8
+3src/collegeapplication/common/NotificationData.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.common7
+/
+*collegeapplication.common.NotificationData9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(11:1)-(146:2)14
+
+simple-name15
+
+NotificationData16
+4
+.collegeapplication.common.NotificationData.con18
+
+field19
+
+	protected20
+
+(14:2)-(14:52)21
+	
+con22
+2
+,collegeapplication.common.DataBaseConnection24
+
+unknown25
+
+
+references26
+W
+Qcollegeapplication.common.DataBaseConnection#getConnection()Ljava/sql/Connection;28
+
+calls29
+
+
+uses30
+k
+ecollegeapplication.common.NotificationData#addNotification(Lcollegeapplication/common/Notification;)V32
+
+method33
+
+(15:2)-(39:3)34
+
+addNotification35
+,
+&collegeapplication.common.Notification37
+
+	has param38
+
+is type39
+O
+Icollegeapplication.common.Notification#getUserProfile()Ljava/lang/String;41
+&
+ collegeapplication.cource.Cource43
+H
+Bcollegeapplication.cource.Cource#getCourceCode()Ljava/lang/String;45
+J
+Dcollegeapplication.common.Notification#getUserId()Ljava/lang/String;47
+6
+0collegeapplication.cource.Cource#getSemorYear()I49
+I
+Ccollegeapplication.common.Notification#getTitle()Ljava/lang/String;51
+K
+Ecollegeapplication.common.Notification#getMessage()Ljava/lang/String;53
+H
+Bcollegeapplication.common.Notification#getTime()Ljava/lang/String;55
+ê
+âcollegeapplication.common.NotificationData#getNotifications(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)Ljava/util/ArrayList;57
+
+(41:2)-(78:3)58
+
+getNotifications59
+8
+2collegeapplication.common.Notification#setSrNo(I)V61
+P
+Jcollegeapplication.common.Notification#setUserProfile(Ljava/lang/String;)V63
+I
+Ccollegeapplication.cource.Cource#setCourceCode(Ljava/lang/String;)V65
+7
+1collegeapplication.cource.Cource#setSemorYear(I)V67
+K
+Ecollegeapplication.common.Notification#setUserId(Ljava/lang/String;)V69
+J
+Dcollegeapplication.common.Notification#setTitle(Ljava/lang/String;)V71
+L
+Fcollegeapplication.common.Notification#setMessage(Ljava/lang/String;)V73
+I
+Ccollegeapplication.common.Notification#setTime(Ljava/lang/String;)V75
+K
+Ecollegeapplication.common.Notification#setReadBy(Ljava/lang/String;)V77
+(
+"collegeapplication.common.TimeUtil79
+a
+[collegeapplication.common.TimeUtil#getTimeDifference(Ljava/lang/String;Ljava/lang/String;)J81
+d
+^collegeapplication.common.NotificationData#addReadBy(Ljava/util/ArrayList;Ljava/lang/String;)V83
+
+(79:2)-(98:3)84
+
+	addReadBy85
+ì
+åcollegeapplication.common.NotificationData#getUnreadNotification(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)I87
+
+(99:2)-(127:3)88
+
+getUnreadNotification89
+`
+Zcollegeapplication.common.NotificationData#isReadBy(Ljava/lang/String;Ljava/lang/String;)Z91
+
+(128:2)-(144:3)92
+
+isReadBy93J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576j›
+
+42
+424325
+
+60
+606125
+
+50
+505125
+M
+82G
+828333 *
+1O O(28:5B$
+
+
+11
+12
+
+
+13
+84
+
+
+15
+85
+
+36
+363725
+
+48
+484925
+M
+31G
+313233 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+34
+
+
+15
+35
+
+64
+646525
+
+54
+545525
+
+80
+808125
+
+40
+404125
+M
+56G
+565733 *
+1)! )(128:5B$
+
+
+11
+12
+
+
+13
+58
+
+
+15
+59
+
+72
+727325
+O
+90I
+909133 *
+1Ä Ä(28:5B$
+
+
+11
+12
+
+
+13
+92
+
+
+15
+93
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+
+23
+232425
+M
+17G
+171819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+21
+
+
+15
+22
+
+46
+464725
+
+27
+272825
+
+68
+686925
+
+70
+707125
+
+44
+444525
+
+52
+525325
+
+76
+767725
+
+66
+666725
+
+62
+626325
+M
+86G
+868733 *
+1c c("28:5B$
+
+
+11
+12
+
+
+13
+88
+
+
+15
+89
+
+78
+787925
+
+74
+747525rø
+
+172326*
+1 (1
+
+172729*
+1$ (1
+
+172330*
+1 (#
+
+313638*
+1 (*
+
+313639*
+1+ (,
+
+313630*
+1 (*
+
+311726*
+1 (
+
+311726*
+1 (
+
+313626*
+1 ($
+
+314029*
+1 ($
+
+314226*
+1 (#
+
+314429*
+1 (#
+
+313626*
+1 (
+
+314629*
+1 (
+
+314226*
+1 (
+
+314829*
+1 (
+
+313626*
+1 (
+
+315029*
+1 (
+
+313626*
+1 ( 
+
+315229*
+1 ( 
+
+313626*
+1 (
+
+315429*
+1 (
+
+563630*
+1) )(
+
+563630*
+1+ +(
+
+563630*
+1+. +(:
+
+561726*
+1/ /(
+
+561726*
+1/ /(
+
+563639*
+13 3(
+
+563630*
+13 3(
+
+563629*
+13 3($
+
+563626*
+14 4(
+
+566029*
+14 4(
+
+563626*
+15 5(
+
+566229*
+15 5(
+
+564226*
+16 6(
+
+566429*
+16 6(
+
+564226*
+17 7(
+
+566629*
+17 7(
+
+563626*
+18 8(
+
+566829*
+18 8(
+
+563626*
+19 9(
+
+567029*
+19 9(
+
+563626*
+1: :(
+
+567229*
+1: :(
+
+563626*
+1; ;(
+
+567429*
+1; ;(
+
+563626*
+1< <(
+
+567629*
+1< <(
+
+567826*
+1= =()
+
+568029*
+1= =()
+
+567830*
+1= =(
+
+563626*
+1=5 =(>
+
+565429*
+1=7 =(>
+
+563626*
+1>( >(1
+
+565429*
+1>* >(1
+
+821726*
+1Y Y(
+
+821726*
+1Y Y(
+
+861726*
+1i i(
+
+861726*
+1i i(
+
+86826*
+1n	 n(
+
+869029*
+1n	 n(
+
+867826*
+1q q(*
+
+868029*
+1q q(*
+
+867830*
+1q q(

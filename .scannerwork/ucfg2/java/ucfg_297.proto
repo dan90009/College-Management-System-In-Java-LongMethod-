@@ -1,0 +1,28 @@
+
+Qcollegeapplication.student.EnterMarksPanel#getPreferredSize()Ljava/awt/Dimension;ê
+ÖC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/EnterMarksPanel.javaG G(#"1*ƒ
+1J J( ñì
+J! J(1	
+%0int"#javax.swing.JComponent#getHeight()I*J
+
+__unknown_file (.,
+*collegeapplication.student.EnterMarksPanel2getHeight():8
+J J(
+%1java.awt.Dimension"java.awt.Dimension∑
+¥
+J J(2
+%2"java.awt.Dimension#<init>(II)V*6
+
+__unknown_file (
+
+%1java.awt.Dimension*!
+
+__unknown_file (2‹*'
+
+__unknown_file (
+	
+%0int"&
+J J(3
+
+%1java.awt.DimensionB.,
+*collegeapplication.student.EnterMarksPanelH

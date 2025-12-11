@@ -1,0 +1,22 @@
+
+3collegeapplication.chat.ChatData#%field_initializer
+__unknown_file ("1*Ð
+1 (·
+´
+…
+{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatData.java (2
+%0java.sql.Connection"Qcollegeapplication.common.DataBaseConnection#getConnection()Ljava/sql/Connection;*<
+ (0".
+,collegeapplication.common.DataBaseConnectionç
+ä
+…
+{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatData.java (3+"
+ collegeapplication.chat.ChatData"
+con"__id*'
+ (
+
+%0java.sql.Connection"œ
+„
+{C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatData.java (
+implicit returnB$"
+ collegeapplication.chat.ChatData

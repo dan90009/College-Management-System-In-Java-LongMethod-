@@ -1,0 +1,1013 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480909530*java2.B† 
+.
+)src/collegeapplication/chat/ChatUser.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.chat7
+%
+ collegeapplication.chat.ChatUser9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(13:1)-(133:2)14
+
+simple-name15
+
+ChatUser16
+7
+1collegeapplication.chat.ChatUser.serialVersionUID18
+
+field19
+
+private20
+
+(16:2)-(16:69)21
+
+serialVersionUID22
+1
++collegeapplication.chat.ChatUser.fromuserid24
+
+(17:2)-(17:28)25
+
+
+fromuserid26
+3
+-collegeapplication.chat.ChatUser.fromusername28
+
+(18:2)-(18:30)29
+
+fromusername30
+2
+,collegeapplication.chat.ChatUser.messagetime32
+
+(19:2)-(19:29)33
+
+messagetime34
+2
+,collegeapplication.chat.ChatUser.messagedate36
+
+(20:2)-(20:29)37
+
+messagedate38
+.
+(collegeapplication.chat.ChatUser.message40
+
+(21:2)-(21:25)41
+
+message42
+/
+)collegeapplication.chat.ChatUser.touserid44
+
+(22:2)-(22:26)45
+
+touserid46
+1
++collegeapplication.chat.ChatUser.tousername48
+
+(23:2)-(23:28)49
+
+
+tousername50
+2
+,collegeapplication.chat.ChatUser.userprofile52
+
+(24:2)-(24:29)53
+
+userprofile54
+,
+&collegeapplication.chat.ChatUser.sr_no56
+
+(25:2)-(25:22)57
+
+sr_no58
+/
+)collegeapplication.chat.ChatUser.isactive60
+
+(26:2)-(26:33)61
+
+isactive62
+-
+'collegeapplication.chat.ChatUser.readby64
+
+(27:2)-(27:27)65
+
+readby66
+E
+?collegeapplication.chat.ChatUser#setReadBy(Ljava/lang/String;)V68
+
+method69
+
+(29:2)-(32:3)70
+
+	setReadBy71
+
+
+uses72
+
+
+references73
+J
+Dcollegeapplication.chat.ChatUser#setUserProfile(Ljava/lang/String;)V75
+
+(33:2)-(36:3)76
+
+setUserProfile77
+3
+-collegeapplication.chat.ChatUser#setSr_no(I)V79
+
+(37:2)-(40:3)80
+
+setSr_no81
+I
+Ccollegeapplication.chat.ChatUser#setFromUserID(Ljava/lang/String;)V83
+
+(41:2)-(44:3)84
+
+setFromUserID85
+K
+Ecollegeapplication.chat.ChatUser#setFromUserName(Ljava/lang/String;)V87
+
+(45:2)-(48:3)88
+
+setFromUserName89
+G
+Acollegeapplication.chat.ChatUser#setToUserID(Ljava/lang/String;)V91
+
+(49:2)-(52:3)92
+
+setToUserID93
+J
+Dcollegeapplication.chat.ChatUser#setMessageTime(Ljava/lang/String;)V95
+
+(53:2)-(56:3)96
+
+setMessageTime97
+J
+Dcollegeapplication.chat.ChatUser#setMessageDate(Ljava/lang/String;)V99
+
+(57:2)-(60:3)100
+
+setMessageDate101
+G
+@collegeapplication.chat.ChatUser#setMessage(Ljava/lang/String;)V103
+
+(61:2)-(64:3)104
+
+
+setMessage105
+Z
+Scollegeapplication.chat.ChatUser#setFromUser(Ljava/lang/String;Ljava/lang/String;)V107
+
+(65:2)-(69:3)108
+
+setFromUser109
+W
+Pcollegeapplication.chat.ChatUser#setMessage(Ljava/lang/String;Ljava/util/Date;)V111
+
+(70:2)-(78:3)112
+k
+dcollegeapplication.chat.ChatUser#setToUser(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V114
+
+(79:2)-(85:3)115
+
+	setToUser116
+I
+Bcollegeapplication.chat.ChatUser#getFromUserId()Ljava/lang/String;118
+
+(86:2)-(89:3)119
+
+getFromUserId120
+J
+Ccollegeapplication.chat.ChatUser#getUserProfile()Ljava/lang/String;122
+
+(90:2)-(93:3)123
+
+getUserProfile124
+K
+Dcollegeapplication.chat.ChatUser#getFromUserName()Ljava/lang/String;126
+
+(94:2)-(97:3)127
+
+getFromUserName128
+F
+?collegeapplication.chat.ChatUser#getMessage()Ljava/lang/String;130
+
+(98:2)-(101:3)131
+
+
+getMessage132
+J
+Ccollegeapplication.chat.ChatUser#getMessageTime()Ljava/lang/String;134
+
+(103:2)-(106:3)135
+
+getMessageTime136
+J
+Ccollegeapplication.chat.ChatUser#getMessageDate()Ljava/lang/String;138
+
+(107:2)-(110:3)139
+
+getMessageDate140
+G
+@collegeapplication.chat.ChatUser#getToUserId()Ljava/lang/String;142
+
+(112:2)-(115:3)143
+
+getToUserId144
+I
+Bcollegeapplication.chat.ChatUser#getToUserName()Ljava/lang/String;146
+
+(116:2)-(119:3)147
+
+getToUserName148
+3
+,collegeapplication.chat.ChatUser#isActive()Z150
+
+(120:2)-(123:3)151
+
+isActive152
+3
+,collegeapplication.chat.ChatUser#getSr_no()I154
+
+(124:2)-(127:3)155
+
+getSr_no156
+E
+>collegeapplication.chat.ChatUser#getReadBy()Ljava/lang/String;158
+
+(128:2)-(131:3)159
+
+	getReadBy160J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576jå
+R
+153K
+15315469 *
+1| |(28:5B&
+
+
+11
+12
+
+13
+155
+
+15
+156
+R
+117K
+11711869 *
+1V V(28:5B&
+
+
+11
+12
+
+13
+119
+
+15
+120
+M
+23G
+232419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+25
+
+
+15
+26
+R
+106K
+10610769 *
+1A A(28:5B&
+
+
+11
+12
+
+13
+108
+
+15
+109
+R
+113K
+11311469 *
+1O O(28:5B&
+
+
+11
+12
+
+13
+115
+
+15
+116
+M
+86G
+868769 *
+1- -(28:5B$
+
+
+11
+12
+
+
+13
+88
+
+
+15
+89
+M
+94G
+949569 *
+15 5(28:5B$
+
+
+11
+12
+
+
+13
+96
+
+
+15
+97
+M
+27G
+272819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+29
+
+
+15
+30
+R
+121K
+12112269 *
+1Z Z(28:5B&
+
+
+11
+12
+
+13
+123
+
+15
+124
+M
+43G
+434419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+45
+
+
+15
+46
+R
+133K
+13313469 *
+1g g(28:5B&
+
+
+11
+12
+
+13
+135
+
+15
+136
+R
+149K
+14915069 *
+1x x(28:5B&
+
+
+11
+12
+
+13
+151
+
+15
+152
+M
+17G
+171819 *
+1 (,28:5B$
+
+
+11
+20
+
+
+13
+21
+
+
+15
+22
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+R
+102K
+10210369 *
+1= =(28:5B&
+
+
+11
+12
+
+13
+104
+
+15
+105
+R
+110K
+11011169 *
+1F F(28:5B&
+
+
+11
+12
+
+13
+112
+
+15
+105
+M
+35G
+353619 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+37
+
+
+15
+38
+O
+98I
+989969 *
+19 9(28:5B&
+
+
+11
+12
+
+13
+100
+
+15
+101
+M
+55G
+555619 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+57
+
+
+15
+58
+M
+39G
+394019 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+41
+
+
+15
+42
+M
+51G
+515219 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+53
+
+
+15
+54
+M
+63G
+636419 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+65
+
+
+15
+66
+M
+90G
+909169 *
+11 1(28:5B$
+
+
+11
+12
+
+
+13
+92
+
+
+15
+93
+R
+129K
+12913069 *
+1b b(28:5B&
+
+
+11
+12
+
+13
+131
+
+15
+132
+T
+157M
+15715869 *
+1€ €(28:5B&
+
+
+11
+12
+
+13
+159
+
+15
+160
+M
+74G
+747569 *
+1! !(28:5B$
+
+
+11
+12
+
+
+13
+76
+
+
+15
+77
+M
+59G
+596019 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+61
+
+
+15
+62
+R
+141K
+14114269 *
+1p p(28:5B&
+
+
+11
+12
+
+13
+143
+
+15
+144
+M
+82G
+828369 *
+1) )(28:5B$
+
+
+11
+12
+
+
+13
+84
+
+
+15
+85
+R
+137K
+13713869 *
+1k k(28:5B&
+
+
+11
+12
+
+13
+139
+
+15
+140
+M
+47G
+474819 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+49
+
+
+15
+50
+R
+145K
+14514669 *
+1t t(28:5B&
+
+
+11
+12
+
+13
+147
+
+15
+148
+M
+31G
+313219 *
+1 (28:5B$
+
+
+11
+20
+
+
+13
+33
+
+
+15
+34
+R
+125K
+12512669 *
+1^ ^(28:5B&
+
+
+11
+12
+
+13
+127
+
+15
+128
+M
+78G
+787969 *
+1% %(28:5B$
+
+
+11
+12
+
+
+13
+80
+
+
+15
+81
+M
+67G
+676869 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+70
+
+
+15
+71râ
+
+67872*
+1 (
+
+67873*
+1 (
+
+676373*
+1 (
+
+74872*
+1# #(
+
+74873*
+1# #(
+
+745173*
+1# #(
+
+78872*
+1' '(
+
+78873*
+1' '(
+
+785573*
+1' '(
+
+82872*
+1+ +(
+
+82873*
+1+ +(
+
+822373*
+1+ +(
+
+86872*
+1/ /(
+
+86873*
+1/ /(
+
+862773*
+1/ /(
+
+90872*
+13 3(
+
+90873*
+13 3(
+
+904373*
+13 3(
+
+94872*
+17 7(
+
+94873*
+17 7(
+
+943173*
+17 7(
+
+98872*
+1; ;(
+
+98873*
+1; ;(
+
+983573*
+1; ;(
+
+102872*
+1? ?(
+
+102873*
+1? ?(
+
+1023973*
+1? ?(
+
+106872*
+1C C(
+
+106873*
+1C C(
+
+1062373*
+1C C(
+
+106872*
+1D D(
+
+106873*
+1D D(
+
+1062773*
+1D D(
+
+110872*
+1H H(
+
+110873*
+1H H(
+
+1103973*
+1H H(
+
+110872*
+1K K(
+
+110873*
+1K K(
+
+1103173*
+1K K(
+
+110872*
+1L L(
+
+110873*
+1L L(
+
+1103573*
+1L L(
+
+113872*
+1Q Q(
+
+113873*
+1Q Q(
+
+1135173*
+1Q Q(
+
+113872*
+1R R(
+
+113873*
+1R R(
+
+1134373*
+1R R(
+
+113872*
+1S S(
+
+113873*
+1S S(
+
+1134773*
+1S S(
+
+113872*
+1T T(
+
+113873*
+1T T(
+
+1135973*
+1T T(
+
+1172373*
+1X
+ X(
+
+1215173*
+1\
+ \(
+
+1252773*
+1`
+ `(
+
+1293973*
+1d
+ d(
+
+1333173*
+1i
+ i(
+
+1373573*
+1m
+ m(
+
+1414373*
+1r
+ r(
+
+1454773*
+1v
+ v(
+
+1495973*
+1z
+ z(
+
+1535573*
+1~
+ ~(
+
+1576373*
+1‚
+ ‚(

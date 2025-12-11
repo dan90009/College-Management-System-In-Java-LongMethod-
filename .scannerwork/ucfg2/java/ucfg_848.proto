@@ -1,0 +1,13 @@
+
+Rcollegeapplication.common.NotificationPanel#getPreferredSize()Ljava/awt/Dimension;‘
+†C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/common/NotificationPanel.java4 4(""1*é
+16	 6(±®
+6	 6(
+%0java.awt.Dimension"0java.awt.Component#getSize()Ljava/awt/Dimension;*K
+
+__unknown_file (/-
++collegeapplication.common.NotificationPanel2	getSize()"&
+6 6(
+
+%0java.awt.DimensionB/-
++collegeapplication.common.NotificationPanelH

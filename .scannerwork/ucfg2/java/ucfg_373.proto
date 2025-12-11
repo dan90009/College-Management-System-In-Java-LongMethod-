@@ -1,0 +1,22 @@
+
+5collegeapplication.admin.AdminData#%field_initializer
+__unknown_file ("1*Ø
+1 (¹
+¶
+‡
+}C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/AdminData.java (2
+%0java.sql.Connection"Qcollegeapplication.common.DataBaseConnection#getConnection()Ljava/sql/Connection;*<
+ (0".
+,collegeapplication.common.DataBaseConnectionë
+è
+‡
+}C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/AdminData.java (3-$
+"collegeapplication.admin.AdminData"
+con"__id*'
+ (
+
+%0java.sql.Connection"ž
+†
+}C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/admin/AdminData.java µ(
+implicit returnB&$
+"collegeapplication.admin.AdminData

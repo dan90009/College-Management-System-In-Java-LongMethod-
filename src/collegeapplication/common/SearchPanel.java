@@ -402,69 +402,110 @@ public class SearchPanel extends JPanel implements ActionListener {
 		}
 	
 	}
-	public void createtablemodel()
-	{
-		String searchtext=searchfield.getText().trim();
-		if(studentandfacultycombo.getSelectedIndex()==0)
-		{
-			String defaultquery="select s.courcecode as 'Class' ,s.rollnumber as 'Roll Number',concat(s.firstname,' ',s.lastname) as 'Student Name',c.courcename as 'Cource Name',concat(c.semoryear,'-',s.semoryear) as 'Sem/Year' from students s left join cources c on s.courcecode=c.courcecode ";
-			String query=defaultquery;
-			if(courcenamecombo.getSelectedIndex()>0)
-			{
-				String courcecode=new CourceData().getCourcecode(courcenamecombo.getSelectedItem()+"");
-				query+=" where s.courcecode='"+courcecode+"'";
-				if(semoryearcombo.getSelectedIndex()>0)
-				{
-					query+=" and s.semoryear="+semoryearcombo.getSelectedIndex();
-				}
-				
-			}
-			
-			if(!searchtext.isEmpty())
-			{
-				String searchquery="s.firstname like '"+searchtext+"%' or s.lastname like '"+searchtext+"%' or s.rollnumber like '"+searchtext+"%' ";
-				if(!query.contains("where"))
-				{
-					query+="where "+searchquery;
-				}
-				else
-				{
-					query+=" and ( "+searchquery+" ) ";
-				}
-			
-			}
+	public void createtablemodel() {
+		String searchText = searchfield.getText().trim();
+		int selectedIndex = studentandfacultycombo.getSelectedIndex();
+
+		if (selectedIndex == 0) {
+			String query = buildStudentQuery(searchText);
 			table.setModel(DbUtils.resultSetToTableModel(new StudentData().searchStudent(query)));
 			this.arrangeStudentTable();
-		}
-		else if(studentandfacultycombo.getSelectedIndex()==1)
-		{
-			String defaultquery="select facultyid as 'Faculty ID',facultyname as 'Faculty Name',emailid as 'Email ID',qualification as 'Qualification',experience as 'Experience' from faculties f ";
-			String query=defaultquery;
-			if(courcenamecombo.getSelectedIndex()>0)
-			{
-				String courcecode=new CourceData().getCourcecode(courcenamecombo.getSelectedItem()+"");
-				query+=" where f.courcecode='"+courcecode+"'";
-				if(semoryearcombo.getSelectedIndex()>0)
-				{
-					query+=" and f.semoryear="+semoryearcombo.getSelectedIndex();
-				}
-				
-			}
-			if(!searchtext.equals("Search")&&!searchtext.isEmpty())
-			{
-				String searchquery=" f.facultyname like '"+searchtext+"%' or f.facultyid like '"+searchtext+"%' ";
-				if(!query.contains("where"))
-				{
-					query+="where "+searchquery;
-				}
-				else
-				{
-					query+=" and ( "+searchquery+" ) ";
-				}
-			
-			}
+		} else if (selectedIndex == 1) {
+			String query = buildFacultyQuery(searchText);
 			table.setModel(DbUtils.resultSetToTableModel(new FacultyData().searchFaculty(query)));
 			this.arrangeFacultyTable();
 		}
 	}
+	private String buildStudentQuery(String searchText) {
+		String defaultQuery =
+				"select s.courcecode as 'Class' ,s.rollnumber as 'Roll Number',"
+						+ "concat(s.firstname,' ',s.lastname) as 'Student Name',"
+						+ "c.courcename as 'Cource Name',"
+						+ "concat(c.semoryear,'-',s.semoryear) as 'Sem/Year' "
+						+ "from students s left join cources c on s.courcecode=c.courcecode ";
+
+		StringBuilder query = new StringBuilder(defaultQuery);
+
+		appendCourseAndSemFilterForStudent(query);
+		appendStudentSearchFilter(query, searchText);
+
+		return query.toString();
+	}
+
+	private String buildFacultyQuery(String searchText) {
+		String defaultQuery =
+				"select facultyid as 'Faculty ID',"
+						+ "facultyname as 'Faculty Name',"
+						+ "emailid as 'Email ID',"
+						+ "qualification as 'Qualification',"
+						+ "experience as 'Experience' "
+						+ "from faculties f ";
+
+		StringBuilder query = new StringBuilder(defaultQuery);
+
+		appendCourseAndSemFilterForFaculty(query);
+		appendFacultySearchFilter(query, searchText);
+
+		return query.toString();
+	}
+	private void appendCourseAndSemFilterForStudent(StringBuilder query) {
+		if (courcenamecombo.getSelectedIndex() <= 0) {
+			return;
+		}
+
+		String courcecode = new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + "");
+		query.append(" where s.courcecode='").append(courcecode).append("'");
+
+		if (semoryearcombo.getSelectedIndex() > 0) {
+			query.append(" and s.semoryear=").append(semoryearcombo.getSelectedIndex());
+		}
+	}
+
+	private void appendCourseAndSemFilterForFaculty(StringBuilder query) {
+		if (courcenamecombo.getSelectedIndex() <= 0) {
+			return;
+		}
+
+		String courcecode = new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + "");
+		query.append(" where f.courcecode='").append(courcecode).append("'");
+
+		if (semoryearcombo.getSelectedIndex() > 0) {
+			query.append(" and f.semoryear=").append(semoryearcombo.getSelectedIndex());
+		}
+	}
+	private void appendStudentSearchFilter(StringBuilder query, String searchText) {
+		if (searchText == null || searchText.isEmpty()) {
+			return;
+		}
+
+		String searchQuery =
+				"s.firstname like '" + searchText + "%' "
+						+ "or s.lastname like '" + searchText + "%' "
+						+ "or s.rollnumber like '" + searchText + "%' ";
+
+		appendSearchCondition(query, searchQuery);
+	}
+
+	private void appendFacultySearchFilter(StringBuilder query, String searchText) {
+		if (searchText == null || searchText.isEmpty() || "Search".equals(searchText)) {
+			return;
+		}
+
+		String searchQuery =
+				" f.facultyname like '" + searchText + "%' "
+						+ "or f.facultyid like '" + searchText + "%' ";
+
+		appendSearchCondition(query, searchQuery);
+	}
+	private void appendSearchCondition(StringBuilder query, String searchCondition) {
+		String lowerQuery = query.toString().toLowerCase();
+
+		if (!lowerQuery.contains("where")) {
+			query.append("where ").append(searchCondition);
+		} else {
+			query.append(" and ( ").append(searchCondition).append(" ) ");
+		}
+	}
+
+
 }

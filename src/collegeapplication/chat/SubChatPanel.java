@@ -226,104 +226,90 @@ public class SubChatPanel extends JPanel implements ActionListener,Runnable {
 		}
 		
 	}
-	
-	public void getMessages()
-	{
-			ArrayList<ChatUser> list=new ChatData().getUserMessages(user);
-			ArrayList<Integer> readbylist=new ArrayList<Integer>();
-			if(list.size()>100)
-			{
-				progresslabel.setVisible(true);
-			}
-			this.repaint();
-			EventQueue.invokeLater(new Runnable()
-			{
-				@Override
-				public void run() 
-				{
-					// TODO Auto-generated method stub
-					for(int i=0; i<list.size(); i++)
-					{
-						if(i==list.size()-1)
-						{
-							progresslabel.setVisible(false);
-						}
-						ChatUser u=list.get(i);
-						if(u.getFromUserId().equals(user.getFromUserId())&&u.getToUserId().equals(user.getToUserId()))
-						{
-							RightSidePanel(u);
-						}
-						else if(u.getToUserId().equals(user.getFromUserId())&&u.getFromUserId().equals(user.getToUserId()))
-						{
-							
-							if(u.getReadBy().isEmpty())	
-							{
-								readbylist.add(u.getSr_no());
-							}
-							else
-							{
-								
-								StringTokenizer read=new StringTokenizer(u.getReadBy(),"#");
-								boolean contain=false;
-								while(read.hasMoreTokens())
-								{
-									String str=read.nextToken();
-									if(str.equals(user.getFromUserId()))
-									{
-										
-										contain=true;
-										break;
-									}
-									
-								}
-								if(!contain)
-								{
-									readbylist.add(u.getSr_no());
-								}
-								
-							}
-							LeftSidePanel(u);
-						}
-						else if(u.getToUserId().equals(user.getToUserId())&&u.getToUserId().contains("Group"))
-						{
-							if(u.getReadBy().isEmpty())	
-							{
-								readbylist.add(u.getSr_no());
+	public void getMessages() {
+		ArrayList<ChatUser> list = new ChatData().getUserMessages(user);
+		ArrayList<Integer> readbylist = new ArrayList<>();
 
-							}
-							else
-							{
-								StringTokenizer read=new StringTokenizer(u.getReadBy(),"#");
-								boolean contain=false;
-								while(read.hasMoreTokens())
-								{
-									String str=read.nextToken();
-									if(str.equals(user.getFromUserId()))
-									{
-										contain=true;
-										break;
-									}
-									
-								}
-								if(!contain)
-								{
-									readbylist.add(u.getSr_no());
-								}
-							}
-							LeftSidePanel(u);
-						}
-					}
-					if(readbylist.size()>0)
-					{
-					new ChatData().addReadBy(readbylist,user.getFromUserId());
-					}
-				}
-				
-			});
-						
-			
-		
+		if (list.size() > 100) {
+			progresslabel.setVisible(true);
+		}
+
+		this.repaint();
+
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				processMessages(list, readbylist);
+			}
+		});
 	}
+	private void processMessages(List<ChatUser> messages, ArrayList<Integer> readbylist) {
+		for (ChatUser u : messages) {
+			if (isOutgoingMessage(u)) {
+				handleOutgoingMessage(u);
+			} else if (isIncomingDirectMessage(u)) {
+				handleIncomingOrGroupMessage(u, readbylist);
+			} else if (isGroupMessage(u)) {
+				handleIncomingOrGroupMessage(u, readbylist);
+			}
+		}
+
+		if (!readbylist.isEmpty()) {
+			new ChatData().addReadBy(readbylist, user.getFromUserId());
+		}
+
+		// After processing, hide progress indicator (if it was shown)
+		progresslabel.setVisible(false);
+	}
+
+	private boolean isOutgoingMessage(ChatUser u) {
+		return u.getFromUserId().equals(user.getFromUserId())
+				&& u.getToUserId().equals(user.getToUserId());
+	}
+
+	private boolean isIncomingDirectMessage(ChatUser u) {
+		return u.getToUserId().equals(user.getFromUserId())
+				&& u.getFromUserId().equals(user.getToUserId());
+	}
+
+	private boolean isGroupMessage(ChatUser u) {
+		return u.getToUserId().equals(user.getToUserId())
+				&& u.getToUserId().contains("Group");
+	}
+
+	private void handleOutgoingMessage(ChatUser u) {
+		RightSidePanel(u);
+	}
+
+	private void handleIncomingOrGroupMessage(ChatUser u, ArrayList<Integer> readbylist) {
+		if (shouldMarkAsRead(u)) {
+			readbylist.add(u.getSr_no());
+		}
+		LeftSidePanel(u);
+	}
+
+	private boolean shouldMarkAsRead(ChatUser u) {
+		String readBy = u.getReadBy();
+		if (readBy == null || readBy.isEmpty()) {
+			return true;
+		}
+		return !isUserAlreadyInReadBy(readBy, user.getFromUserId());
+	}
+
+	private boolean isUserAlreadyInReadBy(String readBy, String userId) {
+		StringTokenizer read = new StringTokenizer(readBy, "#");
+		while (read.hasMoreTokens()) {
+			String token = read.nextToken();
+			if (userId.equals(token)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+}
 	public  void sendmessage()
 	{
 		if(socket!=null)
@@ -426,142 +412,161 @@ public class SubChatPanel extends JPanel implements ActionListener,Runnable {
 		this.repaint();
 		this.revalidate();
 	}
-	
-	public JPanel formatPanel(ChatUser u,boolean from)
-	{
-		//Creating panel of message
-		if(!u.getMessageDate().equals(date))
-		{
-			int diff=TimeUtil.getDayDifference(u.getMessageDate(),NewMessage.getCurrentDate());
-			if(diff==0)
-			{
-				addLabel("TODAY");
-			}
-			else if(diff==1) 
-			{
-				addLabel("YESTERDAY");
-			}
-			else
-			{
-			addLabel(u.getMessageDate());
-			}
-			date=u.getMessageDate();
-		}
-		JPanel p=new JPanel();
-		p.setBorder(new EmptyBorder(5,0,5,0));
-		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
-		p.setBackground(new Color(240,240,240));
-		
-		
-		//Adding username to panel
-		JLabel username=new JLabel();
-		if(!from)
-		{
-			if(user.getToUserId().contains("Group"))
-			{
-			username.setText(u.getFromUserName());
-			}
-			
-		}
-		username.setHorizontalAlignment(JLabel.LEFT);
-		username.setBorder(new EmptyBorder(0,0,5,20));
-		username.setForeground(new Color(0,139,139));
-		username.setFont(new Font("Segoe UI",Font.BOLD,14));
-		p.add(username);
-		
-		//Adding message to panel
-		JLabel messagelabel=new JLabel();
-		messagelabel.setFont(new Font("Segoe UI Emoji",Font.PLAIN,16));
-		messagelabel.setHorizontalTextPosition(JLabel.CENTER);
-		messagelabel.setVerticalTextPosition(JLabel.BOTTOM);
-		if(u.getMessage().length()<40)
-		{
-		messagelabel.setText(u.getMessage());
-		}
-		else
-		{
-			messagelabel.setText("<html><p style=\"width:150px\">"+u.getMessage()+"</p></html>");
-		}
-		messagelabel.setForeground(Color.black);
-		messagelabel.setBorder(new EmptyBorder(0,0,2,20));
-		p.add(messagelabel);
-		
-		//Adding time to panel
-		
-		//Creating panel of time
-		JPanel timepanel=new JPanel(new BorderLayout());
-		JLabel timelabel=new JLabel(u.getMessageTime());
-		timepanel.setBackground(p.getBackground());
-		timelabel.setFont(new Font("Segoe UI",Font.PLAIN,10));
-		timelabel.setForeground(Color.gray);
-		timepanel.add(timelabel,BorderLayout.LINE_END);
-		timepanel.setBorder(new EmptyBorder(2,0,0,2));
-		timelabel.setHorizontalAlignment(JLabel.CENTER);
-		p.add(timepanel);
-		if(from)
-		{
-			p.setBackground(new Color(20,130,130));
-			messagelabel.setForeground(Color.white);
-			timelabel.setForeground(new Color(245,245,245));
-			timepanel.setBackground(p.getBackground());
-			timelabel.setIcon(new ImageIcon("./assets/singletick.png"));
-			timelabel.setVerticalTextPosition(JLabel.CENTER);
-			timepanel.setOpaque(false);
-			timelabel.setHorizontalTextPosition(JLabel.LEFT);
-			timelabel.setBorder(new EmptyBorder(0,0,0,3));
-			if(!user.getToUserId().contains("Group"))
-			{
-				
-				StringTokenizer read=new StringTokenizer(u.getReadBy(),"#");
-				boolean contain=false;
-				while(read.hasMoreTokens())
-				{
-					String str=read.nextToken();
-					if(str.equals(user.getToUserId()))
-					{
-						
-						contain=true;
-						break;
-					}
-					
-				}
-				if(contain)
-				{
-					timelabel.setIcon(new ImageIcon("./assets/doubletickblue.png"));
-				}
-				else
-				{
-					messagestatus.add(new MessageStatus(u,timelabel));
-					if(user.getUserProfile().equals("Student"))
-					{
-						if(new StudentData().isActive(user.getToUserId()))
-						{
-							timelabel.setIcon(new ImageIcon("./assets/doubletick.png"));
-						}
-					}
-					else if(user.getUserProfile().equals("Faculty"))
-					{
-						if(new FacultyData().isActive(user.getToUserId()))
-						{
-							timelabel.setIcon(new ImageIcon("./assets/doubletick.png"));
-						}
-					}
-					else if(user.getUserProfile().equals("Admin"))
-					{
-						if(new AdminData().isActive())
-						{
-							timelabel.setIcon(new ImageIcon("./assets/doubletick.png"));
-						}
-					}
-				}
-			}
-			
-				
+	public JPanel formatPanel(ChatUser u, boolean from) {
+		handleDateHeader(u);
+
+		JPanel messagePanel = createBaseMessagePanel();
+
+		JLabel usernameLabel = createUsernameLabel(u, from);
+		messagePanel.add(usernameLabel);
+
+		JLabel messageLabel = createMessageLabel(u);
+		messagePanel.add(messageLabel);
+
+		JLabel timeLabel = new JLabel(u.getMessageTime());
+		JPanel timePanel = createTimePanel(messagePanel, timeLabel);
+		messagePanel.add(timePanel);
+
+		if (from) {
+			styleOutgoingMessagePanel(messagePanel, messageLabel, timeLabel, timePanel, u);
 		}
 
-		
+		return messagePanel;
+	}
+	private void handleDateHeader(ChatUser u) {
+		if (u.getMessageDate().equals(date)) {
+			return;
+		}
+
+		int diff = TimeUtil.getDayDifference(u.getMessageDate(), NewMessage.getCurrentDate());
+		if (diff == 0) {
+			addLabel("TODAY");
+		} else if (diff == 1) {
+			addLabel("YESTERDAY");
+		} else {
+			addLabel(u.getMessageDate());
+		}
+		date = u.getMessageDate();
+	}
+	private JPanel createBaseMessagePanel() {
+		JPanel p = new JPanel();
+		p.setBorder(new EmptyBorder(5, 0, 5, 0));
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.setBackground(new Color(240, 240, 240));
 		return p;
 	}
+	private JLabel createUsernameLabel(ChatUser u, boolean from) {
+		JLabel username = new JLabel();
+
+		if (!from && isGroupChat()) {
+			username.setText(u.getFromUserName());
+		}
+
+		username.setHorizontalAlignment(JLabel.LEFT);
+		username.setBorder(new EmptyBorder(0, 0, 5, 20));
+		username.setForeground(new Color(0, 139, 139));
+		username.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		return username;
+	}
+
+	private boolean isGroupChat() {
+		String toUserId = user.getToUserId();
+		return toUserId != null && toUserId.contains("Group");
+	}
+	private JLabel createMessageLabel(ChatUser u) {
+		JLabel messagelabel = new JLabel();
+		messagelabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
+		messagelabel.setHorizontalTextPosition(JLabel.CENTER);
+		messagelabel.setVerticalTextPosition(JLabel.BOTTOM);
+
+		String message = u.getMessage();
+		if (message.length() < 40) {
+			messagelabel.setText(message);
+		} else {
+			messagelabel.setText("<html><p style=\"width:150px\">" + message + "</p></html>");
+		}
+
+		messagelabel.setForeground(Color.black);
+		messagelabel.setBorder(new EmptyBorder(0, 0, 2, 20));
+		return messagelabel;
+	}
+	private JPanel createTimePanel(JPanel messagePanel, JLabel timelabel) {
+		JPanel timepanel = new JPanel(new BorderLayout());
+		timepanel.setBackground(messagePanel.getBackground());
+		timelabel.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+		timelabel.setForeground(Color.gray);
+		timelabel.setHorizontalAlignment(JLabel.CENTER);
+		timepanel.add(timelabel, BorderLayout.LINE_END);
+		timepanel.setBorder(new EmptyBorder(2, 0, 0, 2));
+		return timepanel;
+	}
+	private void styleOutgoingMessagePanel(JPanel messagePanel,
+										   JLabel messageLabel,
+										   JLabel timeLabel,
+										   JPanel timePanel,
+										   ChatUser u) {
+
+		// Basic outgoing styling
+		messagePanel.setBackground(new Color(20, 130, 130));
+		messageLabel.setForeground(Color.white);
+		timeLabel.setForeground(new Color(245, 245, 245));
+		timePanel.setBackground(messagePanel.getBackground());
+
+		timeLabel.setIcon(new ImageIcon("./assets/singletick.png"));
+		timeLabel.setVerticalTextPosition(JLabel.CENTER);
+		timePanel.setOpaque(false);
+		timeLabel.setHorizontalTextPosition(JLabel.LEFT);
+		timeLabel.setBorder(new EmptyBorder(0, 0, 0, 3));
+
+		if (!isGroupChat()) {
+			handleNonGroupReadStatus(u, timeLabel);
+		}
+	}
+	private void handleNonGroupReadStatus(ChatUser u, JLabel timeLabel) {
+		if (hasBeenReadByRecipient(u)) {
+			timeLabel.setIcon(new ImageIcon("./assets/doubletickblue.png"));
+			return;
+		}
+
+		messagestatus.add(new MessageStatus(u, timeLabel));
+		updateTickForActiveRecipient(timeLabel);
+	}
+
+	private boolean hasBeenReadByRecipient(ChatUser u) {
+		String readBy = u.getReadBy();
+		if (readBy == null || readBy.isEmpty()) {
+			return false;
+		}
+
+		String toUserId = user.getToUserId();
+		StringTokenizer read = new StringTokenizer(readBy, "#");
+		while (read.hasMoreTokens()) {
+			String str = read.nextToken();
+			if (str.equals(toUserId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void updateTickForActiveRecipient(JLabel timeLabel) {
+		String profile = user.getUserProfile();
+
+		if ("Student".equals(profile)) {
+			if (new StudentData().isActive(user.getToUserId())) {
+				timeLabel.setIcon(new ImageIcon("./assets/doubletick.png"));
+			}
+		} else if ("Faculty".equals(profile)) {
+			if (new FacultyData().isActive(user.getToUserId())) {
+				timeLabel.setIcon(new ImageIcon("./assets/doubletick.png"));
+			}
+		} else if ("Admin".equals(profile)) {
+			if (new AdminData().isActive()) {
+				timeLabel.setIcon(new ImageIcon("./assets/doubletick.png"));
+			}
+		}
+	}
+
 
 	@Override
 	public void run() 
@@ -602,61 +607,71 @@ public class SubChatPanel extends JPanel implements ActionListener,Runnable {
 	class MessageStatusActionListener implements ActionListener
 	{
 		@Override
-		public void actionPerformed(ActionEvent arg0) 
-		{
-			for(int i=0; i<messagestatus.size(); i++)
-			{
-					MessageStatus m=messagestatus.get(i);
-
-					StringTokenizer read=new StringTokenizer(new ChatData().getReadBy(m.getSrNo()),"#");
-					boolean contain=false;
-					while(read.hasMoreTokens())
-					{
-						
-						String str=read.nextToken();
-						if(str.equals(user.getToUserId()))
-						{
-							contain=true;
-							break;
-						}
-						
-					}
-					if(contain)
-					{
-							JLabel label=m.getLabel();
-							label.setIcon(new ImageIcon("./assets/doubletickblue.png"));
-							m.setMessageStatus(true);
-					}
-					if(!contain)
-					{
-						if(user.getUserProfile().equals("Student"))
-						{
-							if(new StudentData().isActive(user.getToUserId()))
-							{
-								JLabel label=m.getLabel();
-								label.setIcon(new ImageIcon("./assets/doubletick.png"));
-							}
-						}
-						else if(user.getUserProfile().equals("Faculty"))
-						{
-							if(new FacultyData().isActive(user.getToUserId()))
-							{
-								JLabel label=m.getLabel();
-								label.setIcon(new ImageIcon("./assets/doubletick.png"));
-							}
-						}
-						else if(user.getUserProfile().equals("Admin"))
-						{
-							if(new AdminData().isActive())
-							{
-								JLabel label=m.getLabel();
-								label.setIcon(new ImageIcon("./assets/doubletick.png"));
-							}
-						}
-					}
-					
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			for (MessageStatus status : messagestatus) {
+				processMessageStatus(status);
 			}
 		}
+
+		private void processMessageStatus(MessageStatus status) {
+			boolean hasBeenRead = hasRecipientReadMessage(status.getSrNo());
+
+			if (hasBeenRead) {
+				markMessageAsRead(status);
+			} else {
+				updateUnreadMessageStatus(status);
+			}
+		}
+
+		private boolean hasRecipientReadMessage(int srNo) {
+			String readBy = new ChatData().getReadBy(srNo);
+			if (readBy == null || readBy.isEmpty()) {
+				return false;
+			}
+
+			String toUserId = user.getToUserId();
+			StringTokenizer read = new StringTokenizer(readBy, "#");
+			while (read.hasMoreTokens()) {
+				String token = read.nextToken();
+				if (toUserId.equals(token)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private void markMessageAsRead(MessageStatus status) {
+			JLabel label = status.getLabel();
+			label.setIcon(new ImageIcon("./assets/doubletickblue.png"));
+			status.setMessageStatus(true);
+		}
+
+		private void updateUnreadMessageStatus(MessageStatus status) {
+			if (!isRecipientActive()) {
+				return;
+			}
+
+			JLabel label = status.getLabel();
+			label.setIcon(new ImageIcon("./assets/doubletick.png"));
+		}
+
+		private boolean isRecipientActive() {
+			String profile = user.getUserProfile();
+			String toUserId = user.getToUserId();
+
+			if ("Student".equals(profile)) {
+				return new StudentData().isActive(toUserId);
+			}
+			if ("Faculty".equals(profile)) {
+				return new FacultyData().isActive(toUserId);
+			}
+			if ("Admin".equals(profile)) {
+				return new AdminData().isActive();
+			}
+			return false;
+		}
+
 	}
 			
 	private class MyDocumentListener implements DocumentListener 

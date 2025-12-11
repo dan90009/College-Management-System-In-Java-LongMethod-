@@ -1,0 +1,158 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480920603*java2.B‘
+1
+,src/collegeapplication/common/ImageUtil.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.common7
+(
+#collegeapplication.common.ImageUtil9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(18:1)-(125:2)14
+
+simple-name15
+
+	ImageUtil16
+i
+ccollegeapplication.common.ImageUtil#toBufferedImage(Ljava/awt/Image;)Ljava/awt/image/BufferedImage;18
+
+method19
+
+(20:5)-(66:6)20
+
+toBufferedImage21
+
+
+references22
+E
+?collegeapplication.common.ImageUtil#hasAlpha(Ljava/awt/Image;)Z24
+
+unknown25
+
+calls26
+
+(69:5)-(84:6)27
+
+hasAlpha28
+g
+acollegeapplication.common.ImageUtil#resizeImage(Ljava/awt/Image;II)Ljava/awt/image/BufferedImage;30
+
+(85:5)-(97:6)31
+
+resizeImage32
+z
+tcollegeapplication.common.ImageUtil#makeRoundedCorner(Ljava/awt/image/BufferedImage;I)Ljava/awt/image/BufferedImage;34
+
+(99:2)-(123:3)35
+
+makeRoundedCorner36J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576j…
+M
+33G
+333419 *
+1c c(/28:5B$
+
+
+11
+12
+
+
+13
+35
+
+
+15
+36
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+M
+23G
+232419 *
+1E E(#28:5B$
+
+
+11
+12
+
+
+13
+27
+
+
+15
+28
+M
+29G
+293019 *
+1U! U(,28:5B$
+
+
+11
+12
+
+
+13
+31
+
+
+15
+32
+M
+17G
+171819 *
+1! (028:5B$
+
+
+11
+12
+
+
+13
+20
+
+
+15
+21r5
+
+17822*
+1 ($
+
+172326*
+1 ($

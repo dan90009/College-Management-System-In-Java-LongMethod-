@@ -1,0 +1,25 @@
+
+Hcollegeapplication.chat.ChatInfoPanel#getContactName()Ljava/lang/String;ç
+ÄC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/ChatInfoPanel.javaÎ Î("1*„
+1
+Ì	 Ì(å
+â
+
+Ì	 Ì(
+%0javax.swing.JLabel"__id*[
+
+__unknown_file (?*='
+%collegeapplication.chat.ChatInfoPanel"
+contactnamelabelöó
+
+Ì	 Ì(#
+%1java.lang.String".javax.swing.JLabel#getText()Ljava/lang/String;*6
+
+__unknown_file (
+
+%0javax.swing.JLabel2	getText()"&
+
+Ì Ì($
+
+%1java.lang.StringB)'
+%collegeapplication.chat.ChatInfoPanelH

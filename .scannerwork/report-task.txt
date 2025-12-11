@@ -1,0 +1,7 @@
+organization=dan90009
+projectKey=dan90009_College-Management-System-In-Java-LongMethod-
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.77300
+dashboardUrl=https://sonarcloud.io/dashboard?id=dan90009_College-Management-System-In-Java-LongMethod-
+ceTaskId=AZsO3VpwZRRvk9g7iRVn
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZsO3VpwZRRvk9g7iRVn

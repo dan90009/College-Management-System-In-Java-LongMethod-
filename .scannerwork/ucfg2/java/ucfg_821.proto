@@ -1,0 +1,67 @@
+
+:collegeapplication.faculty.FacultyData#getTotalFaculaty()IŒ
+C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/faculty/FacultyData.java% %("7*±
+4-
+ -(œ™
+-
+ -(	
+%4int"java.sql.ResultSet#getInt(I)I*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22	getInt(I)*
+1*ñ
+5+ +(Bd
+b
++ +(B
+rsjava.sql.ResultSet"__id*6
+
+__unknown_file (
+
+%2java.sql.ResultSetwu
+, ,(
+%3boolean"java.sql.ResultSet#next()Z*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet2next()*
+4*…
+6* *(&d
+b
+* *(&
+stjava.sql.Statement"__id*6
+
+__unknown_file (
+
+%1java.sql.StatementŠ‡
++ +(A
+%2java.sql.ResultSet"Gjava.sql.Statement#executeQuery(Ljava/lang/String;)Ljava/sql/ResultSet;*6
+
+__unknown_file (
+
+stjava.sql.Statement*>
+
+__unknown_file (" 
+select count(*) from faculties2 executeQuery(Ljava/lang/String;)*
+5*Ã
+7* *(~
+|
+* *(
+%0java.sql.Connection"__id*O
+
+__unknown_file (3*1(
+&collegeapplication.faculty.FacultyData"
+con®«
+* *(%
+%1java.sql.Statement"9java.sql.Connection#createStatement()Ljava/sql/Statement;*7
+
+__unknown_file (
+
+%0java.sql.Connection2createStatement()*
+6*!
+14	 4("
+4 4(
+""B*(
+&collegeapplication.faculty.FacultyDataHX

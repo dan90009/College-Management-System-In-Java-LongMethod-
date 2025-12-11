@@ -296,54 +296,79 @@ public class EditAdminDetailsDialog extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getSource() == createaccountbutton) {
-			if (collagenamefield.getText().isEmpty()) {
-				showerror(collagenamefield);
-			} else if (emailidfield.getText().isEmpty()) {
-				showerror(emailidfield);
-			} else if (contactnumberfield.getText().isEmpty()) {
-				showerror(contactnumberfield);
-			} else if (websitefield.getText().isEmpty()) {
-				showerror(websitefield);
-			} else if (passwordfield.getPassword().toString().isEmpty()) {
-				showerror(passwordfield);
-			} else if (addresstextarea.getText().isEmpty()) {
-				showerror(scrollpaneforaddress);
-			} else {
-				Admin ad = new Admin();
-				ad.setCollageName(collagenamefield.getText());
-				ad.setEmailId(emailidfield.getText());
-				ad.setContactNumber(contactnumberfield.getText());
-				ad.setAddress(addresstextarea.getText());
-				ad.setPassword(String.valueOf(passwordfield.getPassword()));
-				ad.setWebsite(websitefield.getText());
-
-				if(file!=null) {
-					try {
-						ad.setProfilePic(ImageIO.read(file));
-					} catch (Exception exp) {
-						exp.printStackTrace();
-					}
-				} else {
-					ad.setProfilePic(a.getProfilePic());
-				}
-			
-				int result = new AdminData().updateAdminDetails(ad);
-				if (result > 0) {
-					am.adminprofilepanel.setVisible(false);
-					am.adminprofilepanel = new AdminProfilePanel(am);
-					am.adminprofilepanel.setLocation(am.panelx, am.panely);
-					am.adminprofilepanel.setVisible(true);
-					am.contentPane.add(am.adminprofilepanel);
-					am.setCollageDetails();
-
-					this.dispose();
-
-				}
-			}
+		if (!isCreateAccountEvent(e)) {
+			return;
 		}
 
+		JComponent errorField = findFirstEmptyField();
+		if (errorField != null) {
+			showerror(errorField);
+			return;
+		}
+
+		Admin ad = buildAdminFromForm();
+		int result = new AdminData().updateAdminDetails(ad);
+		if (result > 0) {
+			refreshAdminProfileView();
+			this.dispose();
+		}
+	}
+
+	private boolean isCreateAccountEvent(ActionEvent e) {
+		return e.getSource() == createaccountbutton;
+	}
+
+	private JComponent findFirstEmptyField() {
+		if (collagenamefield.getText().isEmpty()) {
+			return collagenamefield;
+		}
+		if (emailidfield.getText().isEmpty()) {
+			return emailidfield;
+		}
+		if (contactnumberfield.getText().isEmpty()) {
+			return contactnumberfield;
+		}
+		if (websitefield.getText().isEmpty()) {
+			return websitefield;
+		}
+		// NOTE: getPassword() returns char[], not String
+		if (passwordfield.getPassword().length == 0) {
+			return passwordfield;
+		}
+		if (addresstextarea.getText().isEmpty()) {
+			return scrollpaneforaddress;
+		}
+		return null;
+	}
+
+	private Admin buildAdminFromForm() {
+		Admin ad = new Admin();
+		ad.setCollageName(collagenamefield.getText());
+		ad.setEmailId(emailidfield.getText());
+		ad.setContactNumber(contactnumberfield.getText());
+		ad.setAddress(addresstextarea.getText());
+		ad.setPassword(String.valueOf(passwordfield.getPassword()));
+		ad.setWebsite(websitefield.getText());
+
+		if (file != null) {
+			try {
+				ad.setProfilePic(ImageIO.read(file));
+			} catch (Exception exp) {
+				exp.printStackTrace();
+			}
+		} else {
+			ad.setProfilePic(a.getProfilePic());
+		}
+		return ad;
+	}
+
+	private void refreshAdminProfileView() {
+		am.adminprofilepanel.setVisible(false);
+		am.adminprofilepanel = new AdminProfilePanel(am);
+		am.adminprofilepanel.setLocation(am.panelx, am.panely);
+		am.adminprofilepanel.setVisible(true);
+		am.contentPane.add(am.adminprofilepanel);
+		am.setCollageDetails();
 	}
 
 	public void showerror(JComponent tf) {

@@ -361,72 +361,118 @@ public class ChatInfoPanel extends JPanel {
 
 		
 	}
-	private void membersPanel(Group g)
-	{
-		// TODO Auto-generated method stub
-		total=0;
+	private void membersPanel(Group g) {
+		total = 0;
 		onlinestatus.setVisible(false);
 		memberspanel.removeAll();
 		memberspanel.setVisible(false);
-		String gn=g.getGroupName();
-		if(admin!=null)
-		{
-			JPanel adminpanel=createPanel(g.getImage(),"You","Admin",admin.getActiveStatus());
+
+		addCurrentUserPanel(g);
+		addPrincipalIfOfficial(g);
+		addGroupMembers(g);
+
+		memberspanel.setVisible(true);
+	}
+
+	private void addCurrentUserPanel(Group g) {
+		if (admin != null) {
+			JPanel adminpanel = createPanel(g.getImage(), "You", "Admin", admin.getActiveStatus());
 			memberspanel.add(adminpanel);
 			total++;
+			return;
 		}
-		else if(faculty!=null)
-		{
-			JPanel facultypanel=createPanel(faculty.getProfilePic(),"You","Faculty-"+faculty.getFacultyId(),true);
+		if (faculty != null) {
+			JPanel facultypanel = createPanel(
+					faculty.getProfilePic(),
+					"You",
+					"Faculty-" + faculty.getFacultyId(),
+					true);
 			memberspanel.add(facultypanel);
 			total++;
+			return;
 		}
-		else if(student!=null)
-		{
-			JPanel studentpanel=createPanel(student.getProfilePic(),"You","Student-"+student.getUserId(),true);
+		if (student != null) {
+			JPanel studentpanel = createPanel(
+					student.getProfilePic(),
+					"You",
+					"Student-" + student.getUserId(),
+					true);
 			memberspanel.add(studentpanel);
 			total++;
 		}
-		if(gn.contains("Official"))
-		{
-			if(admin==null)
-			{
-				JPanel adminpanel=createPanel(g.getImage(),"Principal","Admin",new AdminData().getAdminData().getActiveStatus());
-				memberspanel.add(adminpanel);
-				total++;
-			}
-			
-		}
-		
-	for(ContactInfo c:ContactListPanel.contactinfo)
-		{
-			
-		
-			if((gn.contains("Students")||gn.contains("Official"))&&c.getClassName().equals("Student"))
-			{
-				Student s=c.getStudent();
-				if(s.getCourceCode().equals(g.getCourceCode())&&s.getSemorYear()==g.getSemorYear())
-				{
-				JPanel panel=createPanel(s.getProfilePic(),s.getFullName(),"Student-"+s.getUserId(),s.getActiveStatus());
-				memberspanel.add(panel);
-				total++;
-				}
-			}
-			else if((gn.contains("Faculties")||gn.contains("Official"))&&c.getClassName().equals("Faculty"))
-			{
-				Faculty f=c.getFaculty();
-				if(f.getCourceCode().equals(g.getCourceCode())&&f.getSemorYear()==g.getSemorYear())
-				{
-				JPanel panel=createPanel(f.getProfilePic(),f.getFacultyName(),"Faculty-"+f.getFacultyId(),f.getActiveStatus());
-				memberspanel.add(panel);
-				total++;
-				}
-			}
-			
-		}
-//		memberspanel.revalidate();
-		memberspanel.setVisible(true);
 	}
+
+	private void addPrincipalIfOfficial(Group g) {
+		String gn = g.getGroupName();
+		if (gn.contains("Official") && admin == null) {
+			Admin principal = new AdminData().getAdminData();
+			JPanel adminpanel = createPanel(
+					g.getImage(),
+					"Principal",
+					"Admin",
+					principal.getActiveStatus());
+			memberspanel.add(adminpanel);
+			total++;
+		}
+	}
+
+	private void addGroupMembers(Group g) {
+		String gn = g.getGroupName();
+		for (ContactInfo c : ContactListPanel.contactinfo) {
+			if (isStudentContactInGroup(gn, c, g)) {
+				Student s = c.getStudent();
+				JPanel panel = createPanel(
+						s.getProfilePic(),
+						s.getFullName(),
+						"Student-" + s.getUserId(),
+						s.getActiveStatus());
+				memberspanel.add(panel);
+				total++;
+			} else if (isFacultyContactInGroup(gn, c, g)) {
+				Faculty f = c.getFaculty();
+				JPanel panel = createPanel(
+						f.getProfilePic(),
+						f.getFacultyName(),
+						"Faculty-" + f.getFacultyId(),
+						f.getActiveStatus());
+				memberspanel.add(panel);
+				total++;
+			}
+		}
+	}
+
+	private boolean isStudentContactInGroup(String gn, ContactInfo c, Group g) {
+		if (!(gn.contains("Students") || gn.contains("Official"))) {
+			return false;
+		}
+		if (!"Student".equals(c.getClassName())) {
+			return false;
+		}
+		Student s = c.getStudent();
+		return isStudentMemberOfGroup(s, g);
+	}
+
+	private boolean isFacultyContactInGroup(String gn, ContactInfo c, Group g) {
+		if (!(gn.contains("Faculties") || gn.contains("Official"))) {
+			return false;
+		}
+		if (!"Faculty".equals(c.getClassName())) {
+			return false;
+		}
+		Faculty f = c.getFaculty();
+		return isFacultyMemberOfGroup(f, g);
+	}
+
+	private boolean isStudentMemberOfGroup(Student s, Group g) {
+		return s.getCourceCode().equals(g.getCourceCode()) &&
+				s.getSemorYear() == g.getSemorYear();
+	}
+
+	private boolean isFacultyMemberOfGroup(Faculty f, Group g) {
+		return f.getCourceCode().equals(g.getCourceCode()) &&
+				f.getSemorYear() == g.getSemorYear();
+	}
+
 	public JPanel createPanel(Image image,String username,String lastlogin,boolean isactive)
 	{
 		JPanel usernamepanel=new JPanel();

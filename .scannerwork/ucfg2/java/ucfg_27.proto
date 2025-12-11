@@ -1,0 +1,55 @@
+
+bcollegeapplication.chat.RoundedCornerBorder#getBorderInsets(Ljava/awt/Component;)Ljava/awt/Insets;‹
+C:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/chat/SubChatPanel.javaÍ Í( "startingBlock*Š
+startingBlock
+Í  Í(-Œ
+‰
+
+Ì Ì(
+%2"
+__annotate*2
+
+__unknown_file (
+java.lang.Override*5
+
+__unknown_file (
+
+cjava.awt.ComponentY
+W
+
+Í+ Í(,
+cjava.awt.Component"__annotation*"
+
+__unknown_file (
+
+%2*
+1*â
+1
+Ï Ï(64
+
+Ï Ï(
+%0java.awt.Insets"java.awt.Insetsñ
+î
+
+Ï Ï("
+%1"java.awt.Insets#<init>(IIII)V*3
+
+__unknown_file (
+
+%0java.awt.Insets* 
+
+__unknown_file (2* 
+
+__unknown_file (2* 
+
+__unknown_file (2* 
+
+__unknown_file (2"%
+
+Ï Ï(#
+
+%0java.awt.Insets:%
+
+Í! Í(,
+cjava.awt.ComponentB/-
++collegeapplication.chat.RoundedCornerBorderH

@@ -244,103 +244,133 @@ public class AddSubjectDialog extends JDialog implements ActionListener
 	{
 		this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
-
 	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
+	public void actionPerformed(ActionEvent e) {
+		resetErrorLabel();
+
+		if (!validateFormInputs()) {
+			return;
+		}
+
+		if (e.getSource() == addsubject) {
+			handleAddSubject();
+		}
+	}
+
+	/* ====================== ERROR LABEL HELPERS ====================== */
+
+	private void resetErrorLabel() {
 		lblError.setVisible(false);
 		lblError.setText("This is required question..!=-");
-		 if(subjectnamefield.getText().isEmpty())
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(subjectnamefield.getX(), subjectnamefield.getY()+subjectnamefield.getHeight()-5, 331, 30);
+	}
+
+	private void showErrorAt(Component field, int bottomYOffset, String message) {
+		lblError.setVisible(true);
+		lblError.setText(message);
+		lblError.setBounds(
+				field.getX(),
+				field.getY() + field.getHeight() + bottomYOffset,
+				331,
+				30
+		);
+	}
+
+	/* ====================== VALIDATION ====================== */
+
+	private boolean validateFormInputs() {
+		if (subjectnamefield.getText().isEmpty()) {
+			showErrorAt(subjectnamefield, -5, "This is required question..!=-");
+			return false;
 		}
-		else if(courcetypecombo.getSelectedIndex()==0)
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(courcetypecombo.getX(), courcetypecombo.getY()+courcetypecombo.getHeight()-5, 331, 30);
+
+		if (courcetypecombo.getSelectedIndex() == 0) {
+			showErrorAt(courcetypecombo, -5, "This is required question..!=-");
+			return false;
 		}
-	
-		else if(theorymarksfield.getText().isEmpty()||subjectnamefield.getText().isEmpty())
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(theorymarksfield.getX(), theorymarksfield.getY()+theorymarksfield.getHeight()-5, 331, 30);
+
+		if (theorymarksfield.getText().isEmpty() || subjectnamefield.getText().isEmpty()) {
+			showErrorAt(theorymarksfield, -5, "This is required question..!=-");
+			return false;
 		}
-		else if(practicalmarksfield.getText().isEmpty())
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(practicalmarksfield.getX(), practicalmarksfield.getY()+practicalmarksfield.getHeight()-5, 331, 30);
+
+		if (practicalmarksfield.getText().isEmpty()) {
+			showErrorAt(practicalmarksfield, -5, "This is required question..!=-");
+			return false;
 		}
-		else if(new SubjectData().isExist(Courcecode,semoryear,subjectnamefield.getText()))
-		{
-			lblError.setVisible(true);
-			lblError.setBounds(subjectnamefield.getX(), subjectnamefield.getY()+subjectnamefield.getHeight()-5, 331, 30);
-			lblError.setText("Subject name already exist..!");
+
+		if (new SubjectData().isExist(Courcecode, semoryear, subjectnamefield.getText())) {
+			showErrorAt(subjectnamefield, -5, "Subject name already exist..!");
+			return false;
 		}
-		else
-		{
-			if(e.getSource()==addsubject)
-			{
-				String numbererror="";
-				try
-				{
-				String subjectcode=subjectcodefield.getText();
-				String subjectname=subjectnamefield.getText();
-			
-				String subjecttype=(String) courcetypecombo.getSelectedItem();
-				numbererror="theorymarks";
-				int theorymarks=Integer.parseInt(theorymarksfield.getText());
-				numbererror="practicalmarks";
-				int practicalmarks=Integer.parseInt(practicalmarksfield.getText());
-				Subject su=new Subject();
-				su.setSubjectName(subjectname);
-				su.setSubjectCode(subjectcode);
-				su.setMaxPracticalMarks(practicalmarks);
-				su.setCourceCode(Courcecode);
-				su.setSemorYear(semoryear);
-				su.setSubjectType(subjecttype);
-				su.setMaxTheoryMarks(theorymarks);
-				int result=new SubjectData().addSubject(su);
-				if(result==1)
-				{
-					ResultSet st=new SubjectData().getSubjectinfo(Courcecode,semoryear);
-					table.setModel(DbUtils.resultSetToTableModel(st));
-					DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-					 centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-					 table.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
-					 table.getColumnModel().getColumn(0).setMaxWidth(200);
-					
-						table.getColumnModel().getColumn(1).setMaxWidth(400);
-						table.getColumnModel().getColumn(2).setMaxWidth(200);
-						table.getColumnModel().getColumn(3).setMaxWidth(200);
-						table.getColumnModel().getColumn(4).setMaxWidth(200);
-						table.getColumnModel().getColumn(5).setMaxWidth(200);
-					this.dispose();
-				}
-				}
-				catch(NumberFormatException exp)
-				{
-					if(numbererror.equals("theorymarks"))
-					{
-						lblError.setBounds(theorymarksfield.getX(), theorymarksfield.getY()+theorymarksfield.getHeight(), 331, 30);
-					}
-					if(numbererror.equals("practicalmarks"))
-					{
-						lblError.setBounds(practicalmarksfield.getX(), practicalmarksfield.getY()+practicalmarksfield.getHeight(), 331, 30);
-					}
-					lblError.setVisible(true);
-					lblError.setText("Characters are not allowed !");
-				}
+
+		return true;
+	}
+
+	/* ====================== ADD SUBJECT LOGIC ====================== */
+
+	private void handleAddSubject() {
+		String numbererror = "";
+		try {
+			String subjectcode = subjectcodefield.getText();
+			String subjectname = subjectnamefield.getText();
+			String subjecttype = (String) courcetypecombo.getSelectedItem();
+
+			numbererror = "theorymarks";
+			int theorymarks = Integer.parseInt(theorymarksfield.getText());
+
+			numbererror = "practicalmarks";
+			int practicalmarks = Integer.parseInt(practicalmarksfield.getText());
+
+			Subject su = new Subject();
+			su.setSubjectName(subjectname);
+			su.setSubjectCode(subjectcode);
+			su.setMaxPracticalMarks(practicalmarks);
+			su.setCourceCode(Courcecode);
+			su.setSemorYear(semoryear);
+			su.setSubjectType(subjecttype);
+			su.setMaxTheoryMarks(theorymarks);
+
+			int result = new SubjectData().addSubject(su);
+			if (result == 1) {
+				refreshSubjectTable();
+				this.dispose();
 			}
+		} catch (NumberFormatException exp) {
+			handleNumberFormatError(numbererror);
 		}
-		
-	
-		
+	}
+
+	private void handleNumberFormatError(String numbererror) {
+		if ("theorymarks".equals(numbererror)) {
+			showErrorAt(theorymarksfield, 0, "Characters are not allowed !");
+		} else if ("practicalmarks".equals(numbererror)) {
+			showErrorAt(practicalmarksfield, 0, "Characters are not allowed !");
+		} else {
+			// fallback if something unexpected happens
+			lblError.setVisible(true);
+			lblError.setText("Characters are not allowed !");
+		}
+	}
+
+	/* ====================== TABLE REFRESH ====================== */
+
+	private void refreshSubjectTable() {
+		ResultSet st = new SubjectData().getSubjectinfo(Courcecode, semoryear);
+		table.setModel(DbUtils.resultSetToTableModel(st));
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+		for (int col = 0; col <= 5; col++) {
+			table.getColumnModel().getColumn(col).setCellRenderer(centerRenderer);
+		}
+
+		table.getColumnModel().getColumn(0).setMaxWidth(200);
+		table.getColumnModel().getColumn(1).setMaxWidth(400);
+		table.getColumnModel().getColumn(2).setMaxWidth(200);
+		table.getColumnModel().getColumn(3).setMaxWidth(200);
+		table.getColumnModel().getColumn(4).setMaxWidth(200);
+		table.getColumnModel().getColumn(5).setMaxWidth(200);
 	}
 
 

@@ -521,94 +521,160 @@ public class MarkSheetReportPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Errorlabel.setVisible(false);
-		if(e.getSource()==courcenamecombo)
-		{
-			courcenamecombo.setFocusable(false);
-			
-			subjectorrollcombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-			if(courcenamecombo.getSelectedIndex()==0)
-			{
-				semoryearcombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-				
-			}
-			else
-			{
-			 String cource=(String) courcenamecombo.getSelectedItem();
-			
-			 semoryearcombo.setModel(new DefaultComboBoxModel<String>(new CourceData().getSemorYear(cource)));
-			}
-		 
+
+		Object source = e.getSource();
+
+		if (source == courcenamecombo) {
+			handleCourseNameChange();
+		} else if (source == semoryearcombo) {
+			handleSemOrYearChange();
+		} else if (source == fetchdetailsbutton) {
+			handleFetchDetails();
 		}
-		if(e.getSource()==semoryearcombo && semoryearcombo.getSelectedIndex()>0)
-		{
-			 String cource=(String) courcenamecombo.getSelectedItem();
-			
-			 if(subjectwicebutton.getName().equals("Active"))
-			 {
-				String[] totalsub=new SubjectData().getSubjectinCource(new CourceData().getCourcecode(cource), semoryearcombo.getSelectedIndex());
-				if(totalsub!=null)
-				{
-					subjectorrollcombo.setModel(new DefaultComboBoxModel<String>(totalsub));
-				}
-				else
-				{
-				
-						subjectorrollcombo.setModel(new DefaultComboBoxModel<String>(new String[] {"No Subject Found"}));
-				}
-			 }
-			 else if(studentwicebutton.getName().equals("Active"))
-			 {
-					 subjectorrollcombo.setModel(new DefaultComboBoxModel<String>(new StudentData().getRollNumber(new CourceData().getCourcecode(cource), semoryearcombo.getSelectedIndex())));
-			 }
+	}
+
+	/* ====================== COURSE NAME CHANGE ====================== */
+
+	private void handleCourseNameChange() {
+		courcenamecombo.setFocusable(false);
+
+		subjectorrollcombo.setModel(new DefaultComboBoxModel<>(new String[]{""}));
+
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			semoryearcombo.setModel(new DefaultComboBoxModel<>(new String[]{""}));
+			return;
 		}
-		else if(e.getSource()==semoryearcombo)
-		{
-			subjectorrollcombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));	
+
+		String cource = (String) courcenamecombo.getSelectedItem();
+		semoryearcombo.setModel(
+				new DefaultComboBoxModel<>(new CourceData().getSemorYear(cource))
+		);
+	}
+
+	/* ====================== SEM / YEAR CHANGE ====================== */
+
+	private void handleSemOrYearChange() {
+		if (semoryearcombo.getSelectedIndex() > 0) {
+			updateSubjectOrRollCombo();
+		} else {
+			// reset when sem/year returns to default
+			subjectorrollcombo.setModel(new DefaultComboBoxModel<>(new String[]{""}));
 		}
-		if(e.getSource()==fetchdetailsbutton)
-		{
-			
-			if(declareresultbutton.getName().equals("Active"))
-			{
-				
-				if(courcenamecombo.getSelectedIndex()==0)
-				{
-					showerror(courcenamecombo);
-				}
-				else
-				{
-					createTableForDeclareResult(courcenamecombo.getSelectedItem()+"");
-				}
-			}
-			else
-			{
-				if(courcenamecombo.getSelectedIndex()==0)
-				{
-					showerror(courcenamecombo);
-				}
-				else if(semoryearcombo.getSelectedIndex()==0)
-				{
-					showerror(semoryearcombo);
-				}
-				else if(subjectorrollcombo.isVisible() && subjectorrollcombo.getSelectedItem().equals("No Subject Found"))
-				{
-					Component tf=subjectorrollcombo;
-					Errorlabel.setVisible(true);
-					Errorlabel.setText("No Subject Found !");
-					Errorlabel.setBounds(tf.getX(), tf.getY()+tf.getHeight()-5, 400,26);
-				}
-				else if(subjectorrollcombo.isVisible() && subjectorrollcombo.getSelectedIndex()==0)
-				{
-					showerror(subjectorrollcombo);
-				}
-			
-				else
-				{
-					this.createtablemodel();
-					
-				}
-			}
+	}
+
+	private void updateSubjectOrRollCombo() {
+		String cource = (String) courcenamecombo.getSelectedItem();
+		String courceCode = new CourceData().getCourcecode(cource);
+		int sem = semoryearcombo.getSelectedIndex();
+
+		if (isSubjectModeActive()) {
+			populateSubjectCombo(courceCode, sem);
+		} else if (isStudentModeActive()) {
+			populateRollCombo(courceCode, sem);
 		}
+	}
+
+	private boolean isSubjectModeActive() {
+		return "Active".equals(subjectwicebutton.getName());
+	}
+
+	private boolean isStudentModeActive() {
+		return "Active".equals(studentwicebutton.getName());
+	}
+
+	private void populateSubjectCombo(String courceCode, int sem) {
+		String[] totalsub = new SubjectData().getSubjectinCource(courceCode, sem);
+		if (totalsub != null) {
+			subjectorrollcombo.setModel(new DefaultComboBoxModel<>(totalsub));
+		} else {
+			subjectorrollcombo.setModel(
+					new DefaultComboBoxModel<>(new String[]{"No Subject Found"})
+			);
+		}
+	}
+
+	private void populateRollCombo(String courceCode, int sem) {
+		subjectorrollcombo.setModel(
+				new DefaultComboBoxModel<>(
+						new StudentData().getRollNumber(courceCode, sem)
+				)
+		);
+	}
+
+	/* ====================== FETCH DETAILS ====================== */
+
+	private void handleFetchDetails() {
+		if (isDeclareResultModeActive()) {
+			handleDeclareResultFetch();
+		} else {
+			handleStandardFetch();
+		}
+	}
+
+	private boolean isDeclareResultModeActive() {
+		return "Active".equals(declareresultbutton.getName());
+	}
+
+	private void handleDeclareResultFetch() {
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			showerror(courcenamecombo);
+			return;
+		}
+		createTableForDeclareResult(courcenamecombo.getSelectedItem() + "");
+	}
+
+	private void handleStandardFetch() {
+		if (!validateStandardFetchInputs()) {
+			return;
+		}
+		this.createtablemodel();
+	}
+
+	private boolean validateStandardFetchInputs() {
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			showerror(courcenamecombo);
+			return false;
+		}
+
+		if (semoryearcombo.getSelectedIndex() == 0) {
+			showerror(semoryearcombo);
+			return false;
+		}
+
+		if (isNoSubjectFoundSelected()) {
+			showNoSubjectFoundError();
+			return false;
+		}
+
+		if (isSubjectOrRollNotSelected()) {
+			showerror(subjectorrollcombo);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isNoSubjectFoundSelected() {
+		Object selected = subjectorrollcombo.getSelectedItem();
+		return subjectorrollcombo.isVisible()
+				&& "No Subject Found".equals(selected);
+	}
+
+	private boolean isSubjectOrRollNotSelected() {
+		return subjectorrollcombo.isVisible()
+				&& subjectorrollcombo.getSelectedIndex() == 0;
+	}
+
+	private void showNoSubjectFoundError() {
+		Component tf = subjectorrollcombo;
+		Errorlabel.setVisible(true);
+		Errorlabel.setText("No Subject Found !");
+		Errorlabel.setBounds(
+				tf.getX(),
+				tf.getY() + tf.getHeight() - 5,
+				400,
+				26
+		);
 	}
 	public void showerror(JComponent tf)
 	{

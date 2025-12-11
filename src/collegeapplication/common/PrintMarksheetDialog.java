@@ -122,211 +122,255 @@ public class PrintMarksheetDialog extends JDialog {
 		btnPdf.addActionListener(p);
 	}
 	private PrintMarksheetDialog(Student s) {
-		super(dialog,null,Dialog.ModalityType.APPLICATION_MODAL);
+		super(dialog, null, Dialog.ModalityType.APPLICATION_MODAL);
 
+		initDialogProperties();
+		initContentPanel();
+		initImageLabel();
+		initFilePathLabel();
+		initFileNameLabel(s);
+		initExportButtons(s);
+		initMetaLabels();
+		initDownloadStatusLabel();
+		initHeaderPanel();
+	}
+
+	/* -------------------- Dialog / Layout Initialization -------------------- */
+
+	private void initDialogProperties() {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setBackground(new Color(220, 220, 220));
 		setResizable(false);
 		setTitle("Print Marksheet");
 		setBounds(100, 100, 516, 294);
 		getContentPane().setLayout(null);
+	}
+
+	private void initContentPanel() {
 		contentPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBounds(0, 55, 510, 210);
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
-		
+	}
+
+	/* -------------------- Left Image & File Info -------------------- */
+
+	private void initImageLabel() {
 		imagelabel = new JLabel("image");
 		imagelabel.setBounds(10, 11, 124, 126);
-		
 		imagelabel.setOpaque(true);
 		imagelabel.setBackground(new Color(255, 255, 255));
 		imagelabel.setHorizontalAlignment(SwingConstants.CENTER);
 		imagelabel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		
 		contentPanel.add(imagelabel);
+	}
+
+	private void initFilePathLabel() {
 		String home = System.getProperty("user.home");
-		filepathlabel = new JLabel(home+"\\Downloads\\");
+		filepathlabel = new JLabel(home + "\\Downloads\\");
 		filepathlabel.setForeground(new Color(0, 0, 0));
 		filepathlabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		filepathlabel.setBounds(144, 37, 346, 26);
 		contentPanel.add(filepathlabel);
-		
+	}
+
+	private void initFileNameLabel(Student s) {
 		JLabel filenamelabel = new JLabel();
-		filename=s.getCourceCode()+"-"+s.getSemorYear()+"-"+s.getRollNumber()+"-"+s.getFullName()+"-"+"mark-sheet";
+		filename = s.getCourceCode() + "-" + s.getSemorYear() + "-" + s.getRollNumber() + "-"
+				+ s.getFullName() + "-" + "mark-sheet";
 		filenamelabel.setText(filename);
 		filenamelabel.setForeground(Color.BLACK);
 		filenamelabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		filenamelabel.setBounds(144, 80, 346, 33);
 		contentPanel.add(filenamelabel);
-		
+	}
+
+	/* -------------------- Export Buttons (PNG / JPG / PDF / Print) -------------------- */
+
+	private void initExportButtons(Student s) {
+		JButton btnPng = createPngButton();
+		contentPanel.add(btnPng);
+
+		JButton btnJpg = createJpgButton();
+		contentPanel.add(btnJpg);
+
+		btnPdf = createPdfButton();
+		contentPanel.add(btnPdf);
+
+		JButton btnPrint = createPrintButton(s);
+		contentPanel.add(btnPrint);
+	}
+
+	private JButton createPngButton() {
 		JButton btnPng = new JButton("PNG");
 		btnPng.setIcon(new ImageIcon(".\\assets\\pngbutton.png"));
 		btnPng.setFocusable(false);
 		beforebutton(btnPng);
-		btnPng.addActionListener(new ActionListener()
-		{
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				try {
-					ImageIO.write(image, "png", new File(filepathlabel.getText()+"\\"+filename+".png"));
-					afterbutton(btnPng);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-		}
-		);
 		btnPng.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnPng.setBounds(10, 163, 116, 33);
-		contentPanel.add(btnPng);
-		
+
+		btnPng.addActionListener(e -> handlePngExport(btnPng));
+		return btnPng;
+	}
+
+	private void handlePngExport(JButton btnPng) {
+		try {
+			ImageIO.write(image, "png",
+					new File(filepathlabel.getText() + "\\" + filename + ".png"));
+			afterbutton(btnPng);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private JButton createJpgButton() {
 		JButton btnJpg = new JButton("JPG");
 		btnJpg.setIcon(new ImageIcon(".\\assets\\jpgbutton.png"));
 		btnJpg.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnJpg.setFocusable(false);
 		beforebutton(btnJpg);
-		btnJpg.addActionListener(new ActionListener()
-				{
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						try 
-						{
-						    BufferedImage good_image=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_RGB);
-					        Graphics2D B2G=good_image.createGraphics();
-					        B2G.drawImage(image,0,0,null);
-					        B2G.dispose();
-							ImageIO.write(good_image, "jpeg", new File(filepathlabel.getText()+"\\"+filename+".jpeg"));
-							afterbutton(btnJpg);
-						} 
-						catch (IOException e) 
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-					}
-					
-				}
-				);
-		
 		btnJpg.setBounds(136, 163, 115, 33);
-		contentPanel.add(btnJpg);
-		
-		btnPdf = new JButton("PDF");
-		btnPdf.setIcon(new ImageIcon(".\\assets\\pdfbutton.png"));
-		btnPdf.setFont(new Font("Segoe UI", Font.BOLD, 13));
-		btnPdf.setFocusable(false);
-		beforebutton(btnPdf);
-		btnPdf.setBounds(261, 163, 115, 33);
-		contentPanel.add(btnPdf);
-		
+
+		btnJpg.addActionListener(e -> handleJpgExport(btnJpg));
+		return btnJpg;
+	}
+
+	private void handleJpgExport(JButton btnJpg) {
+		try {
+			BufferedImage goodImage = new BufferedImage(
+					image.getWidth(),
+					image.getHeight(),
+					BufferedImage.TYPE_INT_RGB
+			);
+			Graphics2D g2d = goodImage.createGraphics();
+			g2d.drawImage(image, 0, 0, null);
+			g2d.dispose();
+
+			ImageIO.write(
+					goodImage,
+					"jpeg",
+					new File(filepathlabel.getText() + "\\" + filename + ".jpeg")
+			);
+			afterbutton(btnJpg);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private JButton createPdfButton() {
+		JButton pdfButton = new JButton("PDF");
+		pdfButton.setIcon(new ImageIcon(".\\assets\\pdfbutton.png"));
+		pdfButton.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		pdfButton.setFocusable(false);
+		beforebutton(pdfButton);
+		pdfButton.setBounds(261, 163, 115, 33);
+		// Listener presumably added elsewhere in your class.
+		return pdfButton;
+	}
+
+	private JButton createPrintButton(Student s) {
 		JButton btnPrint = new JButton("Print");
 		btnPrint.setIcon(new ImageIcon(".\\assets\\printbutton.png"));
 		btnPrint.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnPrint.setFocusable(false);
-		btnPrint.addActionListener(new ActionListener()
-				{
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						
-						// TODO Auto-generated method stub
-						PrinterJob job=PrinterJob.getPrinterJob();
-						 job.setJobName(s.getUserId()+" Marksheet");
-						job.setPrintable(new Printable()
-								{
-
-									@Override
-									public int print(Graphics pg, PageFormat pf, int pagenum) throws PrinterException
-									{
-										// TODO Auto-generated method stub
-										pf.setOrientation(PageFormat.LANDSCAPE);
-										if(pagenum>0)
-										{
-											return Printable.NO_SUCH_PAGE;
-										}
-										Graphics2D g=(Graphics2D) pg;
-										g.translate(pf.getImageableX(), pf.getImageableY());
-										g.scale(0.543,0.60);
-									
-										if(am!=null)
-										{
-										am.marksheetpanel.print(g);
-										}
-										else if(fm!=null)
-										{
-											fm.marksheetpanel.print(g);
-										}
-										else if(sm!=null)
-										{
-											sm.marksheetpanel.print(g);
-										}
-										return Printable.PAGE_EXISTS;
-									}
-							
-								});
-				
-						if (job.printDialog() == false)
-							  return;
-
-							  try {
-								  if(am!=null)
-									{
-									am.marksheetpanel.disablebutton();
-									}
-									else if(fm!=null)
-									{
-										fm.marksheetpanel.disablebutton();
-									}
-									else if(sm!=null)
-									{
-										sm.marksheetpanel.downloadbutton.setVisible(false);
-									}
-							        job.print();
-							        afterbutton(btnPrint);
-							        if(am!=null)
-									{
-									am.marksheetpanel.enablebutton();
-									}
-									else if(fm!=null)
-									{
-										fm.marksheetpanel.enablebutton();
-									}
-									else if(sm!=null)
-									{
-										sm.marksheetpanel.downloadbutton.setVisible(true);
-									}
-							  } catch (PrinterException ex) {
-							        // handle exception
-							  }
-						
-					}
-			
-				});
 		beforebutton(btnPrint);
 		btnPrint.setBounds(386, 163, 114, 33);
-		contentPanel.add(btnPrint);
-		
+
+		btnPrint.addActionListener(e -> handlePrintAction(s, btnPrint));
+		return btnPrint;
+	}
+
+	private void handlePrintAction(Student s, JButton btnPrint) {
+		PrinterJob job = PrinterJob.getPrinterJob();
+		job.setJobName(s.getUserId() + " Marksheet");
+		job.setPrintable(createPrintable());
+
+		if (!job.printDialog()) {
+			return;
+		}
+
+		try {
+			disableMarksheetButtons();
+			job.print();
+			afterbutton(btnPrint);
+			enableMarksheetButtons();
+		} catch (PrinterException ex) {
+			// handle exception if needed
+			ex.printStackTrace();
+		}
+	}
+
+	private Printable createPrintable() {
+		return new Printable() {
+			@Override
+			public int print(Graphics pg, PageFormat pf, int pagenum) throws PrinterException {
+				pf.setOrientation(PageFormat.LANDSCAPE);
+				if (pagenum > 0) {
+					return Printable.NO_SUCH_PAGE;
+				}
+
+				Graphics2D g = (Graphics2D) pg;
+				g.translate(pf.getImageableX(), pf.getImageableY());
+				g.scale(0.543, 0.60);
+
+				JComponent marksheetPanel = getMarksheetPanel();
+				if (marksheetPanel != null) {
+					marksheetPanel.print(g);
+				}
+				return Printable.PAGE_EXISTS;
+			}
+		};
+	}
+
+	private JComponent getMarksheetPanel() {
+		if (am != null) {
+			return am.marksheetpanel;
+		} else if (fm != null) {
+			return fm.marksheetpanel;
+		} else if (sm != null) {
+			return sm.marksheetpanel;
+		}
+		return null;
+	}
+
+	private void disableMarksheetButtons() {
+		if (am != null) {
+			am.marksheetpanel.disablebutton();
+		} else if (fm != null) {
+			fm.marksheetpanel.disablebutton();
+		} else if (sm != null) {
+			sm.marksheetpanel.downloadbutton.setVisible(false);
+		}
+	}
+
+	private void enableMarksheetButtons() {
+		if (am != null) {
+			am.marksheetpanel.enablebutton();
+		} else if (fm != null) {
+			fm.marksheetpanel.enablebutton();
+		} else if (sm != null) {
+			sm.marksheetpanel.downloadbutton.setVisible(true);
+		}
+	}
+
+	/* -------------------- Labels & Header -------------------- */
+
+	private void initMetaLabels() {
 		JLabel lblFilePath = new JLabel("File Path :");
 		lblFilePath.setForeground(Color.BLACK);
 		lblFilePath.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblFilePath.setBounds(144, 11, 346, 26);
 		contentPanel.add(lblFilePath);
-		
+
 		JLabel lblFileName = new JLabel("File Name :");
 		lblFileName.setForeground(Color.BLACK);
 		lblFileName.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblFileName.setBounds(144, 60, 346, 26);
 		contentPanel.add(lblFileName);
-		
+	}
+
+	private void initDownloadStatusLabel() {
 		filedownloadedlabel = new JLabel();
 		filedownloadedlabel.setIcon(new ImageIcon(".\\assets\\downloadedbutton.png"));
 		filedownloadedlabel.setText("Png Flie Downloaded Succesfully");
@@ -335,13 +379,15 @@ public class PrintMarksheetDialog extends JDialog {
 		filedownloadedlabel.setVisible(false);
 		filedownloadedlabel.setBounds(144, 111, 366, 33);
 		contentPanel.add(filedownloadedlabel);
-		
+	}
+
+	private void initHeaderPanel() {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(32, 178, 170));
 		panel.setBounds(0, 2, 510, 47);
 		getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblPrintMarksheet = new JLabel("Print Marksheet");
 		lblPrintMarksheet.setBounds(76, 11, 358, 25);
 		panel.add(lblPrintMarksheet);

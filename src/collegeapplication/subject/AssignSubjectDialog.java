@@ -227,102 +227,132 @@ public class AssignSubjectDialog extends JDialog implements ActionListener {
 			subjectnamecombo.setSelectedItem(f.getSubject());
 			positioncombo.setSelectedItem(f.getPosition());
 	}
-	
-
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
 		Errorlabel.setVisible(false);
-		if(e.getSource()==courcenamecombo)
-		{
-			courcenamecombo.setFocusable(false);
-			
-			subjectnamecombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-			if(courcenamecombo.getSelectedIndex()==0)
-			{
-				semoryearcombo.setModel(new DefaultComboBoxModel<String>(new String[] {""}));
-				
-			}
-			else
-			{
-			 String cource=(String) courcenamecombo.getSelectedItem();
 
-			 semoryearcombo.setModel(new DefaultComboBoxModel<String>(new CourceData().getSemorYear(cource)));
-			}
-		 
-		}
-		if(e.getSource()==semoryearcombo && semoryearcombo.getSelectedIndex()>0)
-		{
-			 String cource=(String) courcenamecombo.getSelectedItem();
-			
-			String[] totalsub=new SubjectData().getSubjectinCource(new CourceData().getCourcecode(cource), semoryearcombo.getSelectedIndex());
-			if(totalsub!=null)
-			{
-				subjectnamecombo.setModel(new DefaultComboBoxModel<String>(totalsub));
-			}
-			else
-			{
-				subjectnamecombo.setModel(new DefaultComboBoxModel<String>(new String[] {"No Subject"}));
-				
-			}
-		}
-		if(e.getSource()==assignsubjectbutton)
-		{
-			if(courcenamecombo.getSelectedIndex()==0)
-			{
-				showerror(courcenamecombo);
-			}
-			else if(semoryearcombo.getSelectedIndex()==0)
-			{
-				showerror(semoryearcombo);
-			}
-			else if(subjectnamecombo.getSelectedIndex()==0)
-			{
-				showerror(subjectnamecombo);
-			}
-			else if(positioncombo.getSelectedIndex()==0)
-			{
-				showerror(positioncombo);
-			}
-			else
-			{
-				Faculty fnew=new Faculty();
-			
-				fnew.setCourceCode(new CourceData().getCourcecode(courcenamecombo.getSelectedItem()+""));
-				fnew.setPosition(positioncombo.getSelectedItem()+"");
-				fnew.setSemorYear(semoryearcombo.getSelectedIndex());
-				fnew.setSubject(subjectnamecombo.getSelectedItem()+"");
-				fnew.setFacultyId(f.getFacultyId());
-				fnew.setFacultyName(f.getFacultyName());
-				int result=new FacultyData().assignSubject(f,fnew);
-				if(result>0)
-				{
-					if(am!=null)
-					{
-						if(am.assignsubjectpanel!=null&&am.assignsubjectpanel.isVisible())
-						{
-							am.assignsubjectpanel.createtablemodel();
-						}
-						
-						else if(am.viewfacultypanel!=null&&am.viewfacultypanel.isVisible())
-						{
-							System.out.println("updateing ");
-							am.viewfacultypanel.setVisible(false);
-							am.viewfacultypanel=new ViewFacultyPanel(new FacultyData().getFacultyInfobyId(f.getFacultyId()),am,am.viewfacultypanel.lastpanel);
-							am.viewfacultypanel.setVisible(true);
-							am.viewfacultypanel.setLocation(am.panelx, am.panely);
-							am.getContentPane().add(am.viewfacultypanel);
-						}
-					}
-					
-					this.dispose();
-				}
-			}
-		}
+		Object source = e.getSource();
 
-		
+		if (source == courcenamecombo) {
+			handleCourseNameChange();
+		} else if (source == semoryearcombo) {
+			handleSemOrYearChange();
+		} else if (source == assignsubjectbutton) {
+			handleAssignSubject();
+		}
 	}
+
+	/* ====================== COURSE NAME CHANGE ====================== */
+
+	private void handleCourseNameChange() {
+		courcenamecombo.setFocusable(false);
+
+		// reset subject combo
+		subjectnamecombo.setModel(new DefaultComboBoxModel<>(new String[] { "" }));
+
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			semoryearcombo.setModel(new DefaultComboBoxModel<>(new String[] { "" }));
+			return;
+		}
+
+		String cource = (String) courcenamecombo.getSelectedItem();
+		semoryearcombo.setModel(
+				new DefaultComboBoxModel<>(new CourceData().getSemorYear(cource))
+		);
+	}
+
+	/* ====================== SEM / YEAR CHANGE ====================== */
+
+	private void handleSemOrYearChange() {
+		if (semoryearcombo.getSelectedIndex() <= 0) {
+			// original code did nothing in this case
+			return;
+		}
+
+		String cource = (String) courcenamecombo.getSelectedItem();
+		String courceCode = new CourceData().getCourcecode(cource);
+		int sem = semoryearcombo.getSelectedIndex();
+
+		String[] totalsub = new SubjectData().getSubjectinCource(courceCode, sem);
+		if (totalsub != null) {
+			subjectnamecombo.setModel(new DefaultComboBoxModel<>(totalsub));
+		} else {
+			subjectnamecombo.setModel(
+					new DefaultComboBoxModel<>(new String[] { "No Subject" })
+			);
+		}
+	}
+
+	/* ====================== ASSIGN SUBJECT ====================== */
+
+	private void handleAssignSubject() {
+		if (!validateAssignInputs()) {
+			return;
+		}
+
+		Faculty fnew = buildNewFacultyAssignment();
+		int result = new FacultyData().assignSubject(f, fnew);
+
+		if (result > 0) {
+			updateAdminPanelsAfterAssign();
+			this.dispose();
+		}
+	}
+
+	private boolean validateAssignInputs() {
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			showerror(courcenamecombo);
+			return false;
+		}
+		if (semoryearcombo.getSelectedIndex() == 0) {
+			showerror(semoryearcombo);
+			return false;
+		}
+		if (subjectnamecombo.getSelectedIndex() == 0) {
+			showerror(subjectnamecombo);
+			return false;
+		}
+		if (positioncombo.getSelectedIndex() == 0) {
+			showerror(positioncombo);
+			return false;
+		}
+		return true;
+	}
+
+	private Faculty buildNewFacultyAssignment() {
+		Faculty fnew = new Faculty();
+		fnew.setCourceCode(new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + ""));
+		fnew.setPosition(positioncombo.getSelectedItem() + "");
+		fnew.setSemorYear(semoryearcombo.getSelectedIndex());
+		fnew.setSubject(subjectnamecombo.getSelectedItem() + "");
+		fnew.setFacultyId(f.getFacultyId());
+		fnew.setFacultyName(f.getFacultyName());
+		return fnew;
+	}
+
+	private void updateAdminPanelsAfterAssign() {
+		if (am == null) {
+			return;
+		}
+
+		if (am.assignsubjectpanel != null && am.assignsubjectpanel.isVisible()) {
+			am.assignsubjectpanel.createtablemodel();
+			return;
+		}
+
+		if (am.viewfacultypanel != null && am.viewfacultypanel.isVisible()) {
+			am.viewfacultypanel.setVisible(false);
+			am.viewfacultypanel = new ViewFacultyPanel(
+					new FacultyData().getFacultyInfobyId(f.getFacultyId()),
+					am,
+					am.viewfacultypanel.lastpanel
+			);
+			am.viewfacultypanel.setVisible(true);
+			am.viewfacultypanel.setLocation(am.panelx, am.panely);
+			am.getContentPane().add(am.viewfacultypanel);
+		}
+	}
+
 	public void showerror(JComponent tf)
 	{
 		Errorlabel.setVisible(true);

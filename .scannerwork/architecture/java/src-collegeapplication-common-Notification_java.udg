@@ -1,0 +1,678 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480916879*java2.Bﬂ
+4
+/src/collegeapplication/common/Notification.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.common7
++
+&collegeapplication.common.Notification9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(9:1)-(102:2)14
+
+simple-name15
+
+Notification16
+&
+ collegeapplication.cource.Cource18
+
+unknown19
+
+extends20
+
+
+uses21
+1
++collegeapplication.common.Notification.time23
+
+field24
+
+private25
+
+(12:2)-(12:22)26
+
+
+time27
+2
+,collegeapplication.common.Notification.title29
+
+(13:2)-(13:23)30
+
+title31
+4
+.collegeapplication.common.Notification.message33
+
+(14:2)-(14:25)34
+
+message35
+3
+-collegeapplication.common.Notification.readby37
+
+(15:2)-(15:24)38
+
+readby39
+2
+,collegeapplication.common.Notification.sr_no41
+
+(16:2)-(16:20)42
+
+sr_no43
+3
+-collegeapplication.common.Notification.userid45
+
+(17:2)-(17:24)46
+
+userid47
+8
+2collegeapplication.common.Notification.userprofile49
+
+(18:2)-(18:29)50
+
+userprofile51
+P
+Jcollegeapplication.common.Notification#setUserProfile(Ljava/lang/String;)V53
+
+method54
+
+(21:2)-(24:3)55
+
+setUserProfile56
+
+
+references57
+8
+2collegeapplication.common.Notification#setSrNo(I)V59
+
+(25:2)-(28:3)60
+
+setSrNo61
+K
+Ecollegeapplication.common.Notification#setUserId(Ljava/lang/String;)V63
+
+(29:2)-(32:3)64
+
+	setUserId65
+I
+Ccollegeapplication.common.Notification#setTime(Ljava/lang/String;)V67
+
+(33:2)-(36:3)68
+
+setTime69
+J
+Dcollegeapplication.common.Notification#setTitle(Ljava/lang/String;)V71
+
+(37:2)-(40:3)72
+
+setTitle73
+L
+Fcollegeapplication.common.Notification#setMessage(Ljava/lang/String;)V75
+
+(41:2)-(44:3)76
+
+
+setMessage77
+K
+Ecollegeapplication.common.Notification#setReadBy(Ljava/lang/String;)V79
+
+(45:2)-(48:3)80
+
+	setReadBy81
+7
+1collegeapplication.common.Notification#getSrNo()I83
+
+(49:2)-(52:3)84
+
+getSrNo85
+J
+Dcollegeapplication.common.Notification#getUserId()Ljava/lang/String;87
+
+(53:2)-(56:3)88
+
+	getUserId89
+I
+Ccollegeapplication.common.Notification#getTitle()Ljava/lang/String;91
+
+(57:2)-(60:3)92
+
+getTitle93
+K
+Ecollegeapplication.common.Notification#getMessage()Ljava/lang/String;95
+
+(61:2)-(64:3)96
+
+
+getMessage97
+J
+Dcollegeapplication.common.Notification#getReadBy()Ljava/lang/String;99
+
+(65:2)-(68:3)100
+
+	getReadBy101
+U
+Ncollegeapplication.common.Notification#getNotificationDate()Ljava/lang/String;103
+
+(69:2)-(81:3)104
+
+getNotificationDate105
+I
+Bcollegeapplication.common.Notification#getTime()Ljava/lang/String;107
+
+(82:2)-(85:3)108
+
+getTime109
+U
+Ncollegeapplication.common.Notification#getNotificationTime()Ljava/lang/String;111
+
+(86:2)-(97:3)112
+
+getNotificationTime113
+P
+Icollegeapplication.common.Notification#getUserProfile()Ljava/lang/String;115
+
+(98:2)-(101:3)116
+
+getUserProfile117J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576jå
+M
+44G
+444524 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+46
+
+
+15
+47
+
+17
+171819
+M
+58G
+585954 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+60
+
+
+15
+61
+M
+90G
+909154 *
+19 9(28:5B$
+
+
+11
+12
+
+
+13
+92
+
+
+15
+93
+O
+98I
+989954 *
+1A A(28:5B&
+
+
+11
+12
+
+13
+100
+
+15
+101
+G
+8B
+8910 *
+1	 	(:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+M
+36G
+363724 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+38
+
+
+15
+39
+R
+106K
+10610754 *
+1R R(28:5B&
+
+
+11
+12
+
+13
+108
+
+15
+109
+R
+110K
+11011154 *
+1V V(#28:5B&
+
+
+11
+12
+
+13
+112
+
+15
+113
+M
+48G
+484924 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+50
+
+
+15
+51
+R
+114K
+11411554 *
+1b b(28:5B&
+
+
+11
+12
+
+13
+116
+
+15
+117
+M
+74G
+747554 *
+1) )(28:5B$
+
+
+11
+12
+
+
+13
+76
+
+
+15
+77
+R
+102K
+10210354 *
+1E E(#28:5B&
+
+
+11
+12
+
+13
+104
+
+15
+105
+M
+86G
+868754 *
+15 5(28:5B$
+
+
+11
+12
+
+
+13
+88
+
+
+15
+89
+M
+62G
+626354 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+64
+
+
+15
+65
+M
+22G
+222324 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+26
+
+
+15
+27
+M
+70G
+707154 *
+1% %(28:5B$
+
+
+11
+12
+
+
+13
+72
+
+
+15
+73
+M
+32G
+323324 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+34
+
+
+15
+35
+M
+94G
+949554 *
+1= =(28:5B$
+
+
+11
+12
+
+
+13
+96
+
+
+15
+97
+M
+78G
+787954 *
+1- -(28:5B$
+
+
+11
+12
+
+
+13
+80
+
+
+15
+81
+M
+52G
+525354 *
+1 (28:5B$
+
+
+11
+12
+
+
+13
+55
+
+
+15
+56
+M
+82G
+828354 *
+11 1(28:5B$
+
+
+11
+12
+
+
+13
+84
+
+
+15
+85
+M
+40G
+404124 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+42
+
+
+15
+43
+M
+28G
+282924 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+30
+
+
+15
+31
+M
+66G
+666754 *
+1! !(28:5B$
+
+
+11
+12
+
+
+13
+68
+
+
+15
+69r‘
+
+81720*
+1	# 	()
+
+81721*
+1	# 	()
+
+52821*
+1 (
+
+52857*
+1 (
+
+524857*
+1 (
+
+58821*
+1 (
+
+58857*
+1 (
+
+584057*
+1 (
+
+62821*
+1 (
+
+62857*
+1 (
+
+624457*
+1 (
+
+66821*
+1# #(
+
+66857*
+1# #(
+
+662257*
+1# #(
+
+70821*
+1' '(
+
+70857*
+1' '(
+
+702857*
+1' '(
+
+74821*
+1+ +(
+
+74857*
+1+ +(
+
+743257*
+1+ +(
+
+78821*
+1/ /(
+
+78857*
+1/ /(
+
+783657*
+1/ /(
+
+824057*
+13
+ 3(
+
+864457*
+17
+ 7(
+
+902857*
+1;
+ ;(
+
+943257*
+1?
+ ?(
+
+983657*
+1C
+ C(
+
+1022257*
+1K K(
+
+1062257*
+1T
+ T(
+
+1102257*
+1\ \(
+
+1144857*
+1d
+ d(

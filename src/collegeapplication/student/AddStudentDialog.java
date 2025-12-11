@@ -403,310 +403,381 @@ public class AddStudentDialog extends JDialog implements ActionListener {
 		this();
 		this.sp = studentpanel;
 	}
-
 	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
+	public void actionPerformed(ActionEvent e) {
+		resetErrorLabel();
+
+		Object source = e.getSource();
+
+		if (source == choosefilebutton) {
+			handleChooseFile();
+			return;
+		}
+
+		if (source == courcenamecombo) {
+			handleCourseNameChange();
+			return;
+		}
+
+		if (source == semoryearcombo) {
+			handleSemOrYearChange();
+			return;
+		}
+
+		if (source == addstudentbutton) {
+			handleAddStudent();
+		}
+	}
+
+	/* ====================== COMMON ERROR LABEL ====================== */
+
+	private void resetErrorLabel() {
 		Errorlabel.setVisible(false);
 		Errorlabel.setText("This is required question  !");
-		if (e.getSource() == choosefilebutton)
-		{
+	}
 
-			FileDialog fd = new FileDialog(this, "Choose a Profile pic", FileDialog.LOAD);
-			fd.setDirectory(".\\Students Profile pic");
-			fd.setFile("*.jpeg;*.jpg;*.png;*.tiff;*.tif;*.gif;");
-			fd.setLocationRelativeTo(null);
-			fd.setVisible(true);
-			String strfilename = fd.getFile();
-			imagepath = fd.getDirectory() + strfilename;
-		
+	/* ====================== FILE CHOOSE HANDLING ====================== */
 
-			if(fd.getFile()!=null) 
-			{
-				file = new File(imagepath);
-				long bytes = file.length();
-				if (bytes < 1048576) {
+	private void handleChooseFile() {
+		FileDialog fd = new FileDialog(this, "Choose a Profile pic", FileDialog.LOAD);
+		fd.setDirectory(".\\Students Profile pic");
+		fd.setFile("*.jpeg;*.jpg;*.png;*.tiff;*.tif;*.gif;");
+		fd.setLocationRelativeTo(null);
+		fd.setVisible(true);
 
-					try 
-					{
-						filesize.setText(bytes / 1024 + " KB");
-						filesizenote.setForeground(new Color(46, 139, 27));
-						filesizenote.setText("Image size < 1024 KB");
-						Image image = ImageIO.read(file).getScaledInstance(100, 120, Image.SCALE_SMOOTH);
-						profilepiclabel.setIcon(new ImageIcon(image));
-						filename.setText(file.getName());	
-
-					} 
-					catch (IOException ex) {
-						file = null;
-						// TODO Auto-generated catch block
-						filename.setText("No file Choosen");
-						filesize.setText("");
-						filesizenote.setForeground(Color.red);
-						filesizenote.setText("Image Not supported");
-						ex.printStackTrace();
-					}
-				} 
-				else {
-					file = null;
-					filename.setText("No File Choosen");
-					filesize.setText("");
-					filesizenote.setForeground(Color.red);
-					filesizenote.setText("Image size is greater than 1 MB");
-				}
-
-			}
+		String strfilename = fd.getFile();
+		if (strfilename == null) {
+			return;
 		}
 
-		if (e.getSource() == courcenamecombo)
-		{
-			courcenamecombo.setFocusable(false);
+		imagepath = fd.getDirectory() + strfilename;
+		file = new File(imagepath);
+		processSelectedImageFile();
+	}
+
+	private void processSelectedImageFile() {
+		long bytes = file.length();
+		if (bytes < 1048576) {
+			loadAndShowImage(bytes);
+		} else {
+			resetFileSelectionWithSizeError();
+		}
+	}
+
+	private void loadAndShowImage(long bytes) {
+		try {
+			filesize.setText(bytes / 1024 + " KB");
+			filesizenote.setForeground(new Color(46, 139, 27));
+			filesizenote.setText("Image size < 1024 KB");
+
+			Image image = ImageIO.read(file).getScaledInstance(100, 120, Image.SCALE_SMOOTH);
+			profilepiclabel.setIcon(new ImageIcon(image));
+			filename.setText(file.getName());
+		} catch (IOException ex) {
+			resetFileSelectionWithUnsupportedError(ex);
+		}
+	}
+
+	private void resetFileSelectionWithSizeError() {
+		file = null;
+		filename.setText("No File Choosen");
+		filesize.setText("");
+		filesizenote.setForeground(Color.red);
+		filesizenote.setText("Image size is greater than 1 MB");
+	}
+
+	private void resetFileSelectionWithUnsupportedError(Exception ex) {
+		file = null;
+		filename.setText("No file Choosen");
+		filesize.setText("");
+		filesizenote.setForeground(Color.red);
+		filesizenote.setText("Image Not supported");
+		ex.printStackTrace();
+	}
+
+	/* ====================== COURSE / SEM / OPTIONAL ====================== */
+
+	private void handleCourseNameChange() {
+		courcenamecombo.setFocusable(false);
+		rollnumberfield.setText("");
+		rollnumberfield.setEditable(true);
+		optionalsubjectcombo.setModel(new DefaultComboBoxModel<>(new String[] { "" }));
+		rollnumberfield.setText("");
+
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			semoryearcombo.setModel(new DefaultComboBoxModel<>(new String[] { "" }));
+		} else {
+			String cource = (String) courcenamecombo.getSelectedItem();
+			semoryearcombo.setModel(
+					new DefaultComboBoxModel<>(new CourceData().getSemorYear(cource))
+			);
+		}
+	}
+
+	private void handleSemOrYearChange() {
+		if (semoryearcombo.getSelectedIndex() <= 0) {
+			return;
+		}
+
+		String courcecode = new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + "");
+		int sem = semoryearcombo.getSelectedIndex();
+
+		long rollnumber = determineRollNumber(courcecode, sem);
+		updateRollNumberField(rollnumber);
+
+		String[] totalopsub = new SubjectData().getOptionalSubject(courcecode, sem);
+		updateOptionalSubjectCombo(totalopsub);
+	}
+
+	private long determineRollNumber(String courcecode, int sem) {
+		if (student != null
+				&& courcecode.equals(student.getCourceCode())
+				&& sem == student.getSemorYear()) {
+			return student.getRollNumber();
+		}
+		return new RollNumberData().getRollNumber(courcecode, sem);
+	}
+
+	private void updateRollNumberField(long rollnumber) {
+		if (rollnumber == 0) {
 			rollnumberfield.setText("");
 			rollnumberfield.setEditable(true);
-			optionalsubjectcombo.setModel(new DefaultComboBoxModel<String>(new String[] { "" }));
-			rollnumberfield.setText("");
-			if (courcenamecombo.getSelectedIndex() == 0) 
-			{
-				semoryearcombo.setModel(new DefaultComboBoxModel<String>(new String[] { "" }));
-
-			}
-			else 
-			{
-				String cource = (String) courcenamecombo.getSelectedItem();
-				semoryearcombo.setModel(new DefaultComboBoxModel<String>(new CourceData().getSemorYear(cource)));
-			}
-
+		} else {
+			rollnumberfield.setText(rollnumber + "");
+			rollnumberfield.setEditable(false);
 		}
-		if (e.getSource() == semoryearcombo && semoryearcombo.getSelectedIndex() > 0) 
-		{
-			String courcecode = new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + "");
-			int sem = semoryearcombo.getSelectedIndex();
-			long rollnumber = 0;
-			if (student != null && courcecode.equals(student.getCourceCode()) && sem == student.getSemorYear()) 
-			{
-				rollnumber = student.getRollNumber();
+	}
 
-			} 
-			else 
-			{
-				rollnumber = new RollNumberData().getRollNumber(courcecode, sem);
-			}
-			if (rollnumber == 0) 
-			{
-				rollnumberfield.setText("");
-				rollnumberfield.setEditable(true);
+	private void updateOptionalSubjectCombo(String[] totalopsub) {
+		if (totalopsub != null) {
+			optionalsubjectcombo.setModel(new DefaultComboBoxModel<>(totalopsub));
+		} else {
+			optionalsubjectcombo.setModel(
+					new DefaultComboBoxModel<>(new String[] { "No Optional Subject" })
+			);
+		}
+	}
 
-			} 
-			else
-			{
-				rollnumberfield.setText(rollnumber + "");
-				rollnumberfield.setEditable(false);
+	/* ====================== ADD / UPDATE STUDENT ====================== */
 
-			}
-			String[] totalopsub = new SubjectData().getOptionalSubject(courcecode, sem);
-			if (totalopsub != null) 
-			{
-				optionalsubjectcombo.setModel(new DefaultComboBoxModel<String>(totalopsub));
-			} 
-			else 
-			{
-				optionalsubjectcombo.setModel(new DefaultComboBoxModel<String>(new String[] { "No Optional Subject" }));
-
-			}
+	private void handleAddStudent() {
+		if (!validateRequiredFields()) {
+			return;
 		}
 
-		if (e.getSource() == addstudentbutton)
-		{
+		try {
+			Student s = buildStudentFromForm();
+			int result = saveStudent(s);
 
-			if (courcenamecombo.getSelectedIndex() == 0) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(courcenamecombo.getX(), courcenamecombo.getY() + courcenamecombo.getHeight(), 400,
-						26);
-			} 
-			else if (semoryearcombo.getSelectedIndex() == 0)
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(semoryearcombo.getX(), semoryearcombo.getY() + semoryearcombo.getHeight(), 400,
-						26);
+			if (result > 0) {
+				updateUIAfterStudentSave(s);
+				this.dispose();
 			}
-			else if (rollnumberfield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(rollnumberfield.getX(), rollnumberfield.getY() + rollnumberfield.getHeight(), 400,
-						26);
-			}
+		} catch (NumberFormatException exp) {
+			showSpecificErrorAt(rollnumberfield, "Characters are not allowed!");
+		} catch (RollNumberAvailableException exp) {
+			showSpecificErrorAt(rollnumberfield, "RollNumber already Exist...!");
+			exp.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
 
-			else if (optionalsubjectcombo.getSelectedIndex() == 0
-					&& !optionalsubjectcombo.getSelectedItem().toString().equals("No Optional Subject")) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(optionalsubjectcombo.getX(),
-						optionalsubjectcombo.getY() + optionalsubjectcombo.getHeight(), 400, 26);
-			} 
-			else if (firstnamefield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(firstnamefield.getX(), firstnamefield.getY() + firstnamefield.getHeight(), 400,
-						26);
-			} 
-			else if (lastnamefield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(lastnamefield.getX(), lastnamefield.getY() + lastnamefield.getHeight(), 400, 26);
-			} 
-			else if (emailidfield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(emailidfield.getX(), emailidfield.getY() + emailidfield.getHeight(), 400, 26);
-			} 
-			else if (contactnumberfield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(contactnumberfield.getX(),contactnumberfield.getY() + contactnumberfield.getHeight(), 400, 26);
-			} 
-			else if (gendercombo.getSelectedIndex() == 0)
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(gendercombo.getX(), gendercombo.getY() + gendercombo.getHeight(), 400, 26);
-			}
-			else if (statefield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(statefield.getX(), statefield.getY() + statefield.getHeight(), 400, 26);
-			} 
-			else if (cityfield.getText().isEmpty()) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(cityfield.getX(), cityfield.getY() + cityfield.getHeight(), 400, 26);
-			} 
-			else if (fathernamefield.getText().isEmpty())
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(fathernamefield.getX(), fathernamefield.getY() + fathernamefield.getHeight(), 400,26);
-			}
-			else if (fatheroccupationfield.getText().isEmpty()) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(fatheroccupationfield.getX(),fatheroccupationfield.getY() + fatheroccupationfield.getHeight(), 400, 26);
-			} 
-			else if (mothernamefield.getText().isEmpty()) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(mothernamefield.getX() + 120, mothernamefield.getY() + mothernamefield.getHeight(),400, 26);
-			} 
-			else if (motheroccupationfield.getText().isEmpty()|| motheroccupationfield.getText().equals(" Mother Occupation")) 
-			{
-				Errorlabel.setVisible(true);
-				Errorlabel.setBounds(motheroccupationfield.getX(),motheroccupationfield.getY() + motheroccupationfield.getHeight(), 400, 26);
-			}
-			else {
-				try 
-				{
-					Student s = new Student();
-
-					s.setCourceCode(new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + ""));
-					s.setSemorYear(semoryearcombo.getSelectedIndex());
-					s.setRollNumber(Long.parseLong(rollnumberfield.getText()));
-					int rollnumberexist = new RollNumberData().isExist(s.getCourceCode(), s.getSemorYear(), s.getRollNumber());
-					if (rollnumberexist > 0)
-					{
-						if (!(student != null && student.getRollNumber()==s.getRollNumber())) 
-						{
-							throw new RollNumberAvailableException();
-						}
-
-					}
-					s.setOptionalSubject(optionalsubjectcombo.getSelectedItem().toString());
-					s.setFirstName(firstnamefield.getText());
-					s.setLastName(lastnamefield.getText());
-					s.setEmailId(emailidfield.getText());
-					s.setContactNumber(contactnumberfield.getText());
-
-					s.setGender(gendercombo.getSelectedItem() + "");
-					Date date = (Date) birthdatespinner.getValue();
-					s.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").format(date));
-					s.setState(statefield.getText());
-					s.setCity(cityfield.getText());
-					s.setFatherName(fathernamefield.getText());
-					s.setMotherName(mothernamefield.getText());
-					s.setFatherOccupation(fatheroccupationfield.getText());
-					s.setMotherOccupation(motheroccupationfield.getText());
-					s.generateAdmissionDate();
-					s.generateUserId();
-					if(student!=null)
-					{
-						s.setPassword(student.getPassword());
-						s.setAdmissionDate(student.getAdmissionDate());
-						s.setLastLogin(student.getLastLogin());
-					}
-					if (file!=null) {
-						s.setProfilePic(ImageIO.read(file));
-					} 
-					else if(student!=null){
-						s.setProfilePic(student.getProfilePic());
-					} else {
-						 file = new File("./assets/profilepicicon.jpg");
-							s.setProfilePic(ImageIO.read(file));
-					}
-					int result = 0;
-					if (sp != null) 
-					{
-						result = new StudentData().addStudent(s);
-					} 
-					else if (am != null && student != null) 
-					{
-						result = new StudentData().updateStudentData(student, s);
-					}
-					if (result > 0) {
-
-						
-						if (sp != null) 
-						{
-							if (sp.photoviewscrollpane != null && sp.photoviewscrollpane.isVisible()) 
-							{
-								sp.createtablemodel();
-								sp.createphotopanel();
-							}
-							else 
-							{
-								sp.createtablemodel();
-							}
-
-						} 
-						else if (am != null && student != null) {
-
-							am.viewstudentpanel.setVisible(false);
-							am.viewstudentpanel = new ViewStudentPanel(s, am, am.viewstudentpanel.lastpanel);
-							am.viewstudentpanel.setVisible(true);
-							am.viewstudentpanel.setLocation(am.panelx, am.panely);
-							am.getContentPane().add(am.viewstudentpanel);
-
-						}
-						this.dispose();
-					}
-
-				} catch (NumberFormatException exp) {
-					Errorlabel.setVisible(true);
-					Errorlabel.setText("Characters are not allowed!");
-					Errorlabel.setBounds(rollnumberfield.getX(), rollnumberfield.getY() + rollnumberfield.getHeight(),
-							400, 26);
-				} catch (RollNumberAvailableException exp) {
-					Errorlabel.setVisible(true);
-					Errorlabel.setText("RollNumber already Exist...!");
-					Errorlabel.setBounds(rollnumberfield.getX(), rollnumberfield.getY() + rollnumberfield.getHeight(),
-							400, 26);
-					exp.printStackTrace();
-
-				} catch (Exception e1) {
-
-					// TODO Auto-generated catch block
-
-					e1.printStackTrace();
-				}
-			}
+	private boolean validateRequiredFields() {
+		if (courcenamecombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(courcenamecombo);
+			return false;
+		}
+		if (semoryearcombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(semoryearcombo);
+			return false;
+		}
+		if (rollnumberfield.getText().isEmpty()) {
+			showRequiredErrorAt(rollnumberfield);
+			return false;
 		}
 
+		Object optionalItem = optionalsubjectcombo.getSelectedItem();
+		if (optionalsubjectcombo.getSelectedIndex() == 0
+				&& optionalItem != null
+				&& !optionalItem.toString().equals("No Optional Subject")) {
+			showRequiredErrorAt(optionalsubjectcombo);
+			return false;
+		}
+
+		if (firstnamefield.getText().isEmpty()) {
+			showRequiredErrorAt(firstnamefield);
+			return false;
+		}
+		if (lastnamefield.getText().isEmpty()) {
+			showRequiredErrorAt(lastnamefield);
+			return false;
+		}
+		if (emailidfield.getText().isEmpty()) {
+			showRequiredErrorAt(emailidfield);
+			return false;
+		}
+		if (contactnumberfield.getText().isEmpty()) {
+			showRequiredErrorAt(contactnumberfield);
+			return false;
+		}
+		if (gendercombo.getSelectedIndex() == 0) {
+			showRequiredErrorAt(gendercombo);
+			return false;
+		}
+		if (statefield.getText().isEmpty()) {
+			showRequiredErrorAt(statefield);
+			return false;
+		}
+		if (cityfield.getText().isEmpty()) {
+			showRequiredErrorAt(cityfield);
+			return false;
+		}
+		if (fathernamefield.getText().isEmpty()) {
+			showRequiredErrorAt(fathernamefield);
+			return false;
+		}
+		if (fatheroccupationfield.getText().isEmpty()) {
+			showRequiredErrorAt(fatheroccupationfield);
+			return false;
+		}
+		if (mothernamefield.getText().isEmpty()) {
+			showRequiredErrorAtWithOffset(mothernamefield, 120);
+			return false;
+		}
+		if (motheroccupationfield.getText().isEmpty()
+				|| motheroccupationfield.getText().equals(" Mother Occupation")) {
+			showRequiredErrorAt(motheroccupationfield);
+			return false;
+		}
+
+		return true;
+	}
+
+	private Student buildStudentFromForm() throws Exception {
+		Student s = new Student();
+
+		s.setCourceCode(new CourceData().getCourcecode(courcenamecombo.getSelectedItem() + ""));
+		s.setSemorYear(semoryearcombo.getSelectedIndex());
+		s.setRollNumber(Long.parseLong(rollnumberfield.getText()));
+
+		ensureRollNumberAvailable(s);
+
+		s.setOptionalSubject(optionalsubjectcombo.getSelectedItem().toString());
+		s.setFirstName(firstnamefield.getText());
+		s.setLastName(lastnamefield.getText());
+		s.setEmailId(emailidfield.getText());
+		s.setContactNumber(contactnumberfield.getText());
+		s.setGender(gendercombo.getSelectedItem() + "");
+
+		Date date = (Date) birthdatespinner.getValue();
+		s.setBirthDate(new SimpleDateFormat("dd-MM-yyyy").format(date));
+		s.setState(statefield.getText());
+		s.setCity(cityfield.getText());
+		s.setFatherName(fathernamefield.getText());
+		s.setMotherName(mothernamefield.getText());
+		s.setFatherOccupation(fatheroccupationfield.getText());
+		s.setMotherOccupation(motheroccupationfield.getText());
+		s.generateAdmissionDate();
+		s.generateUserId();
+
+		if (student != null) {
+			s.setPassword(student.getPassword());
+			s.setAdmissionDate(student.getAdmissionDate());
+			s.setLastLogin(student.getLastLogin());
+		}
+
+		s.setProfilePic(resolveStudentProfilePic());
+		return s;
+	}
+
+	private void ensureRollNumberAvailable(Student s) throws RollNumberAvailableException {
+		int rollnumberexist = new RollNumberData().isExist(
+				s.getCourceCode(),
+				s.getSemorYear(),
+				s.getRollNumber()
+		);
+		if (rollnumberexist > 0) {
+			boolean sameExisting =
+					(student != null && student.getRollNumber() == s.getRollNumber());
+			if (!sameExisting) {
+				throw new RollNumberAvailableException();
+			}
+		}
+	}
+
+	private Image resolveStudentProfilePic() throws IOException {
+		if (file != null) {
+			return ImageIO.read(file);
+		}
+		if (student != null) {
+			return student.getProfilePic();
+		}
+		File defaultFile = new File("./assets/profilepicicon.jpg");
+		return ImageIO.read(defaultFile);
+	}
+
+	private int saveStudent(Student s) {
+		if (sp != null) {
+			return new StudentData().addStudent(s);
+		}
+		if (am != null && student != null) {
+			return new StudentData().updateStudentData(student, s);
+		}
+		return 0;
+	}
+
+	private void updateUIAfterStudentSave(Student s) {
+		if (sp != null) {
+			updateStudentPanelTableView();
+		} else if (am != null && student != null) {
+			updateAdminViewStudentPanel(s);
+		}
+	}
+
+	private void updateStudentPanelTableView() {
+		if (sp.photoviewscrollpane != null && sp.photoviewscrollpane.isVisible()) {
+			sp.createtablemodel();
+			sp.createphotopanel();
+		} else {
+			sp.createtablemodel();
+		}
+	}
+
+	private void updateAdminViewStudentPanel(Student s) {
+		am.viewstudentpanel.setVisible(false);
+		am.viewstudentpanel = new ViewStudentPanel(s, am, am.viewstudentpanel.lastpanel);
+		am.viewstudentpanel.setVisible(true);
+		am.viewstudentpanel.setLocation(am.panelx, am.panely);
+		am.getContentPane().add(am.viewstudentpanel);
+	}
+
+	/* ====================== ERROR LABEL HELPERS ====================== */
+
+	private void showRequiredErrorAt(JComponent component) {
+		showSpecificErrorAt(component, "This is required question  !");
+	}
+
+	private void showRequiredErrorAtWithOffset(JComponent component, int offsetX) {
+		Errorlabel.setVisible(true);
+		Errorlabel.setText("This is required question  !");
+		Errorlabel.setBounds(
+				component.getX() + offsetX,
+				component.getY() + component.getHeight(),
+				400,
+				26
+		);
+	}
+
+	private void showSpecificErrorAt(JComponent component, String message) {
+		Errorlabel.setVisible(true);
+		Errorlabel.setText(message);
+		Errorlabel.setBounds(
+				component.getX(),
+				component.getY() + component.getHeight(),
+				400,
+				26
+		);
 	}
 
 }

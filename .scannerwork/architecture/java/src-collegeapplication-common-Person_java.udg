@@ -1,0 +1,1219 @@
+
+1.06dan90009_College-Management-System-In-Java-LongMethod-JavaFrontend"1765480918122*java2.Bï)
+.
+)src/collegeapplication/common/Person.java2
+	
+type3
+	
+MAIN4
+
+package6
+
+collegeapplication.common7
+%
+ collegeapplication.common.Person9
+
+class10
+
+access11
+
+public12
+
+
+full-range13
+
+(17:1)-(174:2)14
+
+simple-name15
+
+Person16
+&
+ collegeapplication.cource.Cource18
+
+unknown19
+
+extends20
+
+
+uses21
+.
+(collegeapplication.common.Person.emailid23
+
+field24
+
+private25
+
+(19:2)-(19:25)26
+
+emailid27
+4
+.collegeapplication.common.Person.contactnumber29
+
+(20:2)-(20:31)30
+
+contactnumber31
+0
+*collegeapplication.common.Person.birthdate33
+
+(21:2)-(21:27)34
+
+	birthdate35
+-
+'collegeapplication.common.Person.gender37
+
+(22:2)-(22:24)38
+
+gender39
+,
+&collegeapplication.common.Person.state41
+
+(23:2)-(23:23)42
+
+state43
++
+%collegeapplication.common.Person.city45
+
+(24:2)-(24:22)46
+
+
+city47
+,
+&collegeapplication.common.Person.image49
+
+(25:2)-(25:22)50
+
+image51
+,
+&collegeapplication.common.Person.sr_no53
+
+(26:2)-(26:20)54
+
+sr_no55
+0
+*collegeapplication.common.Person.lastlogin57
+
+(27:2)-(27:27)58
+
+	lastlogin59
+/
+)collegeapplication.common.Person.password61
+
+(28:2)-(28:26)62
+
+password63
+/
+)collegeapplication.common.Person.isactive65
+
+(29:2)-(29:27)66
+
+isactive67
+F
+@collegeapplication.common.Person#setEmailId(Ljava/lang/String;)V69
+
+method70
+
+(33:2)-(36:3)71
+
+
+setEmailId72
+
+
+references73
+L
+Fcollegeapplication.common.Person#setContactNumber(Ljava/lang/String;)V75
+
+(37:2)-(40:3)76
+
+setContactNumber77
+H
+Bcollegeapplication.common.Person#setBirthDate(Ljava/lang/String;)V79
+
+(41:2)-(44:3)80
+
+setBirthDate81
+E
+?collegeapplication.common.Person#setGender(Ljava/lang/String;)V83
+
+(45:2)-(48:3)84
+
+	setGender85
+D
+>collegeapplication.common.Person#setState(Ljava/lang/String;)V87
+
+(49:2)-(52:3)88
+
+setState89
+C
+=collegeapplication.common.Person#setCity(Ljava/lang/String;)V91
+
+(53:2)-(56:3)92
+
+setCity93
+G
+Acollegeapplication.common.Person#setProfilePic(Ljava/awt/Image;)V95
+
+(58:2)-(61:3)96
+
+setProfilePic97
+9
+3collegeapplication.common.Person#setProfilePic([B)V99
+
+(62:2)-(65:3)100
+3
+,collegeapplication.common.Person#setSrNo(I)V102
+
+(66:2)-(69:3)103
+
+setSrNo104
+I
+Bcollegeapplication.common.Person#setLastLogin(Ljava/lang/String;)V106
+
+(70:2)-(73:3)107
+
+setLastLogin108
+H
+Acollegeapplication.common.Person#setPassword(Ljava/lang/String;)V110
+
+(75:2)-(78:3)111
+
+setPassword112
+;
+4collegeapplication.common.Person#setActiveStatus(Z)V114
+
+(79:2)-(82:3)115
+
+setActiveStatus116
+I
+Bcollegeapplication.common.Person#getCourceName()Ljava/lang/String;118
+
+(84:2)-(87:3)119
+
+getCourceName120
++
+$collegeapplication.cource.CourceData122
+_
+Xcollegeapplication.cource.CourceData#getcourcename(Ljava/lang/String;)Ljava/lang/String;124
+
+calls125
+I
+Bcollegeapplication.cource.Cource#getCourceCode()Ljava/lang/String;127
+F
+?collegeapplication.common.Person#getEmailId()Ljava/lang/String;129
+
+(89:2)-(92:3)130
+
+
+getEmailId131
+L
+Ecollegeapplication.common.Person#getContactNumber()Ljava/lang/String;133
+
+(93:2)-(96:3)134
+
+getContactNumber135
+H
+Acollegeapplication.common.Person#getBirthDate()Ljava/lang/String;137
+
+(97:2)-(100:3)138
+
+getBirthDate139
+R
+Kcollegeapplication.common.Person#getBirthDateInDateFormat()Ljava/util/Date;141
+
+(101:2)-(111:3)142
+
+getBirthDateInDateFormat143
+E
+>collegeapplication.common.Person#getGender()Ljava/lang/String;145
+
+(113:2)-(116:3)146
+
+	getGender147
+F
+?collegeapplication.common.Person#getAddress()Ljava/lang/String;149
+
+(117:2)-(120:3)150
+
+
+getAddress151
+G
+@collegeapplication.common.Person#getPassword()Ljava/lang/String;153
+
+(121:2)-(124:3)154
+
+getPassword155
+D
+=collegeapplication.common.Person#getState()Ljava/lang/String;157
+
+(125:2)-(128:3)158
+
+getState159
+C
+<collegeapplication.common.Person#getCity()Ljava/lang/String;161
+
+(129:2)-(132:3)162
+
+getCity163
+G
+@collegeapplication.common.Person#getProfilePic()Ljava/awt/Image;165
+
+(134:2)-(137:3)166
+
+getProfilePic167
+@
+9collegeapplication.common.Person#getProfilePicInBytes()[B169
+
+(138:2)-(149:3)170
+
+getProfilePicInBytes171
+*
+#collegeapplication.common.ImageUtil173
+j
+ccollegeapplication.common.ImageUtil#toBufferedImage(Ljava/awt/Image;)Ljava/awt/image/BufferedImage;175
+L
+Ecollegeapplication.common.Person#comparePassword(Ljava/lang/String;)Z177
+
+(150:2)-(153:3)178
+
+comparePassword179
+I
+Bcollegeapplication.common.Person#getProfilePic(II)Ljava/awt/Image;181
+
+(154:2)-(157:3)182
+_
+Xcollegeapplication.common.Person#getRoundedProfilePic(III)Ljava/awt/image/BufferedImage;184
+
+(158:2)-(161:3)185
+
+getRoundedProfilePic186
+{
+tcollegeapplication.common.ImageUtil#makeRoundedCorner(Ljava/awt/image/BufferedImage;I)Ljava/awt/image/BufferedImage;188
+H
+Acollegeapplication.common.Person#getLastLogin()Ljava/lang/String;190
+
+(162:2)-(165:3)191
+
+getLastLogin192
+2
++collegeapplication.common.Person#getSrNo()I194
+
+(166:2)-(169:3)195
+
+getSrNo196
+:
+3collegeapplication.common.Person#getActiveStatus()Z198
+
+(170:2)-(173:3)199
+
+getActiveStatus200J
+
+1
+12
+
+
+3
+4Z
+
+5	
+576jè
+T
+193M
+19319470 *
+1¶ ¶(28:5B&
+
+
+11
+12
+
+13
+195
+
+15
+196
+R
+136K
+13613770 *
+1a a(28:5B&
+
+
+11
+12
+
+13
+138
+
+15
+139
+
+172
+17217319
+G
+8B
+8910 *
+1 (:5B$
+
+
+11
+12
+
+
+13
+14
+
+
+15
+16
+R
+152K
+15215370 *
+1y y(28:5B&
+
+
+11
+12
+
+13
+154
+
+15
+155
+M
+28G
+282924 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+30
+
+
+15
+31
+R
+132K
+13213370 *
+1] ]( 28:5B&
+
+
+11
+12
+
+13
+134
+
+15
+135
+T
+197M
+19719870 *
+1™ ™( 28:5B&
+
+
+11
+12
+
+13
+199
+
+15
+200
+
+121
+12112219
+
+174
+17417519
+M
+56G
+565724 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+58
+
+
+15
+59
+M
+90G
+909170 *
+15 5(28:5B$
+
+
+11
+12
+
+
+13
+92
+
+
+15
+93
+R
+128K
+12812970 *
+1Y Y(28:5B&
+
+
+11
+12
+
+13
+130
+
+15
+131
+R
+144K
+14414570 *
+1q q(28:5B&
+
+
+11
+12
+
+13
+146
+
+15
+147
+
+123
+12312419
+M
+74G
+747570 *
+1% %(28:5B$
+
+
+11
+12
+
+
+13
+76
+
+
+15
+77
+R
+156K
+15615770 *
+1} }(28:5B&
+
+
+11
+12
+
+13
+158
+
+15
+159
+N
+98H
+989970 *
+1> >(28:5B%
+
+
+11
+12
+
+13
+100
+
+
+15
+97
+T
+164M
+16416570 *
+1Ü Ü(28:5B&
+
+
+11
+12
+
+13
+166
+
+15
+167
+M
+52G
+525324 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+54
+
+
+15
+55
+M
+64G
+646524 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+66
+
+
+15
+67
+R
+101K
+10110270 *
+1B B(28:5B&
+
+
+11
+12
+
+13
+103
+
+15
+104
+M
+60G
+606124 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+62
+
+
+15
+63
+R
+105K
+10510670 *
+1F F(28:5B&
+
+
+11
+12
+
+13
+107
+
+15
+108
+M
+40G
+404124 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+42
+
+
+15
+43
+M
+82G
+828370 *
+1- -(28:5B$
+
+
+11
+12
+
+
+13
+84
+
+
+15
+85
+R
+148K
+14814970 *
+1u u(28:5B&
+
+
+11
+12
+
+13
+150
+
+15
+151
+
+187
+18718819
+
+17
+171819
+M
+78G
+787970 *
+1) )(28:5B$
+
+
+11
+12
+
+
+13
+80
+
+
+15
+81
+T
+189M
+18919070 *
+1¢ ¢(28:5B&
+
+
+11
+12
+
+13
+191
+
+15
+192
+T
+160M
+16016170 *
+1Å Å(28:5B&
+
+
+11
+12
+
+13
+162
+
+15
+163
+T
+183M
+18318470 *
+1û û(+28:5B&
+
+
+11
+12
+
+13
+185
+
+15
+186
+R
+117K
+11711870 *
+1T T(28:5B&
+
+
+11
+12
+
+13
+119
+
+15
+120
+T
+168M
+16816970 *
+1ä ä($28:5B&
+
+
+11
+12
+
+13
+170
+
+15
+171
+M
+36G
+363724 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+38
+
+
+15
+39
+M
+86G
+868770 *
+11 1(28:5B$
+
+
+11
+12
+
+
+13
+88
+
+
+15
+89
+M
+22G
+222324 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+26
+
+
+15
+27
+R
+140K
+14014170 *
+1e e(&28:5B&
+
+
+11
+12
+
+13
+142
+
+15
+143
+T
+176M
+17617770 *
+1ñ ñ( 28:5B&
+
+
+11
+12
+
+13
+178
+
+15
+179
+T
+180M
+18018170 *
+1ö ö(28:5B&
+
+
+11
+12
+
+13
+182
+
+15
+167
+M
+44G
+444524 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+46
+
+
+15
+47
+R
+109K
+10911070 *
+1K K(28:5B&
+
+
+11
+12
+
+13
+111
+
+15
+112
+M
+94G
+949570 *
+1: :(28:5B$
+
+
+11
+12
+
+
+13
+96
+
+
+15
+97
+M
+32G
+323324 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+34
+
+
+15
+35
+R
+113K
+11311470 *
+1O O(28:5B&
+
+
+11
+12
+
+13
+115
+
+15
+116
+
+126
+12612719
+M
+68G
+686970 *
+1! !(28:5B$
+
+
+11
+12
+
+
+13
+71
+
+
+15
+72
+M
+48G
+484924 *
+1 (28:5B$
+
+
+11
+25
+
+
+13
+50
+
+
+15
+51r®
+
+81720*
+1& (,
+
+81721*
+1& (,
+
+68821*
+1# #(
+
+68873*
+1# #(
+
+682273*
+1# #(
+
+74821*
+1' '(
+
+74873*
+1' '(
+
+742873*
+1' '(
+
+78821*
+1+ +(
+
+78873*
+1+ +(
+
+783273*
+1+ +(
+
+82821*
+1/ /(
+
+82873*
+1/ /(
+
+823673*
+1/ /(
+
+86821*
+13 3(
+
+86873*
+13 3(
+
+864073*
+13 3(
+
+90821*
+17 7(
+
+90873*
+17 7(
+
+904473*
+17 7(
+
+94821*
+1< <(
+
+94873*
+1< <(
+
+944873*
+1< <(
+
+98821*
+1@ @(
+
+98873*
+1@ @(
+
+984873*
+1@ @(
+
+101821*
+1D D(
+
+101873*
+1D D(
+
+1015273*
+1D D(
+
+105821*
+1H H(
+
+105873*
+1H H(
+
+1055673*
+1H H(
+
+109821*
+1M M(
+
+109873*
+1M M(
+
+1096073*
+1M M(
+
+113821*
+1Q Q(
+
+113873*
+1Q Q(
+
+1136473*
+1Q Q(
+
+11712173*
+1V
+ V((
+
+117123125*
+1V V((
+
+117121125*
+1V V(
+
+1171773*
+1V) V(;
+
+117126125*
+1V. V(;
+
+117873*
+1V) V(-
+
+117821*
+1V) V(-
+
+117873*
+1V) V(-
+
+1282273*
+1[
+ [(
+
+1322873*
+1_
+ _(
+
+1363273*
+1c
+ c(
+
+140821*
+1i2 i(6
+
+140873*
+1i2 i(6
+
+1403273*
+1i7 i(@
+
+1443673*
+1s
+ s(
+
+1484473*
+1w
+ w(
+
+1484073*
+1w w(
+
+1526073*
+1{
+ {(
+
+1564073*
+1
+ (
+
+1604473*
+1É
+ É(
+
+1644873*
+1à
+ à(
+
+16817273*
+1é é(+
+
+168174125*
+1é é(+
+
+16817221*
+1é é(
+
+1684873*
+1é, é(1
+
+176821*
+1ò ò(
+
+176873*
+1ò ò(
+
+1766073*
+1ò ò('
+
+1804873*
+1ú
+ ú(
+
+1804873*
+1ú
+ ú(
+
+18317273*
+1†
+ †(%
+
+183187125*
+1† †(%
+
+18317221*
+1†
+ †(
+
+18317273*
+1†& †(?
+
+183174125*
+1†0 †(?
+
+18317221*
+1†& †(/
+
+1834873*
+1†@ †(E
+
+1834873*
+1†@ †(E
+
+1895673*
+1§
+ §(
+
+1935273*
+1®
+ ®(
+
+1976473*
+1¨
+ ¨(

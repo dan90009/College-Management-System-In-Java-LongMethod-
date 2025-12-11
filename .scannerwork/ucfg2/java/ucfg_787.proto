@@ -1,0 +1,708 @@
+
+{collegeapplication.student.StudentData#getMarksheetReportBySubject(Lcollegeapplication/student/Marks;)Ljava/util/ArrayList;é
+ÅC:/Users/dnoo9/Downloads/College-Management-System-In-Java(LongMethodRefactoring)/src/collegeapplication/student/StudentData.javaÍ Í(4"37*Ç
+24
+˝ ˝(<á
+Ñ
+
+˝ ˝(<
+%30java.lang.String"__concat**
+
+˝ ˝(%
+ and s.optionalsubject='*'
+
+˝& ˝(<
+
+%29java.lang.Stringo
+m
+
+˝ ˝(@
+%31java.lang.String"__concat*'
+
+˝ ˝(<
+
+%30java.lang.String*
+
+˝= ˝(@
+'Ü
+É
+
+˝ ˝(@
+%32java.lang.String"__concat*)
+
+˝ ˝(@
+
+queryjava.lang.String*'
+
+˝ ˝(@
+
+%31java.lang.Stringf
+d
+
+˝ ˝(@
+queryjava.lang.String"__id*5
+
+__unknown_file (
+
+%32java.lang.String*
+23*„
+25
+˝ ˝(	 «
+
+˝& ˝(<
+%29java.lang.String"Ecollegeapplication.subject.Subject#getSubjectName()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectName()*
+24*Ÿ
+27
+˙ ˙(Tl
+j
+
+˙ ˙(T
+subjecttypejava.lang.String"__id*5
+
+__unknown_file (
+
+%27java.lang.StringŒÀ
+
+˚ ˚(!
+%28boolean",java.lang.String#equals(Ljava/lang/Object;)Z*=
+
+__unknown_file (!
+
+subjecttypejava.lang.String*$
+
+__unknown_file (
+core2equals(Ljava/lang/Object;)*
+25
+23*–
+28
+˙ ˙(S∑¥
+
+˙ ˙(S
+%27java.lang.String"`collegeapplication.subject.SubjectData#checkCoreorOptional(Ljava/lang/String;)Ljava/lang/String;*K
+
+__unknown_file (/
+-
+%24&collegeapplication.subject.SubjectData*5
+
+__unknown_file (
+
+%26java.lang.String2'checkCoreorOptional(Ljava/lang/String;)*
+27*„
+29
+˙< ˙(A «
+
+˙< ˙(R
+%26java.lang.String"Ecollegeapplication.subject.Subject#getSubjectCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectCode()*
+28*ı
+30
+Ô ˘(0v
+t
+
+Ô ˘(0
+%23java.lang.String"__concat*'
+
+Ô ˘(
+
+%21java.lang.String*
+
+˘ ˘(0
+
+
+%22intf
+d
+
+Ô ˘(1
+queryjava.lang.String"__id*5
+
+__unknown_file (
+
+%23java.lang.Stringec
+
+˙ ˙(%-
+%24&collegeapplication.subject.SubjectData"&collegeapplication.subject.SubjectDataï
+í
+
+˙ ˙('
+%25"0collegeapplication.subject.SubjectData#<init>()V*K
+
+__unknown_file (/
+-
+%24&collegeapplication.subject.SubjectData*
+29*Õ
+31Ô ¯(äÜ
+É
+Ô ¯(ä
+%20java.lang.String"__concat*'
+
+Ô ¯(t
+
+%18java.lang.String*(
+¯u ¯(ä
+
+%19java.lang.StringÅ
+
+
+Ô ˘(
+%21java.lang.String"__concat*(
+Ô ¯(ä
+
+%20java.lang.String*$
+
+˘ ˘(
+' and s.semoryear=¶£
+
+˘ ˘(0
+
+%22int"0collegeapplication.cource.Cource#getSemorYear()I*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSemorYear()*
+30*ƒ
+32
+Ô ˜(lÑ
+Å
+
+Ô ˜(l
+%17java.lang.String"__concat*'
+
+Ô ˜(U
+
+%15java.lang.String*'
+
+˜V ˜(l
+
+%16java.lang.String⁄
+◊
+
+Ô ¯(t
+%18java.lang.String"__concat*'
+
+Ô ˜(l
+
+%17java.lang.String*}
+
+¯ ¯(tom
+k') as 'Total Practical' from students s left join marks m on s.rollnumber=m.rollnumber where s.courcecode='«ƒ
+¯u ¯(ä
+%19java.lang.String"Bcollegeapplication.cource.Cource#getCourceCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getCourceCode()*
+31*Î
+10
+â â("”–
+
+â â("
+%47void"3collegeapplication.student.Marks#setTheoryMarks(I)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*(
+
+__unknown_file (
+
+
+%46int2setTheoryMarks(I)*
+9*®
+33
+Ô ˆ(TÑ
+Å
+
+Ô ˆ(T
+%14java.lang.String"__concat*'
+
+Ô ˆ(=
+
+%12java.lang.String*'
+
+ˆ> ˆ(T
+
+%13java.lang.Stringª
+∏
+
+Ô ˜(U
+%15java.lang.String"__concat*'
+
+Ô ˆ(T
+
+%14java.lang.String*^
+
+˜ ˜(UPN
+L') as 'Total theory',(select practicalmarks from subject where subjectcode=' «
+
+˜V ˜(l
+%16java.lang.String"Ecollegeapplication.subject.Subject#getSubjectCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectCode()*
+32*∏
+11
+â â(üú
+
+â â(!
+
+%46int"java.sql.ResultSet#getInt(I)I*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22	getInt(I)*
+10*≠
+34
+Ô Ù(.Å
+
+
+Ô Ù(.
+%10java.lang.String"__concat*&
+
+Ô Ù(
+
+%8java.lang.String*&
+
+Ù Ù(.
+
+%9java.lang.Stringù
+ö
+
+Ô ı(7
+%11java.lang.String"__concat*'
+
+Ô Ù(.
+
+%10java.lang.String*@
+
+ı ı(720
+.' and rollnumber=s.rollnumber) as 'Practical',£
+†
+
+Ô ˆ(=
+%12java.lang.String"__concat*'
+
+Ô ı(7
+
+%11java.lang.String*F
+
+ˆ ˆ(=86
+4(select theorymarks from subject where subjectcode=' «
+
+ˆ> ˆ(T
+%13java.lang.String"Ecollegeapplication.subject.Subject#getSubjectCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectCode()*
+33*ù
+12
+à à(,ÑÅ
+
+à à(,
+%45void"Fcollegeapplication.subject.Subject#setSubjectName(Ljava/lang/String;)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*5
+
+__unknown_file (
+
+%44java.lang.String2"setSubjectName(Ljava/lang/String;)*
+11*ì
+35
+Ô Ò(-Ä
+~
+
+Ô Ò(-
+%5java.lang.String"__concat*&
+
+Ô Ò(
+
+%3java.lang.String*&
+
+Ò Ò(-
+
+%4java.lang.Stringó
+î
+
+Ô Ú(3
+%6java.lang.String"__concat*&
+
+Ô Ò(-
+
+%5java.lang.String*<
+
+Ú Ú(3.,
+*' and rollnumber=s.rollnumber) as 'Theory'ï
+í
+
+Ô Û(1
+%7java.lang.String"__concat*&
+
+Ô Ú(3
+
+%6java.lang.String*:
+
+Û Û(1,*
+(,(select practicalmarks from marks wherez
+x
+
+Ô Ù(
+%8java.lang.String"__concat*&
+
+Ô Û(1
+
+%7java.lang.String* 
+
+Ù Ù(
+ subjectcode='…∆
+
+Ù Ù(.
+%9java.lang.String"Ecollegeapplication.subject.Subject#getSubjectCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectCode()*
+34*„
+13
+à à( «
+
+à à(+
+%44java.lang.String"Ecollegeapplication.subject.Subject#getSubjectName()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectName()*
+12*∞
+36
+Ô Ô(c–
+Õ
+
+Ô (/
+%2java.lang.String"__concat*c
+
+Ô Ô(cUS
+Qselect distinct s.rollnumber,concat(s.firstname,' ',s.lastname) as 'Student Name'*8
+
+ (/*(
+&,(select theorymarks from marks where y
+w
+
+Ô Ò(
+%3java.lang.String"__concat*&
+
+Ô (/
+
+%2java.lang.String*
+
+Ò Ò(
+subjectcode='…∆
+
+Ò Ò(-
+%4java.lang.String"Ecollegeapplication.subject.Subject#getSubjectCode()Ljava/lang/String;*G
+
+__unknown_file (+
+)
+marks collegeapplication.student.Marks2getSubjectCode()*
+35*õ
+14
+á á(%Çˇ
+
+á á(%
+%43void"Dcollegeapplication.student.Marks#setStudentName(Ljava/lang/String;)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*5
+
+__unknown_file (
+
+%42java.lang.String2"setStudentName(Ljava/lang/String;)*
+13*∞
+37
+Ï Ï(.><
+
+Ï Ï(,
+%0java.util.ArrayList"java.util.ArrayListl
+j
+
+Ï Ï(.
+%1"java.util.ArrayList#<init>()V*7
+
+__unknown_file (
+
+%0java.util.ArrayListj
+h
+
+Ï Ï(/
+listjava.util.ArrayList"__id*7
+
+__unknown_file (
+
+%0java.util.ArrayList*
+36*‹
+15
+á á(√¿
+
+á á($
+%42java.lang.String"1java.sql.ResultSet#getString(I)Ljava/lang/String;*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22getString(I)*
+14*Î
+16
+Ü Ü("“œ
+
+Ü Ü("
+%41void"2collegeapplication.student.Marks#setRollNumber(J)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*)
+
+__unknown_file (
+
+%40long2setRollNumber(J)*
+15*¡
+17
+Ö Ö(É
+Ä
+
+Ö Ö(%
+m collegeapplication.student.Marks"__id*E
+
+__unknown_file ()
+'
+%38 collegeapplication.student.Marks¢ü
+
+Ü Ü(!
+%40long"java.sql.ResultSet#getLong(I)J*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22
+getLong(I)*
+16*˝
+18
+Ö Ö(YW
+
+Ö Ö('
+%38 collegeapplication.student.Marks" collegeapplication.student.Marksâ
+Ü
+
+Ö Ö(
+%39"*collegeapplication.student.Marks#<init>()V*E
+
+__unknown_file ()
+'
+%38 collegeapplication.student.Marks*
+17*<
+1
+ñ	 ñ("+
+
+ñ ñ(
+
+listjava.util.ArrayList*„
+3
+é é(À
+»
+
+é é(
+%54boolean"
+__arrayAdd*9
+
+__unknown_file (
+
+listjava.util.ArrayList*
+
+__unknown_file (: *C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*
+20*¯
+4
+å å((·ﬁ
+
+å å((
+%53void";collegeapplication.subject.Subject#setMaxPracticalMarks(I)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*(
+
+__unknown_file (
+
+
+%52int2setMaxPracticalMarks(I)*
+3*∂
+5
+å å(üú
+
+å å('
+
+%52int"java.sql.ResultSet#getInt(I)I*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22	getInt(I)*
+4*Ú
+6
+ã ã(%€ÿ
+
+ã ã(%
+%51void"8collegeapplication.subject.Subject#setMaxTheoryMarks(I)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*(
+
+__unknown_file (
+
+
+%50int2setMaxTheoryMarks(I)*
+5*∂
+7
+ã ã(üú
+
+ã ã($
+
+%50int"java.sql.ResultSet#getInt(I)I*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22	getInt(I)*
+6*
+8
+ä ä(%Ÿ÷
+
+ä ä(%
+%49void"6collegeapplication.student.Marks#setPracticalMarks(I)V*C
+
+__unknown_file ('
+%
+m collegeapplication.student.Marks*(
+
+__unknown_file (
+
+
+%48int2setPracticalMarks(I)*
+7*∂
+9
+ä ä(üú
+
+ä ä($
+
+%48int"java.sql.ResultSet#getInt(I)I*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet* 
+
+__unknown_file (22	getInt(I)*
+8*ï
+20
+É	 É(zx
+
+É	 É(
+%37boolean"java.sql.ResultSet#next()Z*6
+
+__unknown_file (
+
+rsjava.sql.ResultSet2next()*
+18
+1*
+21
+Ç Ç('g
+e
+
+Ç Ç('
+rsjava.sql.ResultSet"__id*7
+
+__unknown_file (
+
+%36java.sql.ResultSet*
+20*à
+22
+Å Å(&g
+e
+
+Å Å(&
+stjava.sql.Statement"__id*7
+
+__unknown_file (
+
+%35java.sql.StatementÜÉ
+
+Ç Ç(&
+%36java.sql.ResultSet"Gjava.sql.Statement#executeQuery(Ljava/lang/String;)Ljava/sql/ResultSet;*6
+
+__unknown_file (
+
+stjava.sql.Statement*7
+
+__unknown_file (
+
+queryjava.lang.String2 executeQuery(Ljava/lang/String;)*
+21*≈
+23
+ˇ ˇ(ã
+à
+
+ˇ ˇ(&
+%33java.lang.String"__concat*)
+
+ˇ
+ ˇ(&
+
+queryjava.lang.String*,
+
+ˇ
+ ˇ(&
+ order by s.rollnumber ascf
+d
+
+ˇ ˇ(&
+queryjava.lang.String"__id*5
+
+__unknown_file (
+
+%33java.lang.StringÅ
+
+
+Å Å(
+%34java.sql.Connection"__id*O
+
+__unknown_file (3*1(
+&collegeapplication.student.StudentData"
+con≤Ø
+
+Å Å(%
+%35java.sql.Statement"9java.sql.Connection#createStatement()Ljava/sql/Statement;*8
+
+__unknown_file (
+
+%34java.sql.Connection2createStatement()*
+22:7
+
+Í5 Í(@)
+marks collegeapplication.student.MarksB*(
+&collegeapplication.student.StudentDataH
